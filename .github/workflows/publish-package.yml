@@ -35,4 +35,8 @@ jobs:
       run: dotnet pack --configuration Release --output ./nupkg
 
     - name: Push to GitHub Packages
-      run: dotnet nuget push ./nupkg/*.nupkg --api-key ${{ secrets.GH_PACKAGES_TOKEN }} --source "GitHub" --skip-duplicate
+      run: |
+        dotnet nuget push ./nupkg/*.nupkg \
+          --api-key ${{ secrets.GH_PACKAGES_TOKEN }} \
+          --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" \
+          --skip-duplicate
