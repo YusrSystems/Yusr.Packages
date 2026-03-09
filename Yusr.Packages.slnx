@@ -1,6 +1,7 @@
 <Solution>
   <Folder Name="/src/" />
   <Folder Name="/src/Abstractions/">
+    <Project Path="Yusr.Api.Abstractions/Yusr.Api.Abstractions.csproj" Id="cba2e47f-5f60-48d7-9fc7-e7a9c8b10f20" />
     <Project Path="Yusr.Application.Abstractions/Yusr.Application.Abstractions.csproj" Id="3d82fe9b-ad86-4dfa-8f4e-3c888416d83a" />
     <Project Path="Yusr.Core.Abstractions/Yusr.Core.Abstractions.csproj" />
     <Project Path="Yusr.Identity.Abstractions/Yusr.Identity.Abstractions.csproj" Id="af3865b4-fa8d-41d7-872a-fde7d0b1306a" />
