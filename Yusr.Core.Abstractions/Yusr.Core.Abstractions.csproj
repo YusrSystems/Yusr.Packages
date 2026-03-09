@@ -1,9 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+	  
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+
+	<PackageId>YusrSystems.Yusr.Core.Abstractions</PackageId>
+	<PackageDescription>Core abstractions that every Yusr project uses</PackageDescription>
+	<RepositoryUrl>https://github.com/YusrSystems/Yusr.Packages</RepositoryUrl>
+
   </PropertyGroup>
 
 </Project>
