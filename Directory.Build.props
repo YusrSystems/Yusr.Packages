@@ -1,16 +1,18 @@
 <Project>
-  <PropertyGroup>
-    <Authors>YusrSystems</Authors>
-    <Company>YusrSystems</Company>
+	<PropertyGroup>
+		<Authors>YusrSystems</Authors>
+		<Company>YusrSystems</Company>
+		<PackageIcon>logo.png</PackageIcon>
+		<MinVerTagPrefix>v</MinVerTagPrefix>
+	</PropertyGroup>
 
-    <MinVerTagPrefix>v</MinVerTagPrefix>
+	<ItemGroup>
+		<None Include="$(MSBuildThisFileDirectory)logo.png" Pack="true" PackagePath="\" />
+	</ItemGroup>
 
-    <PackageVersion Condition="'$(PackageVersion)' == ''">1.0.0</PackageVersion>
-    </PropertyGroup>
-  
-  <ItemGroup>
-    <PackageReference Include="MinVer" Version="7.0.0">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="MinVer" Version="6.0.0">
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+	</ItemGroup>
 </Project>
