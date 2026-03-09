@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
-	<PackageId>YusrSystems.Yusr.Core.Abstractions</PackageId>
+	<PackageId>YusrSystems.Yusr.Storage.Abstractions</PackageId>
 	<PackageDescription>Storage abstractions that every Yusr project uses</PackageDescription>
 	<RepositoryUrl>https://github.com/YusrSystems/Yusr.Packages</RepositoryUrl>
 	  
