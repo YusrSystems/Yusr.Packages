@@ -2,6 +2,9 @@
   <PropertyGroup>
     <Authors>YusrSystems</Authors>
     <Company>YusrSystems</Company>
+
+    <MinVerTagPrefix>v</MinVerTagPrefix>
+
     <PackageVersion Condition="'$(PackageVersion)' == ''">1.0.0</PackageVersion>
     </PropertyGroup>
   
