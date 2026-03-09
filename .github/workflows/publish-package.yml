@@ -3,6 +3,7 @@ name: Publish Yusr Core Abstractions
 on:
   push:
     branches: [ "master" ]
+    tags: [ 'v*' ] # This ensures the workflow runs when you push a version tag like v1.1.0
 
 jobs:
   build-and-publish:
@@ -14,26 +15,24 @@ jobs:
     steps:
     - uses: actions/checkout@v4
       with:
-        fetch-depth: 0 # Needed for versioning tools
+        fetch-depth: 0 # CRITICAL: MinVer needs the full history to find the tags
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '10.0.x'
-        # This automatically sets up the auth for GitHub Packages
         source-url: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
       env:
-        NODE_AUTH_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
+        # Note: For .NET, this env var is usually not needed if using --api-key, 
+        # but keeping it doesn't hurt.
+        NUGET_AUTH_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
 
     - name: Restore dependencies
       run: dotnet restore
 
     - name: Build and Pack
-      # We use the GitHub Run Number to create a unique version (e.g., 1.0.5)
-      run: |
-        dotnet pack --configuration Release \
-        -p:PackageVersion=1.0.${{ github.run_number }} \
-        --output ./nupkg
+      # REMOVED the manual -p:PackageVersion. MinVer handles it now.
+      run: dotnet pack --configuration Release --output ./nupkg
 
     - name: Push to GitHub Packages
       run: dotnet nuget push ./nupkg/*.nupkg --api-key ${{ secrets.GH_PACKAGES_TOKEN }} --source "GitHub" --skip-duplicate
