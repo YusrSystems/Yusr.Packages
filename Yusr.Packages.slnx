@@ -9,5 +9,6 @@
   </Folder>
   <Folder Name="/src/Implementations/">
     <Project Path="Yusr.Email/Yusr.Email.csproj" />
+    <Project Path="Yusr.Identity/Yusr.Identity.csproj" Id="1575bc48-e633-4177-9354-122eaa28b40c" />
   </Folder>
 </Solution>

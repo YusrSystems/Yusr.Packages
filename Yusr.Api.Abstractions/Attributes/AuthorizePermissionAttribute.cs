@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Yusr.Core.Abstractions.Constants;
+using Yusr.Core.Abstractions.Interfaces;
 
 namespace Yusr.Api.Abstractions.Attributes
 {
@@ -8,7 +8,7 @@ namespace Yusr.Api.Abstractions.Attributes
     {
         public AuthorizePermissionAttribute(string resource, string action)
         {
-            Policy = BaseSystemPermissions.Create(resource, action);
+            Policy = ISystemPermissions.Create(resource, action);
         }
     }
 }
