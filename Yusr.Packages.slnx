@@ -5,9 +5,13 @@
     <Project Path="Yusr.Application.Abstractions/Yusr.Application.Abstractions.csproj" Id="3d82fe9b-ad86-4dfa-8f4e-3c888416d83a" />
     <Project Path="Yusr.Core.Abstractions/Yusr.Core.Abstractions.csproj" />
     <Project Path="Yusr.Identity.Abstractions/Yusr.Identity.Abstractions.csproj" Id="af3865b4-fa8d-41d7-872a-fde7d0b1306a" />
-    <Project Path="Yusr.Storage.Abstraction/Yusr.Storage.Abstractions.csproj" Id="f3431f1c-35fa-4dfd-84ac-bc4a9bd38165" />
+    <Project Path="Yusr.Storage.Abstractions/Yusr.Storage.Abstractions.csproj" Id="f3431f1c-35fa-4dfd-84ac-bc4a9bd38165" />
   </Folder>
   <Folder Name="/src/Implementations/">
     <Project Path="Yusr.Email/Yusr.Email.csproj" />
+    <Project Path="Yusr.FilesStorage/Yusr.Storage.csproj" Id="838e6f04-7c5a-46b2-8855-03134471d954" />
+    <Project Path="Yusr.Identity/Yusr.Identity.csproj" Id="1575bc48-e633-4177-9354-122eaa28b40c" />
+    <Project Path="Yusr.Persistence/Yusr.Persistence.csproj" Id="5fed4556-5990-40f5-bb87-8006e3ecba82" />
+    <Project Path="Yusr.Resources/Yusr.Resources.csproj" Id="7bebb2eb-a9fe-4dea-82a4-fbab5da7ad64" />
   </Folder>
 </Solution>

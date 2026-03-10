@@ -2,6 +2,7 @@
 {
     public interface ITenant
     {
+        public long Id { get; set; }
         string Email { get; set; }
         string Name { get; set; }
         DateTime CreateDate { get; set; }

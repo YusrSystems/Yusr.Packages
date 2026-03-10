@@ -1,7 +1,8 @@
 ﻿using System.Security.Claims;
-using Yusr.Core.Abstractions.Constants;
+using Yusr.Core.Abstractions.Primitives;
+using Yusr.Identity.Abstractions.Constants;
 
-namespace Yusr.Core.Abstractions.Primitives
+namespace Yusr.Identity.Abstractions.Primitives
 {
     public class JwtClaims
     {

@@ -3,40 +3,37 @@ name: Publish Yusr Core Abstractions
 on:
   push:
     branches: [ "master" ]
-    tags: [ 'v*' ] # This ensures the workflow runs when you push a version tag like v1.1.0
+    tags: [ "v*" ]
 
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
+
     permissions:
       contents: read
-      packages: write
 
     steps:
     - uses: actions/checkout@v4
       with:
-        fetch-depth: 0 # CRITICAL: MinVer needs the full history to find the tags
+        fetch-depth: 0
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '10.0.x'
-        source-url: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
-      env:
-        # Note: For .NET, this env var is usually not needed if using --api-key, 
-        # but keeping it doesn't hurt.
-        NUGET_AUTH_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
+        dotnet-version: '8.0.x'
 
-    - name: Restore dependencies
+    - name: Restore
       run: dotnet restore
 
-    - name: Build and Pack
-      # REMOVED the manual -p:PackageVersion. MinVer handles it now.
-      run: dotnet pack --configuration Release --output ./nupkg
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
 
-    - name: Push to GitHub Packages
+    - name: Pack
+      run: dotnet pack --configuration Release --no-build --output ./nupkg
+
+    - name: Publish to NuGet
       run: |
         dotnet nuget push ./nupkg/*.nupkg \
-          --api-key ${{ secrets.GH_PACKAGES_TOKEN }} \
-          --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" \
+          --api-key ${{ secrets.NUGET_API_KEY }} \
+          --source https://api.nuget.org/v3/index.json \
           --skip-duplicate

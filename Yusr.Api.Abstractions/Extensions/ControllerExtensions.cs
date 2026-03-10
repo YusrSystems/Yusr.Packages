@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Yusr.Core.Abstractions.Enums;
 using Yusr.Core.Abstractions.Primitives;
+using Yusr.Identity.Abstractions.Primitives;
 
 namespace Yusr.Api.Abstractions.Extensions
 {
