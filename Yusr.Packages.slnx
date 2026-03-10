@@ -11,6 +11,7 @@
     <Project Path="Yusr.Email/Yusr.Email.csproj" />
     <Project Path="Yusr.FilesStorage/Yusr.Storage.csproj" Id="838e6f04-7c5a-46b2-8855-03134471d954" />
     <Project Path="Yusr.Identity/Yusr.Identity.csproj" Id="1575bc48-e633-4177-9354-122eaa28b40c" />
+    <Project Path="Yusr.Persistence/Yusr.Persistence.csproj" Id="5fed4556-5990-40f5-bb87-8006e3ecba82" />
     <Project Path="Yusr.Resources/Yusr.Resources.csproj" Id="7bebb2eb-a9fe-4dea-82a4-fbab5da7ad64" />
   </Folder>
 </Solution>
