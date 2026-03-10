@@ -1,10 +1,10 @@
 ﻿using System.Security.Claims;
-using Yusr.Core.Abstractions.Constants;
 using Yusr.Core.Abstractions.Entities;
-using Yusr.Core.Abstractions.Interfaces;
+using Yusr.Identity.Abstractions.Constants;
+using Yusr.Identity.Abstractions.Interfaces;
 using Yusr.Identity.Abstractions.Services;
 
-namespace Yusr.Bus.Identity.Services
+namespace Yusr.Identity.Services
 {
     public class ClaimsService<SystemPermissions> : IClaimsService where SystemPermissions : ISystemPermissions
     {
@@ -12,10 +12,10 @@ namespace Yusr.Bus.Identity.Services
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.Username),
-                new Claim(JwtClaimsConstants.TenantIdClaimName, tenant.Id.ToString()),
-                new Claim(ClaimTypes.Role, user.Role.Name)
+                new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new(ClaimTypes.Name, user.Username),
+                new(JwtClaimsConstants.TenantIdClaimName, tenant.Id.ToString()),
+                new(ClaimTypes.Role, user.Role.Name)
             };
 
             var activePermissions = user.Role.Permissions

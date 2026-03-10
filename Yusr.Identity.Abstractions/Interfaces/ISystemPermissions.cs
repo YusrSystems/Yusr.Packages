@@ -1,6 +1,6 @@
 ﻿using System.Collections.Frozen;
 
-namespace Yusr.Core.Abstractions.Interfaces
+namespace Yusr.Identity.Abstractions.Interfaces
 {
     public interface ISystemPermissions
     {

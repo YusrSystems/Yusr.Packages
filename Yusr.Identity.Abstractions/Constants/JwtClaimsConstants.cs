@@ -1,8 +1,8 @@
-﻿namespace Yusr.Core.Abstractions.Constants
+﻿namespace Yusr.Identity.Abstractions.Constants
 {
     public class JwtClaimsConstants
     {
         public const string TenantIdClaimName = "TenantId";
-        public static string PermissionClaimName = "PRM";
+        public const string PermissionClaimName = "PRM";
     }
 }

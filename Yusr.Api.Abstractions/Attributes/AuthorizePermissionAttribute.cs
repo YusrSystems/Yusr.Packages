@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Yusr.Core.Abstractions.Interfaces;
+using Yusr.Identity.Abstractions.Interfaces;
 
 namespace Yusr.Api.Abstractions.Attributes
 {

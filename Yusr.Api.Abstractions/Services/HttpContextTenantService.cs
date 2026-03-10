@@ -1,6 +1,6 @@
-﻿using Yusr.Core.Abstractions.Services;
-using Yusr.Core.Abstractions.Constants;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
+using Yusr.Core.Abstractions.Services;
+using Yusr.Identity.Abstractions.Constants;
 
 namespace Yusr.Api.Abstractions.Services
 {

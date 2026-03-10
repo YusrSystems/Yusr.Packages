@@ -6,16 +6,11 @@ using System.Text;
 using Yusr.Identity.Abstractions.Options;
 using Yusr.Identity.Abstractions.Services;
 
-namespace Yusr.Bus.Identity.Services
+namespace Yusr.Identity.Services
 {
-    public class TokenService : ITokenService
+    public class TokenService(IOptions<JwtOptions> options) : ITokenService
     {
-        private readonly JwtOptions _options;
-
-        public TokenService(IOptions<JwtOptions> options)
-        {
-            _options = options.Value;
-        }
+        private readonly JwtOptions _options = options.Value;
 
         public string GenerateToken(IEnumerable<Claim> claims)
         {

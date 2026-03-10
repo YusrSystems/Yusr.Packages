@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
-using Yusr.Core.Abstractions.Constants;
+using Yusr.Identity.Abstractions.Constants;
 
 namespace Yusr.Api.Abstractions.Authorization
 {

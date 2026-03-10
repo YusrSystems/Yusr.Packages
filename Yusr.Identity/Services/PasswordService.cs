@@ -2,16 +2,11 @@
 using Yusr.Core.Abstractions.Entities;
 using Yusr.Identity.Abstractions.Services;
 
-namespace Yusr.Bus.Identity.Services
+namespace Yusr.Identity.Services
 {
-    public class PasswordService : IPasswordService
+    public class PasswordService(IPasswordHasher<IUser> passwordHasher) : IPasswordService
     {
-        private readonly IPasswordHasher<IUser> _passwordHasher;
-
-        public PasswordService(IPasswordHasher<IUser> passwordHasher)
-        {
-            _passwordHasher = passwordHasher;
-        }
+        private readonly IPasswordHasher<IUser> _passwordHasher = passwordHasher;
 
         public string Hash(IUser user, string providedPassword)
         {
