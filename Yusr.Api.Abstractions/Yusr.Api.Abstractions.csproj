@@ -7,7 +7,7 @@
     <Nullable>enable</Nullable>
 
 	<PackageId>Yusr.Api.Abstractions</PackageId>
-	<PackageDescription>Api abstractions that every Yusr project uses</PackageDescription>
+	<PackageDescription>Contracts and shared types for the API layer, including OpenAPI configurations, logging extensions, and standardized endpoint abstractions.</PackageDescription>
 	<RepositoryUrl>https://github.com/YusrSystems/Yusr.Packages</RepositoryUrl>
 	  
   </PropertyGroup>

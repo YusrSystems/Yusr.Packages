@@ -7,7 +7,7 @@
     <Nullable>enable</Nullable>
 
 	<PackageId>Yusr.Storage.Abstractions</PackageId>
-	<PackageDescription>Storage abstractions that every Yusr project uses</PackageDescription>
+	<PackageDescription>Provider-agnostic storage interfaces and file management abstractions to enable swappable object storage implementations.</PackageDescription>
 	<RepositoryUrl>https://github.com/YusrSystems/Yusr.Packages</RepositoryUrl>
 	  
   </PropertyGroup>

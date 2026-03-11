@@ -4,6 +4,10 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+
+	<PackageId>Yusr.Storage</PackageId>
+	<PackageDescription>Object storage abstraction for Yusr applications, providing a seamless interface for AWS S3 and S3-compatible cloud storage providers.</PackageDescription>
+	<RepositoryUrl>https://github.com/YusrSystems/Yusr.Packages</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>

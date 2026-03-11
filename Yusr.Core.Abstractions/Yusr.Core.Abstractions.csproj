@@ -7,7 +7,7 @@
     <Nullable>enable</Nullable>
 
 	<PackageId>Yusr.Core.Abstractions</PackageId>
-	<PackageDescription>Core abstractions that every Yusr project uses</PackageDescription>
+	<PackageDescription>The foundational building blocks of the Yusr ecosystem, containing base domain types, common primitives, and universal interfaces.</PackageDescription>
 	<RepositoryUrl>https://github.com/YusrSystems/Yusr.Packages</RepositoryUrl>
 
   </PropertyGroup>

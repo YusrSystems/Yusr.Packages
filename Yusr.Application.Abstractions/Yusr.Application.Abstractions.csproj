@@ -7,7 +7,7 @@
     <Nullable>enable</Nullable>
 
 	<PackageId>Yusr.Application.Abstractions</PackageId>
-	<PackageDescription>Application abstractions that every Yusr project uses</PackageDescription>
+	<PackageDescription>Core business logic interfaces for Yusr services, facilitating the implementation of the Application layer.</PackageDescription>
 	<RepositoryUrl>https://github.com/YusrSystems/Yusr.Packages</RepositoryUrl>
 	  
 	  
