@@ -10,6 +10,6 @@
         long RoleId { get; set; }
 
         ITenant Tenant { get; set; }
-        IRole Role { get; set; }
+        Role Role { get; set; }
     }
 }

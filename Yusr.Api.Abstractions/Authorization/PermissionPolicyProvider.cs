@@ -8,7 +8,11 @@ namespace Yusr.Api.Abstractions.Authorization
         public override async Task<AuthorizationPolicy?> GetPolicyAsync(string policyName)
         {
             var policy = await base.GetPolicyAsync(policyName);
-            if (policy != null) return policy;
+
+            if (policy != null)
+            {
+                return policy;
+            }
 
             return new AuthorizationPolicyBuilder()
                 .AddRequirements(new PermissionRequirement(policyName))
