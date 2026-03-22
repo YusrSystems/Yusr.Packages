@@ -9,7 +9,7 @@ namespace Yusr.Application
     {
         public static IServiceCollection AddYusrCommonServices<TSystemPermissions>(this IServiceCollection services) where TSystemPermissions : ISystemPermissions
         {
-            AddYusrCommonServices(services);
+            services.AddYusrCommonServices();
             services.AddScoped<IRolesService, RolesService<TSystemPermissions>>();
 
             return services;
