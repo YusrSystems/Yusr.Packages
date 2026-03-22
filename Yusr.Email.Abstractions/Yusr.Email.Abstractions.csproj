@@ -4,6 +4,17 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+
+
+	  <PackageId>Yusr.Email.Abstractions</PackageId>
+	  <PackageDescription>
+		  Defines core abstractions for email delivery in the Yusr ecosystem, including message contracts, templates, and provider interfaces. Enables flexible, provider-agnostic email integrations with a clean and maintainable architecture.
+	  </PackageDescription>
+	  <RepositoryUrl>https://github.com/YusrSystems/Yusr.Packages</RepositoryUrl>
   </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Update="MinVer" Version="7.0.0" />
+	</ItemGroup>
 
 </Project>
