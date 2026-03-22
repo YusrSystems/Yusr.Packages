@@ -1,6 +1,6 @@
 ﻿using Yusr.Core.Abstractions.Primitives;
 
-namespace Yusr.Application.Abstractions.Interfaces
+namespace Yusr.Application.Abstractions.Interfaces.Generics
 {
     public interface IDeletableService
     {

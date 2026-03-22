@@ -1,6 +1,6 @@
 ﻿using Yusr.Core.Abstractions.Entities;
 
-namespace Yusr.Core.Abstractions.Interfaces
+namespace Yusr.Core.Abstractions.Interfaces.Generics
 {
     public interface IRetrievableRepository<TEntity> where TEntity : BaseEntity
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Yusr.Core.Abstractions.Entities;
 using Yusr.Core.Abstractions.Extensions;
-using Yusr.Core.Abstractions.Interfaces;
+using Yusr.Core.Abstractions.Interfaces.Generics;
 using Yusr.Core.Abstractions.Primitives;
 using Yusr.Persistence.Context;
 

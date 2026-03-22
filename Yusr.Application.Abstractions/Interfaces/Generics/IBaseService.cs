@@ -1,6 +1,6 @@
 ﻿using Yusr.Application.Abstractions.DTOs;
 
-namespace Yusr.Application.Abstractions.Interfaces
+namespace Yusr.Application.Abstractions.Interfaces.Generics
 {
     public interface IBaseService<TDto> : IFilterableService<TDto>,
                                                 IRetrievableService<TDto>,

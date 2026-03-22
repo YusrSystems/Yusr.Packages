@@ -4,6 +4,6 @@
     {
         public long TenantId { get; set; }
 
-        public virtual ITenant Tenant { get; set; } = null!;
+        public virtual Tenant Tenant { get; set; } = null!;
     }
 }

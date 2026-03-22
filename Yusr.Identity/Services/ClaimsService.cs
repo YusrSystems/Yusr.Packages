@@ -8,7 +8,7 @@ namespace Yusr.Identity.Services
 {
     public class ClaimsService<SystemPermissions> : IClaimsService where SystemPermissions : ISystemPermissions
     {
-        public IEnumerable<Claim> GenerateUserClaims(IUser user, ITenant tenant)
+        public IEnumerable<Claim> GenerateUserClaims(User user, Tenant tenant)
         {
             return new List<Claim>
             {

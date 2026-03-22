@@ -1,4 +1,4 @@
-﻿namespace Yusr.Core.Abstractions.Interfaces
+﻿namespace Yusr.Core.Abstractions.Interfaces.Generics
 {
     public interface IQueryableRepository
     {

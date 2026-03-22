@@ -13,7 +13,7 @@ namespace Yusr.Identity
         public static IServiceCollection AddYusrIdentity<TSystemPermissions>(this IServiceCollection services) where TSystemPermissions : ISystemPermissions
         {
             services.TryAddScoped<ITokenService, TokenService>();
-            services.TryAddScoped<IPasswordHasher<IUser>, PasswordHasher<IUser>>();
+            services.TryAddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
             services.TryAddScoped<IPasswordService, PasswordService>();
             services.TryAddScoped<IClaimsService, ClaimsService<TSystemPermissions>>();
 

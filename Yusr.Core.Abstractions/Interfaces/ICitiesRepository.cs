@@ -3,7 +3,7 @@ using Yusr.Core.Abstractions.Interfaces.Generics;
 
 namespace Yusr.Core.Abstractions.Interfaces
 {
-    public interface IRolesRepository : IBaseRepository<Role>
+    public interface ICitiesRepository : IFilterableRepository<City>
     {
     }
 }

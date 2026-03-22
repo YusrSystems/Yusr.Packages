@@ -5,6 +5,6 @@ namespace Yusr.Identity.Abstractions.Services
 {
     public interface IClaimsService
     {
-        IEnumerable<Claim> GenerateUserClaims(IUser user, ITenant tenant);
+        IEnumerable<Claim> GenerateUserClaims(User user, Tenant tenant);
     }
 }

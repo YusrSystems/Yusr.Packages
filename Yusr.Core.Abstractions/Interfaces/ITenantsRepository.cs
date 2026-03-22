@@ -3,7 +3,8 @@ using Yusr.Core.Abstractions.Interfaces.Generics;
 
 namespace Yusr.Core.Abstractions.Interfaces
 {
-    public interface IRolesRepository : IBaseRepository<Role>
+    public interface ITenantsRepository : IBaseRepository<Tenant>
     {
+        Task<Tenant?> GetTenantByEmailAsync(string email);
     }
 }

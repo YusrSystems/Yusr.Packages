@@ -4,16 +4,16 @@ using Yusr.Identity.Abstractions.Services;
 
 namespace Yusr.Identity.Services
 {
-    public class PasswordService(IPasswordHasher<IUser> passwordHasher) : IPasswordService
+    public class PasswordService(IPasswordHasher<User> passwordHasher) : IPasswordService
     {
-        private readonly IPasswordHasher<IUser> _passwordHasher = passwordHasher;
+        private readonly IPasswordHasher<User> _passwordHasher = passwordHasher;
 
-        public string Hash(IUser user, string providedPassword)
+        public string Hash(User user, string providedPassword)
         {
             return _passwordHasher.HashPassword(user, providedPassword);
         }
 
-        public bool Verify(IUser user, string hashedPassword, string providedPassword)
+        public bool Verify(User user, string hashedPassword, string providedPassword)
         {
             var result = _passwordHasher.VerifyHashedPassword(user, hashedPassword, providedPassword);
             return result == PasswordVerificationResult.Success;

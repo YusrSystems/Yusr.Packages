@@ -3,7 +3,8 @@ using Yusr.Core.Abstractions.Interfaces.Generics;
 
 namespace Yusr.Core.Abstractions.Interfaces
 {
-    public interface IRolesRepository : IBaseRepository<Role>
+    public interface IUsersRepository : IBaseRepository<User>
     {
+        Task<User?> GetUserByCredentialsAsync(string username);
     }
 }
