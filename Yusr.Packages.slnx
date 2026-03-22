@@ -9,6 +9,7 @@
     <Project Path="Yusr.Storage.Abstractions/Yusr.Storage.Abstractions.csproj" Id="f3431f1c-35fa-4dfd-84ac-bc4a9bd38165" />
   </Folder>
   <Folder Name="/src/Implementations/">
+    <Project Path="Yusr.Application/Yusr.Application.csproj" Id="1e0192a8-d10b-482b-b7a2-15a3ed798e9a" />
     <Project Path="Yusr.Email/Yusr.Email.csproj" />
     <Project Path="Yusr.FilesStorage/Yusr.Storage.csproj" Id="838e6f04-7c5a-46b2-8855-03134471d954" />
     <Project Path="Yusr.Identity/Yusr.Identity.csproj" Id="1575bc48-e633-4177-9354-122eaa28b40c" />

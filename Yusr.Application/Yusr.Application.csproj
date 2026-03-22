@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Yusr.Api.Abstractions\Yusr.Api.Abstractions.csproj" />
+    <ProjectReference Include="..\Yusr.Application.Abstractions\Yusr.Application.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

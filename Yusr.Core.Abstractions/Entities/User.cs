@@ -11,25 +11,28 @@
         public virtual Role Role { get; set; } = null!;
         public virtual Branch Branch { get; set; } = null!;
 
-        public static User Create(string username, string password, bool isActive, long branchId, long roleId)
+        public static User Create(string username, bool isActive, long branchId, long roleId)
         {
             return new User
             {
                 Username = username,
-                Password = password,
                 IsActive = isActive,
                 BranchId = branchId,
                 RoleId = roleId
             };
         }
 
-        public User Update(string username, string password, bool isActive, long branchId, long roleId)
+        public User Update(string username, bool isActive, long branchId, long roleId)
         {
             Username = username;
-            Password = password;
             IsActive = isActive;
             BranchId = branchId;
             RoleId = roleId;
+            return this;
+        }
+        public User ChangePassword(string password)
+        {
+            Password = password;
             return this;
         }
     }
