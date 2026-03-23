@@ -60,7 +60,7 @@ namespace Yusr.Persistence.Context
         }
 
 
-
+        public DbSet<Tenant> Tenants { get; set; }
         public DbSet<Branch> Branches { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Currency> Currencies { get; set; }
