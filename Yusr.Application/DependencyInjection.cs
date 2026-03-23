@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Yusr.Api.Abstractions.Services;
 using Yusr.Application.Abstractions.Interfaces;
 using Yusr.Application.Services;
+using Yusr.Core.Abstractions.Services;
 using Yusr.Identity.Abstractions.Interfaces;
 
 namespace Yusr.Application
@@ -17,6 +19,7 @@ namespace Yusr.Application
 
         public static IServiceCollection AddYusrCommonServices(this IServiceCollection services)
         {
+            services.AddScoped<ITenantService, HttpContextTenantService>();
             services.AddScoped<IBranchesService, BranchesService>();
             services.AddScoped<ICitiesService, CitiesService>();
             services.AddScoped<ICountriesService, CountriesService>();
