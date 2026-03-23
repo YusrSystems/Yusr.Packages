@@ -25,11 +25,6 @@ namespace Yusr.Persistence
             services.AddScoped<IUsersRepository, UsersRepository>();
             services.AddScoped<ITenantsRepository, TenantsRepository>();
 
-            services.Scan(scan => scan
-                .FromAssembliesOf(typeof(DependencyInjection))
-                .AddClasses(classes => classes.AssignableTo(typeof(GenericRepository<>)))
-                .AsImplementedInterfaces()
-                .WithScopedLifetime());
             return services;
         }
     }
