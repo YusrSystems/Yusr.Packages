@@ -14,18 +14,6 @@ namespace Yusr.Persistence
     {
         public static IServiceCollection AddYusrPersistence(this IServiceCollection services)
         {
-            services.AddDbContext<YusrDbContext>((serviceProvider, options) =>
-            {
-                var dbOptions = serviceProvider.GetRequiredService<IOptions<DatabaseOptions>>().Value;
-
-                if (!string.IsNullOrEmpty(dbOptions.SqlConnection))
-                {
-                    options.UseNpgsql(dbOptions.SqlConnection)
-                        .UseSnakeCaseNamingConvention();
-
-                    options.LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information).EnableSensitiveDataLogging();
-                }
-            });
             services.AddSingleton<IExceptionService, ExceptionService>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
