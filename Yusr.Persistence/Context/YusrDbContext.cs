@@ -5,7 +5,7 @@ using Yusr.Persistence.Converters;
 
 namespace Yusr.Persistence.Context
 {
-    public class YusrDbContext(DbContextOptions<YusrDbContext> options, ITenantService tenantService) : DbContext(options)
+    public partial class YusrDbContext(DbContextOptions<YusrDbContext> options, ITenantService tenantService) : DbContext(options)
     {
         private readonly ITenantService _tenantService = tenantService;
 
