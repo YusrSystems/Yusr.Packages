@@ -58,5 +58,14 @@ namespace Yusr.Persistence.Context
         {
             modelBuilder.Entity<TEntity>().HasQueryFilter(x => x.TenantId == _tenantService.CurrentTenantId());
         }
+
+
+
+        public DbSet<Branch> Branches { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Currency> Currencies { get; set; }
+        public DbSet<City> Cities { get; set; }
+        public DbSet<Country> Countries { get; set; }
+        public DbSet<Role> Roles { get; set; }
     }
 }
