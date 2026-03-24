@@ -13,12 +13,14 @@
 	 <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
-  <ItemGroup>
-	<Content Include="Resources\**\*.*">
-		<Pack>true</Pack>
-		<PackagePath>contentFiles\any\any\Resources\</PackagePath>
-		<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	</Content>
-  </ItemGroup>
+	<ItemGroup>
+		<Content Include="Resources\**\*.*">
+			<Pack>true</Pack>
+			<PackagePath>contentFiles\any\any\Resources\</PackagePath>
+			<PackageCopyToOutput>true</PackageCopyToOutput>
+			<BuildAction>None</BuildAction>
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
 
 </Project>
