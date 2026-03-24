@@ -14,13 +14,12 @@
   </PropertyGroup>
 
 	<ItemGroup>
-		<Content Include="Resources\**\*.*">
+		<None Include="Resources\**\*.*">
 			<Pack>true</Pack>
 			<PackagePath>contentFiles\any\any\Resources\</PackagePath>
 			<PackageCopyToOutput>true</PackageCopyToOutput>
-			<BuildAction>None</BuildAction>
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
+			<PackageFlatten>false</PackageFlatten>
+		</None>
 	</ItemGroup>
 
 </Project>
