@@ -12,6 +12,8 @@
         public bool IsActive { get; set; }
         public string? Logo { get; private set; }
 
+        public virtual Currency Currency { get; set; } = null!;
+
         public static Tenant Create(string email, string name, string phone, long currencyId, string? logo)
         {
             return new Tenant
