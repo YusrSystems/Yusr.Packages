@@ -24,10 +24,7 @@ namespace Yusr.Api.Abstractions.Authorization
             var roleIdClaim = context.User.FindFirst(ClaimTypes.Role);
 
             if (roleIdClaim == null || !long.TryParse(roleIdClaim.Value, out var roleId))
-            {
-                _logger.LogError("User {UserId} has an invalid Role ID format: {RoleId}", context.User.Identity?.Name, roleIdClaim?.Value);
                 return;
-            }
 
             bool hasPermission = await _rolePermissionService.HasPermissionAsync(roleId, requirement.Permission);
 
