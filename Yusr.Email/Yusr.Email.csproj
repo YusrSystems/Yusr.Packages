@@ -12,9 +12,9 @@
 
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="README.md" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="README.md" Pack="true" PackagePath="\"/>
+	</ItemGroup>
 
   <ItemGroup>
     <Content Include="README.md" />
