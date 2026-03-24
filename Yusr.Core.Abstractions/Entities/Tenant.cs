@@ -4,32 +4,51 @@
     {
         public string Email { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
+        public string Phone { get; private set; } = string.Empty;
         public DateTime CreateDate { get; set; } = DateTime.UtcNow;
         public DateTime StartDate { get; set; } = DateTime.UtcNow;
         public DateTime EndDate { get; set; }
+        public long CurrencyId { get; private set; }
         public bool IsActive { get; set; }
+        public string? Logo { get; private set; }
 
-        public static Tenant Create(string email, string name)
+        public static Tenant Create(string email, string name, string phone, long currencyId, string? logo)
         {
             return new Tenant
             {
                 Email = email,
                 Name = name,
+                Phone = phone,
                 CreateDate = DateTime.UtcNow,
                 StartDate = DateTime.UtcNow,
-                EndDate = DateTime.UtcNow.AddMonths(1),
+                EndDate = DateTime.UtcNow.AddDays(15),
+                CurrencyId = currencyId,
+                Logo = logo,
                 IsActive = true
             };
         }
 
-        public Tenant Update(string email, string name, DateTime endDate, bool isActive)
+        public Tenant Update(string email, string name, string phone, long currencyId, string? logo)
         {
             Email = email;
             Name = name;
+            Phone = phone;
             StartDate = DateTime.UtcNow;
-            EndDate = endDate;
-            IsActive = isActive;
+            CurrencyId = currencyId;
+            Logo = logo;
 
+            return this;
+        }
+
+        public Tenant ChangeStatus(bool isActive)
+        {
+            IsActive = isActive;
+            return this;
+        }
+
+        public Tenant Renew(DateTime endDate)
+        {
+            EndDate = endDate;
             return this;
         }
     }
