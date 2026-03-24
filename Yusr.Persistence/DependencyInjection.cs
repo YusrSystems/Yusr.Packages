@@ -17,6 +17,7 @@ namespace Yusr.Persistence
             services.AddScoped<ICitiesRepository, CitiesRepository>();
             services.AddScoped<ICountriesRepository, CountriesRepository>();
             services.AddScoped<ICurrenciesRepository, CurrenciesRepository>();
+            services.AddScoped<IRolesRepository, RolesRepository>();
             services.AddScoped<IUsersRepository, UsersRepository>();
             services.AddScoped<ITenantsRepository, TenantsRepository>();
 
