@@ -8,7 +8,17 @@
 	<PackageId>Yusr.Email</PackageId>
 	<PackageDescription>MailKit-based email integration for Yusr applications, providing high-performance SMTP client wrappers and MIME message construction utilities.</PackageDescription>
 	<RepositoryUrl>https://github.com/YusrSystems/Yusr.Packages</RepositoryUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+
   </PropertyGroup>
+
+	<ItemGroup>
+		<None Include="README.md" Pack="true" PackagePath="\"/>
+	</ItemGroup>
+
+  <ItemGroup>
+    <Content Include="README.md" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="MailKit" Version="4.15.1" />
