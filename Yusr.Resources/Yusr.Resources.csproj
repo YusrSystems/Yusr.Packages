@@ -8,39 +8,17 @@
 	<PackageId>Yusr.Resources</PackageId>
 	<PackageDescription>Shared static assets for Yusr branding, including the IBM Plex Sans Arabic font family and official system imagery.</PackageDescription>
 	<RepositoryUrl>https://github.com/YusrSystems/Yusr.Packages</RepositoryUrl>
+
+	 <ContentTargetFolders>contentFiles</ContentTargetFolders>
+	 <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="Resources\Fonts\IBMPlexSansArabic-Bold.ttf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Resources\Fonts\IBMPlexSansArabic-ExtraLight.ttf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Resources\Fonts\IBMPlexSansArabic-Light.ttf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Resources\Fonts\IBMPlexSansArabic-Medium.ttf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Resources\Fonts\IBMPlexSansArabic-Regular.ttf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Resources\Fonts\IBMPlexSansArabic-SemiBold.ttf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Resources\Fonts\IBMPlexSansArabic-Thin.ttf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Resources\Images\yusrLogoOnly.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Resources\Images\YusrLogo_right_black.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Resources\Images\YusrLogo_right_white.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+	<Content Include="Resources\**\*.*">
+		<Pack>true</Pack>
+		<PackagePath>contentFiles\any\any\Resources\</PackagePath>
+		<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</Content>
   </ItemGroup>
 
 </Project>
