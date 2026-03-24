@@ -8,8 +8,17 @@
 	<PackageId>Yusr.Storage</PackageId>
 	<PackageDescription>Object storage abstraction for Yusr applications, providing a seamless interface for AWS S3 and S3-compatible cloud storage providers.</PackageDescription>
 	<RepositoryUrl>https://github.com/YusrSystems/Yusr.Packages</RepositoryUrl>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
+	<ItemGroup>
+		<None Include="README.md" Pack="true" PackagePath="\"/>
+	</ItemGroup>
+
+  <ItemGroup>
+    <Content Include="README.md" />
+  </ItemGroup>
+	
   <ItemGroup>
 	<PackageReference Include="AWSSDK.S3" Version="4.0.19.1" />
 	<PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.5" />
