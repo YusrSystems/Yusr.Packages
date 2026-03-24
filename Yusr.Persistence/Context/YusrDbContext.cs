@@ -8,9 +8,16 @@ namespace Yusr.Persistence.Context
     public class YusrDbContext(DbContextOptions options, ITenantService tenantService) : DbContext(options)
     {
         private readonly ITenantService _tenantService = tenantService;
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(YusrDbContext).Assembly);
+
+            var derivedAssembly = this.GetType().Assembly;
+            if (derivedAssembly != typeof(YusrDbContext).Assembly)
+            {
+                modelBuilder.ApplyConfigurationsFromAssembly(derivedAssembly);
+            }
 
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {
@@ -24,6 +31,7 @@ namespace Yusr.Persistence.Context
                 }
             }
         }
+
         protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
         {
             configurationBuilder.Properties<DateTime>().HaveConversion<DateTimeUtcConverter>();
