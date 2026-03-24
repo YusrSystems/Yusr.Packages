@@ -24,5 +24,4 @@ var email = new EmailMessage(
 // 3. Send the email using the concrete EmailService
 var emailService = new EmailService();
 await emailService.SendAsync(email);
-
 ```
