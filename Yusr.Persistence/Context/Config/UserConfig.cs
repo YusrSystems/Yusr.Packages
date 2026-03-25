@@ -8,6 +8,7 @@ namespace Yusr.Persistence.Context.Config
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
+            builder.ToTable("users", "public");
 
             builder.HasKey(x => new { x.TenantId, x.Id });
 

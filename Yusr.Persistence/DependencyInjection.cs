@@ -1,6 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Yusr.Core.Abstractions.Interfaces;
 using Yusr.Core.Abstractions.Services;
+using Yusr.Infrastructure.Persistence.Interceptors;
 using Yusr.Persistence.Repositories;
 using Yusr.Persistence.Services;
 
@@ -13,6 +15,9 @@ namespace Yusr.Persistence
             services.AddSingleton<IExceptionService, ExceptionService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+            services.AddScoped<SlowQueryInterceptor>();
+            services.AddScoped<TenantRowLevelSecurityInterceptor>();
+
             services.AddScoped<IBranchesRepository, BranchesRepository>();
             services.AddScoped<ICitiesRepository, CitiesRepository>();
             services.AddScoped<ICountriesRepository, CountriesRepository>();
@@ -22,6 +27,16 @@ namespace Yusr.Persistence
             services.AddScoped<ITenantsRepository, TenantsRepository>();
 
             return services;
+        }
+
+        public static DbContextOptionsBuilder AddYusrInterceptors(this DbContextOptionsBuilder optionsBuilder, IServiceProvider serviceProvider)
+        {
+            optionsBuilder.AddInterceptors(
+                serviceProvider.GetRequiredService<SlowQueryInterceptor>(),
+                serviceProvider.GetRequiredService<TenantRowLevelSecurityInterceptor>()
+            );
+
+            return optionsBuilder;
         }
     }
 }

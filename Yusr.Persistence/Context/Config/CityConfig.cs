@@ -8,6 +8,8 @@ namespace Yusr.Persistence.Context.Config
     {
         public void Configure(EntityTypeBuilder<City> builder)
         {
+            builder.ToTable("cities", "public");
+
             builder.HasKey(x => x.Id);
             builder.Property(e => e.Id).ValueGeneratedOnAdd();
 
