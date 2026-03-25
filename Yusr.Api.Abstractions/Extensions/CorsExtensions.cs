@@ -7,7 +7,7 @@ namespace Yusr.Bus.Presentation.Api.Extensions
     {
         private static string CorsName = "AllowFrontend";
 
-        public static IServiceCollection AddYusrCors(this IServiceCollection services, string[] origins)
+        public static IServiceCollection AddYusrCors(this IServiceCollection services, params string[] origins)
         {
             services.AddCors(options =>
             {
