@@ -48,7 +48,7 @@ namespace Yusr.Persistence.Repositories
         }
 
         // Check of hashing passwords will be in Application Layer
-        public async Task<User?> GetUserByCredentialsAsync(string username)
+        public async Task<User?> GetUserByUsernameAsync(string username)
         {
             return await _context.Users
                 .AsNoTracking()

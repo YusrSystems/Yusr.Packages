@@ -5,6 +5,6 @@ namespace Yusr.Core.Abstractions.Interfaces
 {
     public interface IUsersRepository : IBaseRepository<User>
     {
-        Task<User?> GetUserByCredentialsAsync(string username);
+        Task<User?> GetUserByUsernameAsync(string username);
     }
 }
