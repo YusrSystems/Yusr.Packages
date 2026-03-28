@@ -5,10 +5,13 @@
         public string Email { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public string Phone { get; private set; } = string.Empty;
+        public long CurrencyId { get; private set; }
+        public string? CompanyBusinessCategory { get; private set; }
+        public string? Crn { get; private set; }
+        public string? VatNumber { get; private set; }
         public DateTime CreateDate { get; set; } = DateTime.UtcNow;
         public DateTime StartDate { get; set; } = DateTime.UtcNow;
         public DateTime EndDate { get; set; }
-        public long CurrencyId { get; private set; }
         public bool IsActive { get; set; }
         public string? Logo { get; private set; }
 
@@ -45,6 +48,14 @@
         public Tenant ChangeStatus(bool isActive)
         {
             IsActive = isActive;
+            return this;
+        }
+
+        public Tenant ChangeCompanyInfo(string? companyBusinessCategory, string? crn, string? vatNumber)
+        {
+            CompanyBusinessCategory = companyBusinessCategory;
+            Crn = crn;
+            VatNumber = vatNumber;
             return this;
         }
 
