@@ -24,7 +24,7 @@ namespace Yusr.Application.Abstractions.Mappings
 
         public static List<BranchDto> ToDtoList(this IEnumerable<Branch> entities)
         {
-            return entities.Select(e => e.ToDto()).ToList();
+            return [.. entities.Select(e => e.ToDto())];
         }
     }
 }

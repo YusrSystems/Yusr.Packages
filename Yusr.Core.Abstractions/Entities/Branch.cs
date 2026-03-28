@@ -4,7 +4,7 @@
     {
         public string Name { get; private set; } = string.Empty;
 
-        public static Branch Create(string name, long cityId, string? street, string? district, string? buildingNumber, string? postalCode)
+        public static Branch Create(string name, long? cityId, string? street, string? district, string? buildingNumber, string? postalCode)
         {
             return new Branch
             {
@@ -17,7 +17,7 @@
             };
         }
 
-        public Branch Update(string name, long cityId, string? street, string? district, string? buildingNumber, string? postalCode)
+        public Branch Update(string name, long? cityId, string? street, string? district, string? buildingNumber, string? postalCode)
         {
             Name = name;
             CityId = cityId;

@@ -11,15 +11,13 @@ using Yusr.Core.Abstractions.Services;
 
 namespace Yusr.Application.Services
 {
-    public class BranchesService : BaseApplicationService, IBranchesService
+    public class BranchesService(
+        ILogger<BranchesService> logger, 
+        IExceptionService exceptionService, 
+        IBranchesRepository branchRepo
+    ) : BaseApplicationService(logger, exceptionService), IBranchesService
     {
-        private readonly IBranchesRepository _branchRepo;
-        public BranchesService(ILogger<BranchesService> logger, IExceptionService exceptionService, IBranchesRepository branchRepo, IUnitOfWork unitOfWork) : base(logger, exceptionService)
-        {
-            _branchRepo = branchRepo;
-        }
-
-
+        private readonly IBranchesRepository _branchRepo = branchRepo;
 
         public async Task<OperationResult<FilterResponse<BranchDto>>> FilterAsync(int pageNumber, int rowsPerPage, FilterCondition? condition)
         {

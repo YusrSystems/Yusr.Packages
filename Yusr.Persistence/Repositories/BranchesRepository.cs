@@ -7,12 +7,8 @@ using Yusr.Persistence.Context;
 
 namespace Yusr.Persistence.Repositories
 {
-    public class BranchesRepository : GenericRepository<Branch>, IBranchesRepository
+    public class BranchesRepository(YusrDbContext context) : GenericRepository<Branch>(context), IBranchesRepository
     {
-        public BranchesRepository(YusrDbContext context) : base(context)
-        {
-        }
-
         public override async Task<FilterResponse<Branch>> FilterAsync(int pageNumber, int rowsPerPage, FilterCondition? condition)
         {
             var query = DbSet
@@ -38,7 +34,7 @@ namespace Yusr.Persistence.Repositories
         public override async Task<Branch?> GetByIdAsync(long id, bool track = false)
         {
             var query = DbSet
-                .Include(b => b.City).ThenInclude(c => c.Country)
+                .Include(b => b.City).ThenInclude(c => c!.Country)
                 .AsQueryable();
 
             if (!track)
