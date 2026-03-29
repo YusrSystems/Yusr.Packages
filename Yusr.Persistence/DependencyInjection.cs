@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Yusr.Core.Abstractions.Interfaces;
+using Yusr.Core.Abstractions.Interfaces.Generics;
 using Yusr.Core.Abstractions.Services;
 using Yusr.Infrastructure.Persistence.Interceptors;
 using Yusr.Persistence.Repositories;
@@ -18,6 +19,7 @@ namespace Yusr.Persistence
             services.AddScoped<SlowQueryInterceptor>();
             services.AddScoped<TenantRowLevelSecurityInterceptor>();
 
+            services.AddScoped(typeof(IBaseRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IBranchesRepository, BranchesRepository>();
             services.AddScoped<ICitiesRepository, CitiesRepository>();
             services.AddScoped<ICountriesRepository, CountriesRepository>();
