@@ -8,8 +8,8 @@ namespace Yusr.Reporting.Abstractions
 {
     public abstract class BaseReportService<TRequest, TRendererData>(
         IReportContextService reportContextService,
-        IFilesStorage filesStorage, 
-        IReportRenderer<TRendererData> renderer, 
+        IFilesStorage filesStorage,
+        IReportRenderer<TRendererData> renderer,
         IMemoryCache cache
     ) : IReportService<TRequest, TRendererData> where TRendererData : BaseRendererData where TRequest : BaseRequest
     {

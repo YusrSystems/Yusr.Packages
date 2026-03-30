@@ -12,8 +12,8 @@ using Yusr.Core.Abstractions.Services;
 namespace Yusr.Application.Services
 {
     public class BranchesService(
-        ILogger<BranchesService> logger, 
-        IExceptionService exceptionService, 
+        ILogger<BranchesService> logger,
+        IExceptionService exceptionService,
         IBranchesRepository branchRepo
     ) : BaseApplicationService(logger, exceptionService), IBranchesService
     {
