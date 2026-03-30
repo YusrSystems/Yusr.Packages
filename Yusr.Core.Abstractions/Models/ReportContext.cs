@@ -9,7 +9,11 @@ namespace Yusr.Core.Abstractions.Models
         string TenantEmail,
         string TenantName,
         string TenantPhone,
+        string? TenantBusinessCategory,
+        string? TenantCrn,
+        string? TenantVatNumber,
         string? TenantLogo,
+        Currency? Currency,
         Branch Branch,
         DateTime GeneratedAt
     );

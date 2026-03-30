@@ -21,7 +21,11 @@ namespace Yusr.Persistence.Services
                     u.Tenant.Email,
                     u.Tenant.Name,
                     u.Tenant.Phone,
+                    u.Tenant.CompanyBusinessCategory,
+                    u.Tenant.Crn,
+                    u.Tenant.VatNumber,
                     u.Tenant.Logo,
+                    u.Tenant.Currency,
                     u.Branch,
                     DateTime.UtcNow
                 ))
