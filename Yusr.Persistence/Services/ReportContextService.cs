@@ -18,6 +18,7 @@ namespace Yusr.Persistence.Services
                     u.Id,
                     u.Username,
                     u.TenantId,
+                    u.Tenant.Email,
                     u.Tenant.Name,
                     u.Tenant.Phone,
                     u.Tenant.Logo,

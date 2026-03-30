@@ -6,6 +6,7 @@ namespace Yusr.Core.Abstractions.Models
         long UserId,
         string Username,
         long TenantId,
+        string TenantEmail,
         string TenantName,
         string TenantPhone,
         string? TenantLogo,
