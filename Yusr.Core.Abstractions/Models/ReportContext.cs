@@ -4,7 +4,7 @@ namespace Yusr.Core.Abstractions.Models
 {
     public record ReportContext(
         long UserId,
-        string UserName,
+        string Username,
         long TenantId,
         string TenantName,
         string TenantPhone,
