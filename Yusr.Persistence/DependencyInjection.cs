@@ -14,7 +14,7 @@ namespace Yusr.Persistence
         public static IServiceCollection AddYusrCommonRepositories(this IServiceCollection services)
         {
             services.AddSingleton<IExceptionService, ExceptionService>();
-            services.AddSingleton<IReportContextService, ReportContextService>();
+            services.AddScoped<IReportContextService, ReportContextService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped<SlowQueryInterceptor>();
