@@ -18,5 +18,11 @@ namespace Yusr.Persistence.Repositories
                 .Where(c => c.Email == email)
                 .FirstOrDefaultAsync();
         }
+
+        public async Task<bool> CheckEmailAvailability(string email)
+        {
+            var normalizedUsername = email.Trim().ToLower();
+            return await _context.Tenants.AnyAsync(c => c.Email.ToLower().Equals(normalizedUsername));
+        }
     }
 }
