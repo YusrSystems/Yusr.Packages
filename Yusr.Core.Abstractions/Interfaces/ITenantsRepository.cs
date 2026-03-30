@@ -6,5 +6,6 @@ namespace Yusr.Core.Abstractions.Interfaces
     public interface ITenantsRepository : IBaseRepository<Tenant>
     {
         Task<Tenant?> GetTenantByEmailAsync(string email);
+        Task<bool> CheckEmailAvailability(string email);
     }
 }
