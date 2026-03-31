@@ -6,4 +6,16 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Reference Include="ZATCA.EInvoice.SDK">
+      <HintPath>Zatca\Libs\ZATCA.EInvoice.SDK.dll</HintPath>
+    </Reference>
+    <Reference Include="ZATCA.EInvoice.SDK.Contracts">
+      <HintPath>Zatca\Libs\ZATCA.EInvoice.SDK.Contracts.dll</HintPath>
+    </Reference>
+    <Reference Include="ZATCA.EInvoice.SDK.Saxon">
+      <HintPath>Zatca\Libs\ZATCA.EInvoice.SDK.Saxon.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
