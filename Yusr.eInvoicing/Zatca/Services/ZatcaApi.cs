@@ -4,7 +4,6 @@ using System.Text;
 using System.Text.Json;
 using System.Xml;
 using Yusr.eInvoicing.Zatca.Entites;
-using Yusr.Erp.Application.Accounting.DTOs;
 using Yusr.Infrastructure.eInvoicing.Zatca.Extensions;
 using ZATCA.EInvoice.SDK;
 using ZATCA.EInvoice.SDK.Contracts.Models;
