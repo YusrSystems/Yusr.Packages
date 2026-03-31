@@ -3,6 +3,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Xml;
+using Yusr.eInvoicing.Zatca.Entites;
 using Yusr.Erp.Application.Accounting.DTOs;
 using Yusr.Infrastructure.eInvoicing.Zatca.Extensions;
 using ZATCA.EInvoice.SDK;
@@ -10,54 +11,6 @@ using ZATCA.EInvoice.SDK.Contracts.Models;
 
 namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
 {
-    public class ComplianceValidationResponse
-    {
-        public ValidationResults ValidationResults { get; set; } = new ValidationResults();
-        public string ReportingStatus { get; set; } = string.Empty;
-        public string ClearanceStatus { get; set; } = string.Empty;
-        public string ClearedInvoice { get; set; } = string.Empty;
-    }
-
-    public class ValidationResults
-    {
-        public List<ValidationMessage> InfoMessages { get; set; } = new List<ValidationMessage>();
-        public List<ValidationMessage> WarningMessages { get; set; } = new List<ValidationMessage>();
-        public List<ValidationMessage> ErrorMessages { get; set; } = new List<ValidationMessage>();
-        public string Status { get; set; } = string.Empty;
-    }
-
-    public class ValidationMessage
-    {
-        public string Type { get; set; } = string.Empty;
-        public string Code { get; set; } = string.Empty;
-        public string Category { get; set; } = string.Empty;
-        public string Message { get; set; } = string.Empty;
-        public string Status { get; set; } = string.Empty;
-    }
-
-    public class InvoiceSubmissionResponse
-    {
-        public string InvoiceHash { get; set; } = string.Empty;
-        public string Status { get; set; } = string.Empty;
-        public List<string> Warnings { get; set; } = new List<string>();
-        public List<InvoiceError> Errors { get; set; } = new List<InvoiceError>();
-    }
-
-    public class InvoiceError
-    {
-        public string Category { get; set; } = string.Empty;
-        public string Code { get; set; } = string.Empty;
-        public string Message { get; set; } = string.Empty;
-    }
-
-    public class ZatcaApiRespone
-    {
-        public bool IsValid { get; set; }
-        public HttpStatusCode ResultCode { get; set; }
-        public string ErrorMessage { get; set; } = "";
-        public string WarningMessage { get; set; } = "";
-        public string ClearedInvoice { get; set; } = string.Empty;
-    }
 
     public class ZatcaApi
     {
