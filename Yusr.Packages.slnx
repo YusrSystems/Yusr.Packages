@@ -4,6 +4,7 @@
     <Project Path="Yusr.Api.Abstractions/Yusr.Api.Abstractions.csproj" Id="cba2e47f-5f60-48d7-9fc7-e7a9c8b10f20" />
     <Project Path="Yusr.Application.Abstractions/Yusr.Application.Abstractions.csproj" Id="3d82fe9b-ad86-4dfa-8f4e-3c888416d83a" />
     <Project Path="Yusr.Core.Abstractions/Yusr.Core.Abstractions.csproj" />
+    <Project Path="Yusr.eInvoicing.Abstractions/Yusr.eInvoicing.Abstractions.csproj" Id="dc86107c-e9c5-4fe6-a769-3b3397556198" />
     <Project Path="Yusr.Email.Abstractions/Yusr.Email.Abstractions.csproj" Id="392958a2-030d-4bcd-8bd0-a3427e8089ad" />
     <Project Path="Yusr.Identity.Abstractions/Yusr.Identity.Abstractions.csproj" Id="af3865b4-fa8d-41d7-872a-fde7d0b1306a" />
     <Project Path="Yusr.Reporting.Abstractions/Yusr.Reporting.Abstractions.csproj" Id="61e70a08-2420-4386-a566-f63f81848b4d" />
