@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Yusr.Core.Abstractions.Primitives;
-using Yusr.eInvoicing.Abstractions.Entities;
+﻿using Yusr.Core.Abstractions.Primitives;
+using Yusr.eInvoicing.Abstractions.Entities.Interfaces;
 
 namespace Yusr.eInvoicing.Abstractions.Services.Csid
 {
     internal interface ICsidService
     {
-        Task<OperationResult<<CsidResponse?>> TryRequestComplianceCsidAsync(string otp, CsrResult csrResult, bool Production)
+        Task<OperationResult<ICsidResult?>> TryRequestComplianceCsidAsync(string otp, ICsrResult csrResult, bool Production);
+        Task<OperationResult<ICsidResult?>> TryRequestProductionCsidAsync(ICsidResult csidResponse, bool Production);
     }
 }

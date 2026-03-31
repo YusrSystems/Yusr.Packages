@@ -1,6 +1,6 @@
-﻿namespace Yusr.eInvoicing.Abstractions.Entities
+﻿namespace Yusr.eInvoicing.Abstractions.Entities.Interfaces
 {
-    internal interface ICsidResult
+    public interface ICsidResult
     {
         public long RequestId { get; set; }
         public string DispositionMessage { get; set; }

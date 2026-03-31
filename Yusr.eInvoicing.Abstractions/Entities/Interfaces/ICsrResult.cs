@@ -1,4 +1,4 @@
-﻿namespace Yusr.eInvoicing.Abstractions.Entities
+﻿namespace Yusr.eInvoicing.Abstractions.Entities.Interfaces
 {
     public interface ICsrResult
     {

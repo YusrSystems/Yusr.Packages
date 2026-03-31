@@ -10,6 +10,7 @@ namespace Yusr.Core.Abstractions.Primitives
         public ResultType ResultType { get; private set; }
         public string ErrorMessage { get; private set; } = string.Empty;
         public string ErrorTitle { get; private set; } = string.Empty;
+        public string WarningMessage { get; private set; } = string.Empty;
 
         public bool Succeeded => ResultType == ResultType.Ok;
 
