@@ -1,9 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Yusr.eInvoicing.Abstractions.Services.Api;
 using Yusr.eInvoicing.Abstractions.Services.Csid;
 using Yusr.eInvoicing.Abstractions.Services.Csr;
-using Yusr.eInvoicing.Abstractions.Services.Entities;
 using Yusr.eInvoicing.Abstractions.Services.Initialization;
 using Yusr.eInvoicing.Abstractions.Services.Mapper;
 using Yusr.eInvoicing.Abstractions.Services.Qr;
@@ -25,7 +23,7 @@ using Yusr.eInvoicing.Zatca.Services.Signing;
 using Yusr.eInvoicing.Zatca.Services.Validation;
 using Yusr.eInvoicing.Zatca.Services.Xml;
 
-namespace Yusr.eInvoicing
+namespace Yusr.eInvoicing.Zatca
 {
     public static class DependencyInjection
     {

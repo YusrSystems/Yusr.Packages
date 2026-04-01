@@ -1,7 +1,7 @@
 ﻿using Yusr.eInvoicing.Abstractions.Entities;
 using ZATCA.EInvoice.SDK.Contracts.Models;
 
-namespace Yusr.Infrastructure.eInvoicing.Zatca.Extensions
+namespace Yusr.eInvoicing.Zatca.Extensions
 {
     public static class InvoiceRequestExtensions
     {

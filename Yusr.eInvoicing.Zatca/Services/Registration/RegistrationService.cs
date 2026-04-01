@@ -5,7 +5,6 @@ using Yusr.eInvoicing.Abstractions.Enums;
 using Yusr.eInvoicing.Abstractions.Services.Api;
 using Yusr.eInvoicing.Abstractions.Services.Csid;
 using Yusr.eInvoicing.Abstractions.Services.Csr;
-using Yusr.eInvoicing.Abstractions.Services.Entities;
 using Yusr.eInvoicing.Abstractions.Services.Registration;
 using Yusr.eInvoicing.Zatca.Entities;
 

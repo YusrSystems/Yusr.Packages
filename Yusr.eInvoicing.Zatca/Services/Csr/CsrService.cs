@@ -2,7 +2,7 @@
 using Yusr.eInvoicing.Abstractions.Entities.Interfaces;
 using Yusr.eInvoicing.Abstractions.Enums;
 using Yusr.eInvoicing.Abstractions.Services.Csr;
-using Yusr.eInvoicing.Abstractions.Services.Entities;
+using Yusr.eInvoicing.Zatca.Entities;
 using ZATCA.EInvoice.SDK;
 using ZATCA.EInvoice.SDK.Contracts.Models;
 
@@ -12,9 +12,9 @@ namespace Yusr.eInvoicing.Zatca.Services.Csr
     {
         public async Task<OperationResult<ZatcaCsrResult>> TryGenerateCsrAsync(IEInvoicingSetting eInvoicingSetting, EInvoicingEnvironmentType type)
         {
-            CsrGenerationDto dto = new CsrGenerationDto(
-                $"yusrsys-{Guid.NewGuid().ToString()}-{eInvoicingSetting.Tenant.VatNumber}",
-                $"1-{Guid.NewGuid().ToString()}|2-{Guid.NewGuid().ToString()}|3-{Guid.NewGuid().ToString()}",
+            CsrGenerationDto dto = new(
+                $"yusrsys-{Guid.NewGuid()}-{eInvoicingSetting.Tenant.VatNumber}",
+                $"1-{Guid.NewGuid()}|2-{Guid.NewGuid()}|3-{Guid.NewGuid()}",
                 eInvoicingSetting.Tenant.VatNumber,
                 eInvoicingSetting.Branch.Name,
                 eInvoicingSetting.Tenant.Name,
@@ -24,7 +24,7 @@ namespace Yusr.eInvoicing.Zatca.Services.Csr
                 eInvoicingSetting.Tenant.CompanyBusinessCategory
             );
 
-            CsrGenerator gen = new CsrGenerator();
+            CsrGenerator gen = new();
             CsrResult csrResult = gen.GenerateCsr(dto, (EnvironmentType)type, false);
 
             if (!csrResult.IsValid)

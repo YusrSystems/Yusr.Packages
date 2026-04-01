@@ -40,9 +40,9 @@ namespace Yusr.eInvoicing.Zatca.Services.Qr
         }
         public byte[] GenerateQrCode(string base64Tlv)
         {
-            QRCodeGenerator qrGen = new QRCodeGenerator();
+            QRCodeGenerator qrGen = new();
             QRCodeData qrData = qrGen.CreateQrCode(base64Tlv, QRCodeGenerator.ECCLevel.Q);
-            PngByteQRCode qrCode = new PngByteQRCode(qrData);
+            PngByteQRCode qrCode = new(qrData);
             return qrCode.GetGraphic(20);
         }
 

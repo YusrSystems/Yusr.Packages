@@ -15,15 +15,15 @@ namespace Yusr.eInvoicing.Zatca.Services.Api
 
         public async Task<OperationResult<bool>> GenerateFullCheck(IEInvoicingSetting setting, EInvoicingEnvironmentType type)
         {
-            List<(string invoiceTypeName, EInvoiceType type, bool simplified)> invoices = new List<(string invoiceTypeName, EInvoiceType type, bool simplified)>
-            {
+            List<(string invoiceTypeName, EInvoiceType type, bool simplified)> invoices =
+            [
                 ("فاتورة ضريبية", EInvoiceType.Sell, false),
                 ("إشعار دائن", EInvoiceType.Credit, false),
                 ("إشعار مدين", EInvoiceType.Debit, false),
                 ("فاتورة ضريبية مبسطة", EInvoiceType.Sell, true),
                 ("إشعار دائن مبسط", EInvoiceType.Credit, true),
                 ("إشعار مدين مبسط", EInvoiceType.Debit, true),
-            };
+            ];
 
             foreach (var invoice in invoices)
             {
@@ -56,7 +56,7 @@ namespace Yusr.eInvoicing.Zatca.Services.Api
         {
             var now = DateTime.Now;
 
-            EInvoiceDto eInvoice = new EInvoiceDto
+            EInvoiceDto eInvoice = new()
             {
                 EInvoiceType = type,
                 ProfileID = "reporting:1.0",

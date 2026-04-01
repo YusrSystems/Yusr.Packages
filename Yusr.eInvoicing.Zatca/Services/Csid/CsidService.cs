@@ -4,7 +4,6 @@ using System.Text.Json;
 using Yusr.Core.Abstractions.Primitives;
 using Yusr.eInvoicing.Abstractions.Enums;
 using Yusr.eInvoicing.Abstractions.Services.Csid;
-using Yusr.eInvoicing.Abstractions.Services.Entities;
 using Yusr.eInvoicing.Zatca.Entities;
 
 namespace Yusr.eInvoicing.Zatca.Services.Csid

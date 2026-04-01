@@ -8,7 +8,7 @@ using Yusr.eInvoicing.Abstractions.Services.Mapper;
 using Yusr.eInvoicing.Abstractions.Services.Qr;
 using Yusr.eInvoicing.Abstractions.Services.Validation;
 using Yusr.eInvoicing.Abstractions.Services.Xml;
-using Yusr.Infrastructure.eInvoicing.Zatca.Extensions;
+using Yusr.eInvoicing.Zatca.Extensions;
 using ZATCA.EInvoice.SDK;
 
 namespace Yusr.eInvoicing.Zatca.Services.Initialization
@@ -51,18 +51,18 @@ namespace Yusr.eInvoicing.Zatca.Services.Initialization
 
         public OperationResult<bool> ValidateEInvoice(EInvoiceDto eInvoice, bool IgnoreWarnings)
         {
-            var validationResult = validationService.ValidateInvoice(eInvoice);
+            var (Errors, Warnings) = validationService.ValidateInvoice(eInvoice);
 
-            StringBuilder stringBuilder = new StringBuilder();
-            if (validationResult.Errors.Count > 0)
+            StringBuilder stringBuilder = new();
+            if (Errors.Count > 0)
             {
-                validationResult.Errors.ForEach(v => stringBuilder.AppendLine(v));
+                Errors.ForEach(v => stringBuilder.AppendLine(v));
                 return OperationResult<bool>.ValidationError("الفاتورة تحتوي على أخطاء", stringBuilder.ToString());
             }
 
-            if (validationResult.Warnings.Count > 0 && !IgnoreWarnings)
+            if (Warnings.Count > 0 && !IgnoreWarnings)
             {
-                validationResult.Warnings.ForEach(v => stringBuilder.AppendLine(v));
+                Warnings.ForEach(v => stringBuilder.AppendLine(v));
                 return OperationResult<bool>.ValidationWarning("الفاتورة تحتوي على تحذيرات", stringBuilder.ToString());
             }
 

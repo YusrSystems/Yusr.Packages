@@ -12,7 +12,7 @@
   </Folder>
   <Folder Name="/src/Implementations/">
     <Project Path="Yusr.Application/Yusr.Application.csproj" Id="1e0192a8-d10b-482b-b7a2-15a3ed798e9a" />
-    <Project Path="Yusr.eInvoicing/Yusr.eInvoicing.csproj" Id="0573db39-1c4f-441d-a47e-3dc71a0740ef" />
+    <Project Path="Yusr.eInvoicing.Zatca/Yusr.eInvoicing.Zatca.csproj" Id="0573db39-1c4f-441d-a47e-3dc71a0740ef" />
     <Project Path="Yusr.Email/Yusr.Email.csproj" />
     <Project Path="Yusr.FilesStorage/Yusr.Storage.csproj" Id="838e6f04-7c5a-46b2-8855-03134471d954" />
     <Project Path="Yusr.Identity/Yusr.Identity.csproj" Id="1575bc48-e633-4177-9354-122eaa28b40c" />

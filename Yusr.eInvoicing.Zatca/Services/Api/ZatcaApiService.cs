@@ -8,7 +8,7 @@ using Yusr.eInvoicing.Abstractions.Entities;
 using Yusr.eInvoicing.Abstractions.Enums;
 using Yusr.eInvoicing.Abstractions.Services.Api;
 using Yusr.eInvoicing.Zatca.Entities;
-using Yusr.Infrastructure.eInvoicing.Zatca.Extensions;
+using Yusr.eInvoicing.Zatca.Extensions;
 using ZATCA.EInvoice.SDK;
 using ZATCA.EInvoice.SDK.Contracts.Models;
 

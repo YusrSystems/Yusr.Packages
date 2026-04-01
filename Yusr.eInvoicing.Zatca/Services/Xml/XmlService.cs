@@ -76,14 +76,14 @@ namespace Yusr.eInvoicing.Zatca.Services.Xml
             if (eInvoice.CustomerAddress != null)
             {
                 string?[] addressFields =
-                {
+                [
                     eInvoice.CustomerAddress.StreetName,
                     eInvoice.CustomerAddress.BuildingNumber,
                     eInvoice.CustomerAddress.CitySubdivisionName,
                     eInvoice.CustomerAddress.CityName,
                     eInvoice.CustomerAddress.PostalZone,
                     eInvoice.CustomerAddress.CountryCode
-                };
+                ];
 
                 if (addressFields.Any(f => !string.IsNullOrEmpty(f)))
                 {
@@ -136,7 +136,7 @@ namespace Yusr.eInvoicing.Zatca.Services.Xml
                 _ => ""
             };
 
-            UBL.Invoice.InvoiceType invoice = new UBL.Invoice.InvoiceType
+            UBL.Invoice.InvoiceType invoice = new()
             {
                 ProfileID = new ProfileIDType { Value = eInvoice.ProfileID },
                 ID = new IDType { Value = eInvoice.ID.ToString() }, // invoiceId from db
@@ -148,8 +148,8 @@ namespace Yusr.eInvoicing.Zatca.Services.Xml
                 TaxCurrencyCode = new TaxCurrencyCodeType { Value = eInvoice.CurrencyCode },
 
 
-                AdditionalDocumentReference = new DocumentReferenceType[]
-                {
+                AdditionalDocumentReference =
+                [
                     new DocumentReferenceType
                     {
                         ID = new IDType { Value = "ICV" }, // Invoice Counter Value
@@ -167,8 +167,7 @@ namespace Yusr.eInvoicing.Zatca.Services.Xml
                             }
                         }
                     }
-
-                },
+                ],
 
                 AccountingSupplierParty = new SupplierPartyType
                 {
@@ -189,8 +188,8 @@ namespace Yusr.eInvoicing.Zatca.Services.Xml
                             }
                         },
 
-                        PartyTaxScheme = new PartyTaxSchemeType[]
-                        {
+                        PartyTaxScheme =
+                        [
                             new PartyTaxSchemeType
                             {
                                 CompanyID = new CompanyIDType { Value = eInvoice.SupplierVatNumber }, // الرقم الضريبي
@@ -199,15 +198,15 @@ namespace Yusr.eInvoicing.Zatca.Services.Xml
                                     ID = new IDType { Value = "VAT" }
                                 }
                             }
-                        },
+                        ],
 
-                        PartyLegalEntity = new PartyLegalEntityType[]
-                        {
+                        PartyLegalEntity =
+                        [
                             new PartyLegalEntityType
                             {
                                 RegistrationName = new RegistrationNameType { Value = eInvoice.SupplierName }
                             }
-                        }
+                        ]
 
                     }
                 },
@@ -222,13 +221,13 @@ namespace Yusr.eInvoicing.Zatca.Services.Xml
 
                         PartyTaxScheme = CustomerPartyTaxScheme,
 
-                        PartyLegalEntity = new PartyLegalEntityType[]
-                        {
+                        PartyLegalEntity =
+                        [
                             new PartyLegalEntityType
                             {
                                 RegistrationName = new RegistrationNameType { Value = eInvoice.CustomerName }
                             }
-                        },
+                        ],
                     }
                 },
 
@@ -247,32 +246,32 @@ namespace Yusr.eInvoicing.Zatca.Services.Xml
 
             if (eInvoice.OriginalInvoiceId != null)
             {
-                invoice.BillingReference = new BillingReferenceType[]
-                {
+                invoice.BillingReference =
+                [
                     new BillingReferenceType
                     {
                         InvoiceDocumentReference = new DocumentReferenceType { ID = new IDType { Value = eInvoice.OriginalInvoiceId.ToString() } }
                     }
-                };
+                ];
 
-                invoice.PaymentMeans = new PaymentMeansType[]
-                {
+                invoice.PaymentMeans =
+                [
                     new PaymentMeansType
                     {
                         PaymentMeansCode = new PaymentMeansCodeType { Value = "10" },
-                        InstructionNote = new InstructionNoteType[]
-                        {
+                        InstructionNote =
+                        [
                             new InstructionNoteType {Value = "In case of goods or services refund | عند ترجيع السلع أو الخدمات" }
-                        }
+                        ]
                     }
-                };
+                ];
             }
 
 
-            List<InvoiceLineType> invoiceLines = new List<InvoiceLineType>();
-            List<TaxSubtotalType> invoiceTaxSubtotals = new List<TaxSubtotalType>();
-            List<TaxTotalType> invoiceTaxes = new List<TaxTotalType>();
-            List<AllowanceChargeType> invoiceAllowances = new List<AllowanceChargeType>();
+            List<InvoiceLineType> invoiceLines = [];
+            List<TaxSubtotalType> invoiceTaxSubtotals = [];
+            List<TaxTotalType> invoiceTaxes = [];
+            List<AllowanceChargeType> invoiceAllowances = [];
             TaxExemptionReasonCodeType? taxExemptionReasonCode = null;
             TaxExemptionReasonType[] taxExemptionReason = new TaxExemptionReasonType[1];
 
@@ -304,41 +303,41 @@ namespace Yusr.eInvoicing.Zatca.Services.Xml
                     InvoicedQuantity = new InvoicedQuantityType { Value = invoiceLine.Quantity },
                     LineExtensionAmount = new LineExtensionAmountType { Value = invoiceLine.NoTaxTotalPrice, currencyID = eInvoice.CurrencyCode },
 
-                    AllowanceCharge = new AllowanceChargeType[]
-                    {
+                    AllowanceCharge =
+                    [
                         new AllowanceChargeType
                         {
                             ChargeIndicator = new ChargeIndicatorType{ Value = invoiceLine.AllowanceChargeAmount < 0 },
-                            AllowanceChargeReason = new AllowanceChargeReasonType[]
-                            {
+                            AllowanceChargeReason =
+                            [
                                 new AllowanceChargeReasonType{ Value = invoiceLine.AllowanceChargeAmount < 0? "مبلغ مضاف موزع" : "خصم موزع" }
-                            },
+                            ],
                             Amount = new AmountType2 { currencyID = eInvoice.CurrencyCode, Value = Math.Abs(invoiceLine.AllowanceChargeAmount) },
                         }
-                    },
+                    ],
 
-                    TaxTotal = new TaxTotalType[]
+                    TaxTotal =
+                    [
+                        new TaxTotalType
                         {
-                            new TaxTotalType
-                            {
-                                TaxAmount = new TaxAmountType { Value = taxCode != "S" ? 0 : invoiceLine.TaxAmount, currencyID = eInvoice.CurrencyCode },
-                                RoundingAmount = new RoundingAmountType { Value = invoiceLine.TaxTotalPrice, currencyID = eInvoice.CurrencyCode }
-                            }
-                        },
-                    Item = new UBL.Invoice.ItemType
+                            TaxAmount = new TaxAmountType { Value = taxCode != "S" ? 0 : invoiceLine.TaxAmount, currencyID = eInvoice.CurrencyCode },
+                            RoundingAmount = new RoundingAmountType { Value = invoiceLine.TaxTotalPrice, currencyID = eInvoice.CurrencyCode }
+                        }
+                    ],
+                    Item = new ItemType
                     {
                         Name = new NameType1 { Value = invoiceLine.Name },
-                        ClassifiedTaxCategory = new TaxCategoryType[]
+                        ClassifiedTaxCategory =
+                        [
+                            new TaxCategoryType
                             {
-                                new TaxCategoryType
-                                {
-                                    ID = new IDType { Value = taxCode },
-                                    Percent = new PercentType1 { Value = taxCode != "S" ? 0 : invoiceLine.TotalTaxPercent },
-                                    TaxExemptionReasonCode = taxExemptionReasonCode,
-                                    TaxExemptionReason = taxExemptionReason,
-                                    TaxScheme = new TaxSchemeType { ID = new IDType { Value = "VAT" } }
-                                }
+                                ID = new IDType { Value = taxCode },
+                                Percent = new PercentType1 { Value = taxCode != "S" ? 0 : invoiceLine.TotalTaxPercent },
+                                TaxExemptionReasonCode = taxExemptionReasonCode,
+                                TaxExemptionReason = taxExemptionReason,
+                                TaxScheme = new TaxSchemeType { ID = new IDType { Value = "VAT" } }
                             }
+                        ]
                     },
                     Price = new PriceType
                     {
@@ -425,7 +424,7 @@ namespace Yusr.eInvoicing.Zatca.Services.Xml
                         },
                         Percent = new PercentType1 { Value = 0 },
                         TaxExemptionReasonCode = new TaxExemptionReasonCodeType { Value = taxExemptionReasonCode_Z },
-                        TaxExemptionReason = new TaxExemptionReasonType[] { new TaxExemptionReasonType { Value = taxExemptionReason_Z } },
+                        TaxExemptionReason = [new TaxExemptionReasonType { Value = taxExemptionReason_Z }],
                         TaxScheme = new TaxSchemeType
                         {
                             ID = new IDType
@@ -463,7 +462,7 @@ namespace Yusr.eInvoicing.Zatca.Services.Xml
                         },
                         Percent = new PercentType1 { Value = 0 },
                         TaxExemptionReasonCode = new TaxExemptionReasonCodeType { Value = taxExemptionReasonCode_E },
-                        TaxExemptionReason = new TaxExemptionReasonType[] { new TaxExemptionReasonType { Value = taxExemptionReason_E } },
+                        TaxExemptionReason = [new TaxExemptionReasonType { Value = taxExemptionReason_E }],
                         TaxScheme = new TaxSchemeType
                         {
                             ID = new IDType
@@ -493,13 +492,13 @@ namespace Yusr.eInvoicing.Zatca.Services.Xml
                     Value = eInvoice.TaxAmount,
                     currencyID = eInvoice.CurrencyCode
                 },
-                TaxSubtotal = invoiceTaxSubtotals.ToArray()
+                TaxSubtotal = [.. invoiceTaxSubtotals]
             });
 
 
-            invoice.InvoiceLine = invoiceLines.ToArray();
-            invoice.TaxTotal = invoiceTaxes.ToArray();
-            invoice.AllowanceCharge = invoiceAllowances.ToArray();
+            invoice.InvoiceLine = [.. invoiceLines];
+            invoice.TaxTotal = [.. invoiceTaxes];
+            invoice.AllowanceCharge = [.. invoiceAllowances];
 
             var serializer = new XmlSerializer(typeof(UBL.Invoice.InvoiceType));
             var namespaces = new XmlSerializerNamespaces();
@@ -551,7 +550,7 @@ namespace Yusr.eInvoicing.Zatca.Services.Xml
 
         public string? ExtractValue(XmlDocument signedXml, string xpath)
         {
-            XmlNamespaceManager nsmgr = new XmlNamespaceManager(signedXml.NameTable);
+            XmlNamespaceManager nsmgr = new(signedXml.NameTable);
             nsmgr.AddNamespace("cac", "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2");
             nsmgr.AddNamespace("cbc", "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2");
 
