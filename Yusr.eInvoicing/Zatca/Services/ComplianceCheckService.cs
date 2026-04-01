@@ -6,8 +6,6 @@ using Yusr.eInvoicing.Abstractions.Entities.Interfaces;
 using Yusr.eInvoicing.Abstractions.Enums;
 using Yusr.eInvoicing.Abstractions.Services.Api;
 using Yusr.eInvoicing.Abstractions.Services.Xml;
-using Yusr.Identity.Abstractions.Primitives;
-
 
 namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
 {
@@ -16,7 +14,7 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
         private readonly IXmlService _xmlService = xmlService;
         private readonly IEInvoiceApiService _eInvoiceApiService = eInvoiceApiService;
 
-        public async Task<OperationResult<bool>> GenerateFullCheck(JwtClaims jwtClaims, Tenant tenant, IEInvoicingSetting setting, Branch branch, bool Production = false)
+        public async Task<OperationResult<bool>> GenerateFullCheck(IEInvoicingSetting setting, Branch branch, bool Production = false)
         {
             List<(string invoiceTypeName, EInvoiceType type, bool simplified)> invoices = new List<(string invoiceTypeName, EInvoiceType type, bool simplified)>
             {
@@ -30,7 +28,7 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
 
             foreach (var invoice in invoices)
             {
-                var res = await SendInvoice(jwtClaims, tenant, setting, branch, invoice.type, invoice.simplified, Production);
+                var res = await SendInvoice(setting, branch, invoice.type, invoice.simplified, Production);
                 if (!res.Succeeded)
                 {
                     return OperationResult<bool>.CopyErrorsFrom(res);
@@ -40,9 +38,9 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
             return OperationResult<bool>.Ok(true);
         }
 
-        public async Task<OperationResult<bool>> SendInvoice(JwtClaims jwtClaims, Tenant tenant, IEInvoicingSetting setting, Branch branch, EInvoiceType type, bool simplified, bool Production = false)
+        public async Task<OperationResult<bool>> SendInvoice(IEInvoicingSetting setting, Branch branch, EInvoiceType type, bool simplified, bool Production = false)
         {
-            var res = GenerateInvoice(jwtClaims, tenant, setting, branch, type, simplified);
+            var res = GenerateInvoice(setting, branch, type, simplified);
 
             if (!res.Succeeded || res.Result.xmlInvoice == null || res.Result.xmlSignedInvoice == null)
                 return OperationResult<bool>.CopyErrorsFrom(res);
@@ -55,7 +53,7 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
             return OperationResult<bool>.Ok(true);
         }
 
-        private OperationResult<(XmlDocument xmlInvoice, XmlDocument xmlSignedInvoice)> GenerateInvoice(JwtClaims jwtClaims, Tenant tenant, IEInvoicingSetting setting, Branch branch, EInvoiceType type, bool simplified)
+        private OperationResult<(XmlDocument xmlInvoice, XmlDocument xmlSignedInvoice)> GenerateInvoice(IEInvoicingSetting setting, Branch branch, EInvoiceType type, bool simplified)
         {
             var now = DateTime.Now;
 
@@ -71,9 +69,9 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
                 InvoiceCounter = 300,
                 PreviousInvoiceHash = "NWZlY2ViNjZmZmM4NmYzOGQ5NTI3ODZjNmQ2OTZjNzljMmRiYzIzOWRkNGU5MWI0NjcyOWQ3M2EyN2ZiNTdlOQ==",
                 OriginalInvoiceId = type == EInvoiceType.Sell ? null : 200,
-                SupplierCRN = tenant.Crn ?? string.Empty,
-                SupplierVatNumber = tenant.VatNumber ?? string.Empty,
-                SupplierName = tenant.Name ?? string.Empty,
+                SupplierCRN = setting.Tenant.Crn ?? string.Empty,
+                SupplierVatNumber = setting.Tenant.VatNumber ?? string.Empty,
+                SupplierName = setting.Tenant.Name ?? string.Empty,
                 SupplierAddress = new EInvoiceAddressDto
                 {
                     StreetName = branch.Street ?? string.Empty,
@@ -136,7 +134,7 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
                 };
             }
 
-            return _xmlService.CreateFullXml(eInvoice, jwtClaims, setting.CertificateContent ?? string.Empty, setting.PrivateKey ?? string.Empty);
+            return _xmlService.CreateFullXml(eInvoice, setting.CertificateContent ?? string.Empty, setting.PrivateKey ?? string.Empty);
         }
     }
 }

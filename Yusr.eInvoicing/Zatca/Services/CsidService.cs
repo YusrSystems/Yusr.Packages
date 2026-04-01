@@ -2,6 +2,7 @@
 using System.Text;
 using System.Text.Json;
 using Yusr.Core.Abstractions.Primitives;
+using Yusr.eInvoicing.Abstractions.Enums;
 using Yusr.eInvoicing.Abstractions.Services.Csid;
 using Yusr.eInvoicing.Abstractions.Services.Entities;
 using Yusr.eInvoicing.Zatca.Entities;
@@ -16,9 +17,15 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
             Timeout = TimeSpan.FromSeconds(30)
         };
 
-        public async Task<OperationResult<ZatcaCsidResult>> TryRequestComplianceCsidAsync(string otp, ZatcaCsrResult csrResult, bool Production)
+        public async Task<OperationResult<ZatcaCsidResult>> TryRequestComplianceCsidAsync(string otp, ZatcaCsrResult csrResult, EInvoicingEnvironmentType type)
         {
-            string endpoint = Production ? "core/compliance" : "simulation/compliance";
+            string endpoint = type switch
+            {
+                EInvoicingEnvironmentType.Test => "developer-portal/compliance",
+                EInvoicingEnvironmentType.Simulation => "simulation/compliance",
+                EInvoicingEnvironmentType.Production => "core/compliance",
+                _ => "developer-portal/compliance"
+            };
 
             using var request = new HttpRequestMessage(HttpMethod.Post, endpoint);
             request.Headers.Add("OTP", otp);
@@ -43,9 +50,15 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
             return OperationResult<ZatcaCsidResult>.Ok(result);
         }
 
-        public async Task<OperationResult<ZatcaCsidResult>> TryRequestProductionCsidAsync(ZatcaCsidResult csidResponse, bool Production)
+        public async Task<OperationResult<ZatcaCsidResult>> TryRequestProductionCsidAsync(ZatcaCsidResult csidResponse, EInvoicingEnvironmentType type)
         {
-            string endpoint = Production ? "production/csids" : "simulation/production/csids";
+            string endpoint = type switch
+            {
+                EInvoicingEnvironmentType.Test => "developer-portal/production/csids",
+                EInvoicingEnvironmentType.Simulation => "simulation/production/csids",
+                EInvoicingEnvironmentType.Production => "core/production/csids",
+                _ => "developer-portal/production/csids"
+            };
 
             using var request = new HttpRequestMessage(HttpMethod.Post, endpoint);
 

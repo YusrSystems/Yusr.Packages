@@ -1,5 +1,4 @@
 ﻿using Yusr.eInvoicing.Abstractions.Enums;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Yusr.eInvoicing.Abstractions.Entities.Interfaces
 {
@@ -13,11 +12,6 @@ namespace Yusr.eInvoicing.Abstractions.Entities.Interfaces
         public DateTime? DeliveryDate { get; set; }
         public EInvoiceStatus EInvoiceStatus { get; set; }
         public decimal FullAmount { get; set; }
-        public decimal PaidAmount { get; set; }
-        public decimal DiscountAmount { get; set; }
-        public decimal AddedAmount { get; set; }
-        public long StoreId { get; set; }
-        public long ActionAccountId { get; set; }
         public string? QR { get; set; }
         public string? InvoiceHash { get; set; }
         public string? PreviousHash { get; set; }
@@ -31,16 +25,16 @@ namespace Yusr.eInvoicing.Abstractions.Entities.Interfaces
 
             return IInvoice.IsRegisteredForEInvoicing(settings);
         }
+
         public static bool IsRegisteredForEInvoicing(IEInvoicingSetting settings)
         {
             if (settings.EInvoicingStatus == 0
-                || string.IsNullOrEmpty(settings.certificateContent) || string.IsNullOrEmpty(settings.PrivateKey)
+                || string.IsNullOrEmpty(settings.CertificateContent) || string.IsNullOrEmpty(settings.PrivateKey)
                 || string.IsNullOrEmpty(settings.BinarySecurityToken) || string.IsNullOrEmpty(settings.Secret))
                 return false;
 
             return true;
         }
-
 
         public IInvoice UpdateEInvoiceInfo(long? invoiceCounter, string? invoiceHash, string? previousHash, string? signedXml, string? qr)
         {
@@ -62,6 +56,5 @@ namespace Yusr.eInvoicing.Abstractions.Entities.Interfaces
             QR = qr;
             return this;
         }
-
     }
 }

@@ -19,13 +19,12 @@ using Yusr.eInvoicing.Abstractions.Services.Xml;
 using Yusr.eInvoicing.Zatca.Entities;
 using Yusr.Identity.Abstractions.Primitives;
 using Yusr.Infrastructure.eInvoicing.Zatca.Extensions;
-using Yusr.Infrastructure.eInvoicing.Zatca.Services;
 using ZATCA.EInvoice.SDK;
 
 namespace Yusr.Infrastructure.eInvoicing.Zatca
 {
     public class ZatcaService(IEInvoicingSetting settings,
-        IXmlService xmlService, 
+        IXmlService xmlService,
         IQrService qrService,
         IValidationService validationService,
         IEInvoiceApiService eInvoiceApiService,
@@ -35,7 +34,7 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca
         IComplianceCheckService ComplianceCheckService
         ) : IEInvoicingService
     {
-        
+
 
         public OperationResult<EInvoicePrepareDto> PrepareEInvoice(EInvoiceDto eInvoice, string certificateContent, string privateKey, bool ignoreWarnings, JwtClaims jwtClaims)
         {
