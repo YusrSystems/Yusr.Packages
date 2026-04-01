@@ -14,9 +14,9 @@ namespace Yusr.eInvoicing.Zatca.Services.Registration
     public class RegistrationService(
         ICsrService<ZatcaCsrResult> csrService,
         ICsidService<ZatcaCsidResult, ZatcaCsrResult> csidService,
-        IEInvoicingComplianceCheckService complianceCheckService,
+        IEInvoiceComplianceCheckService complianceCheckService,
         ICsidStorage csidStorage
-    ) : IEInvoicingRegistrationService
+    ) : IEInvoiceRegistrationService
     {
         public async Task<OperationResult<bool>> Register(IEInvoicingSetting setting, string otp, EInvoicingEnvironmentType type)
         {

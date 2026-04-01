@@ -12,9 +12,9 @@ using Yusr.eInvoicing.Abstractions.Services.Xml;
 namespace Yusr.eInvoicing.Zatca.Services.Send
 {
     public class InvoiceSendService(
-        IEInvoicingXmlService xmlService,
+        IEInvoiceXmlService xmlService,
         IEInvoiceApiService eInvoiceApiService
-    ) : IInvoiceSendService
+    ) : IEInvoiceSendService
     {
         public async Task<OperationResult<EInvoiceStatus>> SendEInvoice(EInvoicePrepareDto eInvoicePrepareDto, EInvoicingEnvironmentType eInvoicingEnvironmentType, string binarySecurityToken, string secret)
         {

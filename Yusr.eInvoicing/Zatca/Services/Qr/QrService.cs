@@ -5,7 +5,7 @@ using Yusr.eInvoicing.Abstractions.Services.Qr;
 
 namespace Yusr.eInvoicing.Zatca.Services.Qr
 {
-    public class QrService : IEInvoicingQrService
+    public class QrService : IEInvoiceQrService
     {
         public string ExtractQrValue(XmlDocument xmlInvoice)
         {
