@@ -1,4 +1,4 @@
-﻿using Yusr.Erp.Application.Accounting.DTOs;
+﻿using Yusr.eInvoicing.Abstractions.Entities;
 using ZATCA.EInvoice.SDK.Contracts.Models;
 
 namespace Yusr.Infrastructure.eInvoicing.Zatca.Extensions

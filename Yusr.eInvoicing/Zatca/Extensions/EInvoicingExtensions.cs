@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Yusr.Erp.Application.Accounting.Interfaces;
+﻿
+
+using Microsoft.Extensions.DependencyInjection;
+using Yusr.eInvoicing.Abstractions.Services;
 
 namespace Yusr.Infrastructure.eInvoicing.Zatca.Extensions
 {
