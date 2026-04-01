@@ -7,9 +7,10 @@ namespace Yusr.eInvoicing.Abstractions.Entities.Interfaces
     {
         public string? CertificateContent { get; set; }
         public string? PrivateKey { get; set; }
-        public EInvoicingStatus EInvoicingStatus { get; set; }
+        public EInvoicingEnvironmentType EInvoicingEnvironmentType { get; set; }
         public string? BinarySecurityToken { get; set; }
         public string? Secret { get; set; }
         public Tenant Tenant { get; set; }
+        public Branch Branch { get; set; }
     }
 }

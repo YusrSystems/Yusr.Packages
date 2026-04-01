@@ -1,5 +1,4 @@
 ﻿using System.Xml;
-using Yusr.Core.Abstractions.Entities;
 using Yusr.Core.Abstractions.Primitives;
 using Yusr.eInvoicing.Abstractions.Dto;
 using Yusr.eInvoicing.Abstractions.Entities.Interfaces;
@@ -9,12 +8,12 @@ using Yusr.eInvoicing.Abstractions.Services.Xml;
 
 namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
 {
-    public class ComplianceCheckService(IXmlService xmlService, IEInvoiceApiService eInvoiceApiService) : IComplianceCheckService
+    public class ComplianceCheckService(IEInvoicingXmlService xmlService, IEInvoiceApiService eInvoiceApiService) : IEInvoicingComplianceCheckService
     {
-        private readonly IXmlService _xmlService = xmlService;
+        private readonly IEInvoicingXmlService _xmlService = xmlService;
         private readonly IEInvoiceApiService _eInvoiceApiService = eInvoiceApiService;
 
-        public async Task<OperationResult<bool>> GenerateFullCheck(IEInvoicingSetting setting, Branch branch, bool Production = false)
+        public async Task<OperationResult<bool>> GenerateFullCheck(IEInvoicingSetting setting, EInvoicingEnvironmentType type)
         {
             List<(string invoiceTypeName, EInvoiceType type, bool simplified)> invoices = new List<(string invoiceTypeName, EInvoiceType type, bool simplified)>
             {
@@ -28,7 +27,7 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
 
             foreach (var invoice in invoices)
             {
-                var res = await SendInvoice(setting, branch, invoice.type, invoice.simplified, Production);
+                var res = await SendInvoice(setting, invoice.type, invoice.simplified, type);
                 if (!res.Succeeded)
                 {
                     return OperationResult<bool>.CopyErrorsFrom(res);
@@ -38,14 +37,14 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
             return OperationResult<bool>.Ok(true);
         }
 
-        public async Task<OperationResult<bool>> SendInvoice(IEInvoicingSetting setting, Branch branch, EInvoiceType type, bool simplified, bool Production = false)
+        public async Task<OperationResult<bool>> SendInvoice(IEInvoicingSetting setting, EInvoiceType eInvoiceType, bool simplified, EInvoicingEnvironmentType type)
         {
-            var res = GenerateInvoice(setting, branch, type, simplified);
+            var res = GenerateInvoice(setting, eInvoiceType, simplified);
 
             if (!res.Succeeded || res.Result.xmlInvoice == null || res.Result.xmlSignedInvoice == null)
                 return OperationResult<bool>.CopyErrorsFrom(res);
 
-            var sendRes = await _eInvoiceApiService.SendComplianceCheckInvoice(res.Result.xmlSignedInvoice, setting.BinarySecurityToken ?? string.Empty, setting.Secret ?? string.Empty, Production);
+            var sendRes = await _eInvoiceApiService.SendComplianceCheckInvoice(res.Result.xmlSignedInvoice, setting.BinarySecurityToken ?? string.Empty, setting.Secret ?? string.Empty, type);
 
             if (!sendRes.Succeeded)
                 return OperationResult<bool>.CopyErrorsFrom(sendRes);
@@ -53,7 +52,7 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
             return OperationResult<bool>.Ok(true);
         }
 
-        private OperationResult<(XmlDocument xmlInvoice, XmlDocument xmlSignedInvoice)> GenerateInvoice(IEInvoicingSetting setting, Branch branch, EInvoiceType type, bool simplified)
+        private OperationResult<(XmlDocument xmlInvoice, XmlDocument xmlSignedInvoice)> GenerateInvoice(IEInvoicingSetting setting, EInvoiceType type, bool simplified)
         {
             var now = DateTime.Now;
 
@@ -74,11 +73,11 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
                 SupplierName = setting.Tenant.Name ?? string.Empty,
                 SupplierAddress = new EInvoiceAddressDto
                 {
-                    StreetName = branch.Street ?? string.Empty,
-                    BuildingNumber = branch.BuildingNumber ?? string.Empty,
-                    CitySubdivisionName = branch.District ?? string.Empty,
-                    CityName = branch.City?.Name ?? string.Empty,
-                    PostalZone = branch.PostalCode ?? string.Empty,
+                    StreetName = setting.Branch.Street ?? string.Empty,
+                    BuildingNumber = setting.Branch.BuildingNumber ?? string.Empty,
+                    CitySubdivisionName = setting.Branch.District ?? string.Empty,
+                    CityName = setting.Branch.City?.Name ?? string.Empty,
+                    PostalZone = setting.Branch.PostalCode ?? string.Empty,
                     CountryCode = "SA"
                 },
                 ActionAccountId = 3,

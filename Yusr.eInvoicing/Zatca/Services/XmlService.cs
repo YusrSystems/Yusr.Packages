@@ -11,9 +11,9 @@ using Yusr.eInvoicing.Abstractions.Services.Xml;
 
 namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
 {
-    public class XmlService(ISignService signService) : IXmlService
+    public class XmlService(IEInvoicingSignService signService) : IEInvoicingXmlService
     {
-        private readonly ISignService _signService = signService;
+        private readonly IEInvoicingSignService _signService = signService;
 
         public OperationResult<XmlDocument> GenerateXmlEInvoice(EInvoiceDto eInvoice)
         {

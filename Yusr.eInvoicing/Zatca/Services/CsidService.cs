@@ -17,6 +17,9 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
             Timeout = TimeSpan.FromSeconds(30)
         };
 
+        private static readonly JsonSerializerOptions _serializerOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+        private static readonly JsonSerializerOptions _deserializerOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+
         public async Task<OperationResult<ZatcaCsidResult>> TryRequestComplianceCsidAsync(string otp, ZatcaCsrResult csrResult, EInvoicingEnvironmentType type)
         {
             string endpoint = type switch
@@ -33,7 +36,7 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             var payload = new { csr = csrResult.Csr };
-            var json = JsonSerializer.Serialize(payload, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+            var json = JsonSerializer.Serialize(payload, _serializerOptions);
             request.Content = new StringContent(json, Encoding.UTF8, "application/json");
 
             var response = await httpClient.SendAsync(request);
@@ -42,7 +45,7 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
             if (!response.IsSuccessStatusCode)
                 return OperationResult<ZatcaCsidResult>.InternalError("لم يتم اصدار شهادة الامتثال بشكل صحيح", $"ZATCA Error: {response.StatusCode} - {resultJson}");
 
-            ZatcaCsidResult? result = JsonSerializer.Deserialize<ZatcaCsidResult>(resultJson, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            ZatcaCsidResult? result = JsonSerializer.Deserialize<ZatcaCsidResult>(resultJson, _deserializerOptions);
 
             if (result == null)
                 return OperationResult<ZatcaCsidResult>.InternalError("لم يتم اصدار شهادة الامتثال بشكل صحيح", "Failed To Parse Json Response");
@@ -70,7 +73,7 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             var payload = new { compliance_request_id = csidResponse.RequestId };
-            var json = JsonSerializer.Serialize(payload, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+            var json = JsonSerializer.Serialize(payload, _serializerOptions);
             request.Content = new StringContent(json, Encoding.UTF8, "application/json");
 
             var response = await httpClient.SendAsync(request);
@@ -79,7 +82,7 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
             if (!response.IsSuccessStatusCode)
                 return OperationResult<ZatcaCsidResult>.InternalError("لم يتم اصدار شهادة الإنتاج بشكل صحيح", $"ZATCA Error: {response.StatusCode} - {resultJson}");
 
-            ZatcaCsidResult? result = JsonSerializer.Deserialize<ZatcaCsidResult>(resultJson, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            ZatcaCsidResult? result = JsonSerializer.Deserialize<ZatcaCsidResult>(resultJson, _deserializerOptions);
 
             if (result == null)
                 return OperationResult<ZatcaCsidResult>.InternalError("لم يتم اصدار شهادة الامتثال بشكل صحيح", "Failed To Parse Json Response");

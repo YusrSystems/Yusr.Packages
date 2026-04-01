@@ -1,5 +1,4 @@
-﻿using Yusr.Core.Abstractions.Entities;
-using Yusr.Core.Abstractions.Primitives;
+﻿using Yusr.Core.Abstractions.Primitives;
 using Yusr.eInvoicing.Abstractions.Entities.Interfaces;
 using Yusr.eInvoicing.Abstractions.Enums;
 using Yusr.eInvoicing.Abstractions.Services.Csr;
@@ -11,17 +10,17 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
 {
     public class CsrService : ICsrService<ZatcaCsrResult>
     {
-        public async Task<OperationResult<ZatcaCsrResult>> TryGenerateCsrAsync(IEInvoicingSetting eInvoicingSetting, Branch branch, EInvoicingEnvironmentType type)
+        public async Task<OperationResult<ZatcaCsrResult>> TryGenerateCsrAsync(IEInvoicingSetting eInvoicingSetting, EInvoicingEnvironmentType type)
         {
             CsrGenerationDto dto = new CsrGenerationDto(
                 $"yusrsys-{Guid.NewGuid().ToString()}-{eInvoicingSetting.Tenant.VatNumber}",
                 $"1-{Guid.NewGuid().ToString()}|2-{Guid.NewGuid().ToString()}|3-{Guid.NewGuid().ToString()}",
                 eInvoicingSetting.Tenant.VatNumber,
-                branch.Name,
+                eInvoicingSetting.Branch.Name,
                 eInvoicingSetting.Tenant.Name,
                 "SA",
                 "1100", // 1100 = Standard + Simplified, 1000 = Standard only, 0100 = Simplified only
-                branch.City?.Country?.Name + " - " + branch.City?.Name,
+                eInvoicingSetting.Branch.City?.Country?.Name + " - " + eInvoicingSetting.Branch.City?.Name,
                 eInvoicingSetting.Tenant.CompanyBusinessCategory
             );
 

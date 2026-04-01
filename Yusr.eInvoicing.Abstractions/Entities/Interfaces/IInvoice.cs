@@ -1,4 +1,5 @@
-﻿using Yusr.eInvoicing.Abstractions.Enums;
+﻿using Yusr.Core.Abstractions.Utilities;
+using Yusr.eInvoicing.Abstractions.Enums;
 
 namespace Yusr.eInvoicing.Abstractions.Entities.Interfaces
 {
@@ -23,12 +24,20 @@ namespace Yusr.eInvoicing.Abstractions.Entities.Interfaces
             if (type != InvoiceType.Sell && type != InvoiceType.SellReturn)
                 return false;
 
-            return IInvoice.IsRegisteredForEInvoicing(settings);
+            return IsRegisteredForEInvoicing(settings);
+        }
+
+        public bool IsSendableEInvoice(IEInvoicingSetting settings)
+        {
+            if (InvoiceType != InvoiceType.Sell && InvoiceType != InvoiceType.SellReturn)
+                return false;
+
+            return IsRegisteredForEInvoicing(settings);
         }
 
         public static bool IsRegisteredForEInvoicing(IEInvoicingSetting settings)
         {
-            if (settings.EInvoicingStatus == 0
+            if (settings.EInvoicingEnvironmentType == EInvoicingEnvironmentType.NotRegistered
                 || string.IsNullOrEmpty(settings.CertificateContent) || string.IsNullOrEmpty(settings.PrivateKey)
                 || string.IsNullOrEmpty(settings.BinarySecurityToken) || string.IsNullOrEmpty(settings.Secret))
                 return false;
@@ -55,6 +64,22 @@ namespace Yusr.eInvoicing.Abstractions.Entities.Interfaces
         {
             QR = qr;
             return this;
+        }
+
+        public decimal GetTaxAmount()
+        {
+            return YusrMath.Round(InvoiceItems
+                .Select(ii => new
+                {
+                    ii.TotalPrice,
+                    TaxFactor = (!ii.Taxable || ii.TotalTaxesPerc == 0) ? 1 : YusrMath.GetFactor(ii.TotalTaxesPerc)
+                })
+                .Select(x => new
+                {
+                    TaxTotalPrice = x.TotalPrice,
+                    NoTaxTotalPrice = YusrMath.Round(x.TotalPrice / x.TaxFactor)
+                })
+                .Sum(x => x.TaxTotalPrice - x.NoTaxTotalPrice));
         }
     }
 }

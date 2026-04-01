@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Xml;
 using Yusr.Core.Abstractions.Primitives;
 using Yusr.eInvoicing.Abstractions.Entities;
+using Yusr.eInvoicing.Abstractions.Enums;
 using Yusr.eInvoicing.Abstractions.Services.Api;
 using Yusr.eInvoicing.Zatca.Entities;
 using Yusr.Infrastructure.eInvoicing.Zatca.Extensions;
@@ -22,34 +23,64 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
             Timeout = TimeSpan.FromSeconds(30)
         };
 
-        public async Task<OperationResult<EInvoicingApiResponse>> SendComplianceCheckInvoice(XmlDocument signedEInvoice, string binarySecurityToken, string secret, bool Production = false)
+        public async Task<OperationResult<EInvoicingApiResponse>> SendComplianceCheckInvoice(XmlDocument signedEInvoice, string binarySecurityToken, string secret, EInvoicingEnvironmentType type)
         {
-            string url = Production ? "core/compliance/invoices" : "simulation/compliance/invoices";
-            return await SendInvoice(GenerateRequest(signedEInvoice).ToEInvoiceRequest(), binarySecurityToken, secret, url, addClearanceHeader: false);
+            string endpoint = type switch
+            {
+                EInvoicingEnvironmentType.Test => "developer-portal/compliance/invoices",
+                EInvoicingEnvironmentType.Simulation => "simulation/compliance/invoices",
+                EInvoicingEnvironmentType.Production => "core/compliance/invoices",
+                _ => "developer-portal/compliance/invoices"
+            };
+            return await SendInvoice(GenerateRequest(signedEInvoice).ToEInvoiceRequest(), binarySecurityToken, secret, endpoint, addClearanceHeader: false);
         }
 
-        public async Task<OperationResult<EInvoicingApiResponse>> SendSimplifiedInvoice(XmlDocument signedEInvoice, string binarySecurityToken, string secret, bool Production = false)
+        public async Task<OperationResult<EInvoicingApiResponse>> SendSimplifiedInvoice(XmlDocument signedEInvoice, string binarySecurityToken, string secret, EInvoicingEnvironmentType type)
         {
-            string url = Production ? "core/invoices/reporting/single" : "simulation/invoices/reporting/single";
-            return await SendInvoice(GenerateRequest(signedEInvoice).ToEInvoiceRequest(), binarySecurityToken, secret, url, addClearanceHeader: true);
+            string endpoint = type switch
+            {
+                EInvoicingEnvironmentType.Test => "developer-portal/invoices/reporting/single",
+                EInvoicingEnvironmentType.Simulation => "simulation/invoices/reporting/single",
+                EInvoicingEnvironmentType.Production => "core/invoices/reporting/single",
+                _ => "developer-portal/invoices/reporting/single"
+            };
+            return await SendInvoice(GenerateRequest(signedEInvoice).ToEInvoiceRequest(), binarySecurityToken, secret, endpoint, addClearanceHeader: true);
         }
 
-        public async Task<OperationResult<EInvoicingApiResponse>> SendSimplifiedInvoice(EInvoiceRequest invoiceRequest, string binarySecurityToken, string secret, bool Production = false)
+        public async Task<OperationResult<EInvoicingApiResponse>> SendSimplifiedInvoice(EInvoiceRequest invoiceRequest, string binarySecurityToken, string secret, EInvoicingEnvironmentType type)
         {
-            string url = Production ? "core/invoices/reporting/single" : "simulation/invoices/reporting/single";
-            return await SendInvoice(invoiceRequest, binarySecurityToken, secret, url, addClearanceHeader: true);
+            string endpoint = type switch
+            {
+                EInvoicingEnvironmentType.Test => "developer-portal/invoices/reporting/single",
+                EInvoicingEnvironmentType.Simulation => "simulation/invoices/reporting/single",
+                EInvoicingEnvironmentType.Production => "core/invoices/reporting/single",
+                _ => "developer-portal/invoices/reporting/single"
+            };
+            return await SendInvoice(invoiceRequest, binarySecurityToken, secret, endpoint, addClearanceHeader: true);
         }
 
-        public async Task<OperationResult<EInvoicingApiResponse>> SendStandardInvoice(XmlDocument signedEInvoice, string binarySecurityToken, string secret, bool Production = false)
+        public async Task<OperationResult<EInvoicingApiResponse>> SendStandardInvoice(XmlDocument signedEInvoice, string binarySecurityToken, string secret, EInvoicingEnvironmentType type)
         {
-            string url = Production ? "core/invoices/clearance/single" : "simulation/invoices/clearance/single";
-            return await SendInvoice(GenerateRequest(signedEInvoice).ToEInvoiceRequest(), binarySecurityToken, secret, url, addClearanceHeader: true);
+            string endpoint = type switch
+            {
+                EInvoicingEnvironmentType.Test => "developer-portal/invoices/clearance/single",
+                EInvoicingEnvironmentType.Simulation => "simulation/invoices/clearance/single",
+                EInvoicingEnvironmentType.Production => "core/invoices/clearance/single",
+                _ => "developer-portal/invoices/clearance/single"
+            };
+            return await SendInvoice(GenerateRequest(signedEInvoice).ToEInvoiceRequest(), binarySecurityToken, secret, endpoint, addClearanceHeader: true);
         }
 
-        public async Task<OperationResult<EInvoicingApiResponse>> SendStandardInvoice(EInvoiceRequest invoiceRequest, string binarySecurityToken, string secret, bool Production = false)
+        public async Task<OperationResult<EInvoicingApiResponse>> SendStandardInvoice(EInvoiceRequest invoiceRequest, string binarySecurityToken, string secret, EInvoicingEnvironmentType type)
         {
-            string url = Production ? "core/invoices/clearance/single" : "simulation/invoices/clearance/single";
-            return await SendInvoice(invoiceRequest, binarySecurityToken, secret, url, addClearanceHeader: true);
+            string endpoint = type switch
+            {
+                EInvoicingEnvironmentType.Test => "developer-portal/invoices/clearance/single",
+                EInvoicingEnvironmentType.Simulation => "simulation/invoices/clearance/single",
+                EInvoicingEnvironmentType.Production => "core/invoices/clearance/single",
+                _ => "developer-portal/invoices/clearance/single"
+            };
+            return await SendInvoice(invoiceRequest, binarySecurityToken, secret, endpoint, addClearanceHeader: true);
         }
 
 

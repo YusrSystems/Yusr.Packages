@@ -3,7 +3,7 @@ using Yusr.eInvoicing.Abstractions.Services.Validation;
 
 namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
 {
-    public class ValidationService : IValidationService
+    public class ValidationService : IEInvoicingValidationService
     {
         public (List<string> Errors, List<string> Warnings) ValidateInvoice(EInvoiceDto eInvoice)
         {

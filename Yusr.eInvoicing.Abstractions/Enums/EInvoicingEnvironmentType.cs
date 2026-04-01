@@ -1,9 +1,10 @@
 ﻿namespace Yusr.eInvoicing.Abstractions.Enums
 {
-    public enum EInvoicingEnvironmentType
+    public enum EInvoicingEnvironmentType : byte
     {
-        Production,
-        Simulation,
-        Test
+        Production = 0,
+        Simulation = 1,
+        Test = 2,
+        NotRegistered = 3
     }
 }

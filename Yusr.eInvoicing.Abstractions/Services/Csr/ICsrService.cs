@@ -7,6 +7,6 @@ namespace Yusr.eInvoicing.Abstractions.Services.Csr
 {
     public interface ICsrService<TCsrResult> where TCsrResult : ICsrResult
     {
-        Task<OperationResult<TCsrResult>> TryGenerateCsrAsync(IEInvoicingSetting eInvoicingSetting, Branch branch, EInvoicingEnvironmentType type);
+        Task<OperationResult<TCsrResult>> TryGenerateCsrAsync(IEInvoicingSetting eInvoicingSetting, EInvoicingEnvironmentType type);
     }
 }

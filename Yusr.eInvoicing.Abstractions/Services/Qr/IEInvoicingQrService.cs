@@ -2,7 +2,7 @@
 
 namespace Yusr.eInvoicing.Abstractions.Services.Qr
 {
-    public interface IQrService
+    public interface IEInvoicingQrService
     {
         string ExtractQrValue(XmlDocument xmlInvoice);
 
