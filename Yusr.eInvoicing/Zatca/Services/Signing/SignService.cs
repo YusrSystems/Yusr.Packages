@@ -12,7 +12,7 @@ namespace Yusr.eInvoicing.Zatca.Services.Signing
         {
             try
             {
-                EInvoiceSigner signer = new EInvoiceSigner();
+                EInvoiceSigner signer = new();
                 SignResult signResult = signer.SignDocument(xmlInvoice, certificateContent, privateKey);
 
                 if (!signResult.IsValid)

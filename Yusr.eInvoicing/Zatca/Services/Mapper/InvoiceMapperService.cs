@@ -10,7 +10,7 @@ namespace Yusr.eInvoicing.Zatca.Services.Mapper
     {
         public EInvoiceDto GetEInvoiceData(IEInvoicingSetting setting, IInvoice invoice, IAccount customer, List<IItem> dbItems, long? lastCounter, string? lastHash)
         {
-            var result = new EInvoiceDto
+            EInvoiceDto result = new()
             {
                 ProfileID = "reporting:1.0",
                 ID = invoice.Id,
@@ -19,35 +19,34 @@ namespace Yusr.eInvoicing.Zatca.Services.Mapper
                 DeliveryDate = invoice.InvoiceDate,
                 OriginalInvoiceId = invoice.OriginalInvoiceId,
                 InvoiceAmount = invoice.FullAmount,
-                EInvoiceType = invoice.InvoiceType == InvoiceType.SellReturn ? EInvoiceType.Credit : EInvoiceType.Sell
-            };
+                EInvoiceType = invoice.InvoiceType == InvoiceType.SellReturn ? EInvoiceType.Credit : EInvoiceType.Sell,
+                CurrencyCode = setting.Tenant.Currency?.Code ?? "",
+                SupplierCRN = setting.Tenant.Crn ?? "",
+                SupplierVatNumber = setting.Tenant.VatNumber ?? "",
+                SupplierName = setting.Tenant.Name ?? "",
+                SupplierAddress = new EInvoiceAddressDto
+                {
+                    StreetName = setting.Branch.Street ?? "",
+                    BuildingNumber = setting.Branch.BuildingNumber ?? "",
+                    CityName = setting.Branch.City?.Name ?? "",
+                    PostalZone = setting.Branch.PostalCode ?? "",
+                    CountryCode = setting.Branch.City?.Country?.Code ?? "",
+                    CitySubdivisionName = setting.Branch.District ?? ""
+                },
 
-            result.CurrencyCode = setting.Tenant.Currency?.Code ?? "";
-            result.SupplierCRN = setting.Tenant.Crn ?? "";
-            result.SupplierVatNumber = setting.Tenant.VatNumber ?? "";
-            result.SupplierName = setting.Tenant.Name ?? "";
-            result.SupplierAddress = new EInvoiceAddressDto
-            {
-                StreetName = setting.Branch.Street ?? "",
-                BuildingNumber = setting.Branch.BuildingNumber ?? "",
-                CityName = setting.Branch.City?.Name ?? "",
-                PostalZone = setting.Branch.PostalCode ?? "",
-                CountryCode = setting.Branch.City?.Country?.Code ?? "",
-                CitySubdivisionName = setting.Branch.District ?? ""
-            };
-
-            result.CustomerName = customer.Name;
-            result.ActionAccountId = customer.Id;
-            result.CustomerVatNumber = customer.VatNumber ?? "";
-            result.CustomerCRN = customer.Crn ?? "";
-            result.CustomerAddress = new EInvoiceAddressDto
-            {
-                StreetName = customer.Street ?? "",
-                BuildingNumber = customer.BuildingNumber ?? "",
-                CityName = setting.Branch.City?.Name ?? "",
-                PostalZone = customer.PostalCode ?? "",
-                CountryCode = setting.Branch.City?.Country?.Code ?? "",
-                CitySubdivisionName = customer.District ?? ""
+                CustomerName = customer.Name,
+                ActionAccountId = customer.Id,
+                CustomerVatNumber = customer.VatNumber ?? "",
+                CustomerCRN = customer.Crn ?? "",
+                CustomerAddress = new EInvoiceAddressDto
+                {
+                    StreetName = customer.Street ?? "",
+                    BuildingNumber = customer.BuildingNumber ?? "",
+                    CityName = setting.Branch.City?.Name ?? "",
+                    PostalZone = customer.PostalCode ?? "",
+                    CountryCode = setting.Branch.City?.Country?.Code ?? "",
+                    CitySubdivisionName = customer.District ?? ""
+                }
             };
 
             var dbItemsDic = dbItems.ToDictionary(i => i.Id);

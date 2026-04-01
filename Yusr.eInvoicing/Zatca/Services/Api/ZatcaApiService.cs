@@ -15,13 +15,11 @@ using ZATCA.EInvoice.SDK.Contracts.Models;
 namespace Yusr.eInvoicing.Zatca.Services.Api
 {
 
-    public class ZatcaApi : IEInvoiceApiService
+    public class ZatcaApiService(HttpClient httpClient) : IEInvoiceApiService
     {
-        private static readonly HttpClient httpClient = new HttpClient
-        {
-            BaseAddress = new Uri("https://gw-fatoora.zatca.gov.sa/e-invoicing/"),
-            Timeout = TimeSpan.FromSeconds(30)
-        };
+        private readonly HttpClient _httpClient = httpClient;
+        private static readonly JsonSerializerOptions _serializerOptions = new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+        private static readonly JsonSerializerOptions _deserializerOptions = new() { PropertyNameCaseInsensitive = true };
 
         public async Task<OperationResult<EInvoicingApiResponse>> SendComplianceCheckInvoice(XmlDocument signedEInvoice, string binarySecurityToken, string secret, EInvoicingEnvironmentType type)
         {
@@ -85,12 +83,12 @@ namespace Yusr.eInvoicing.Zatca.Services.Api
 
 
 
-        private static async Task<OperationResult<EInvoicingApiResponse>> SendInvoice(EInvoiceRequest invoiceRequest, string binarySecurityToken, string secret, string url, bool addClearanceHeader)
+        private async Task<OperationResult<EInvoicingApiResponse>> SendInvoice(EInvoiceRequest invoiceRequest, string binarySecurityToken, string secret, string url, bool addClearanceHeader)
         {
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, url);
+            HttpRequestMessage request = new(HttpMethod.Post, url);
             PrepareRequest(ref request, invoiceRequest, binarySecurityToken, secret, addClearanceHeader);
 
-            HttpResponseMessage response = await httpClient.SendAsync(request);
+            HttpResponseMessage response = await _httpClient.SendAsync(request);
             string responseContent = await response.Content.ReadAsStringAsync();
 
             if (response.StatusCode == HttpStatusCode.InternalServerError)
@@ -110,7 +108,7 @@ namespace Yusr.eInvoicing.Zatca.Services.Api
 
             try
             {
-                ComplianceValidationResponse? complianceValidationResponse = JsonSerializer.Deserialize<ComplianceValidationResponse>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                ComplianceValidationResponse? complianceValidationResponse = JsonSerializer.Deserialize<ComplianceValidationResponse>(responseContent, _deserializerOptions);
 
                 if (complianceValidationResponse != null)
                 {
@@ -134,7 +132,7 @@ namespace Yusr.eInvoicing.Zatca.Services.Api
 
         private static InvoiceRequest GenerateRequest(XmlDocument signedEInvoice)
         {
-            RequestGenerator requestGenerator = new RequestGenerator();
+            RequestGenerator requestGenerator = new();
             return requestGenerator.GenerateRequest(signedEInvoice).InvoiceRequest;
         }
 
@@ -156,8 +154,7 @@ namespace Yusr.eInvoicing.Zatca.Services.Api
                 uuid = invoiceRequest.Uuid,
                 invoice = invoiceRequest.Invoice
             };
-            var jsonOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
-            string jsonBody = JsonSerializer.Serialize(payload, jsonOptions);
+            string jsonBody = JsonSerializer.Serialize(payload, _serializerOptions);
             request.Content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
         }
     }

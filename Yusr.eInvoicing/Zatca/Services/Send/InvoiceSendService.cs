@@ -6,7 +6,7 @@ using Yusr.eInvoicing.Abstractions.Entities;
 using Yusr.eInvoicing.Abstractions.Entities.Interfaces;
 using Yusr.eInvoicing.Abstractions.Enums;
 using Yusr.eInvoicing.Abstractions.Services.Api;
-using Yusr.eInvoicing.Abstractions.Services.Sending;
+using Yusr.eInvoicing.Abstractions.Services.Send;
 using Yusr.eInvoicing.Abstractions.Services.Xml;
 
 namespace Yusr.eInvoicing.Zatca.Services.Send
@@ -23,8 +23,6 @@ namespace Yusr.eInvoicing.Zatca.Services.Send
 
         public async Task<OperationResult<EInvoiceStatus>> SendEInvoice(EInvoiceRequest invoiceRequest, EInvoicingEnvironmentType eInvoicingEnvironmentType, string binarySecurityToken, string secret, bool isSimplified)
         {
-            EInvoiceStatus eInvoiceStatus = EInvoiceStatus.NotSent;
-
             OperationResult<EInvoicingApiResponse> zatcaApiResponse;
 
             if (isSimplified)
@@ -35,6 +33,7 @@ namespace Yusr.eInvoicing.Zatca.Services.Send
             if (!zatcaApiResponse.Succeeded)
                 return OperationResult<EInvoiceStatus>.ValidationError("لم ترسل الفاتورة إلى الهيئة بشكل صحيح", $"[الأخطاء]:{zatcaApiResponse.ErrorMessage}, [التحذيرات]: {zatcaApiResponse.WarningMessage}");
 
+            EInvoiceStatus eInvoiceStatus;
             if (!string.IsNullOrEmpty(zatcaApiResponse.ErrorMessage))
                 eInvoiceStatus = EInvoiceStatus.NotSent;
             else if (!string.IsNullOrEmpty(zatcaApiResponse.WarningMessage))
@@ -52,10 +51,10 @@ namespace Yusr.eInvoicing.Zatca.Services.Send
 
             byte[] xmlBytes = Convert.FromBase64String(invoice.SignedXml ?? string.Empty);
             string xmlString = Encoding.UTF8.GetString(xmlBytes);
-            XmlDocument xmlDoc = new XmlDocument();
+            XmlDocument xmlDoc = new();
             xmlDoc.LoadXml(xmlString);
 
-            EInvoiceRequest invoiceRequest = new EInvoiceRequest
+            EInvoiceRequest invoiceRequest = new()
             {
                 Invoice = invoice.SignedXml ?? string.Empty,
                 InvoiceHash = invoice.InvoiceHash ?? string.Empty,

@@ -9,16 +9,12 @@ using Yusr.eInvoicing.Zatca.Entities;
 
 namespace Yusr.eInvoicing.Zatca.Services.Csid
 {
-    public class CsidService : ICsidService<ZatcaCsidResult, ZatcaCsrResult>
+    public class CsidService(HttpClient httpClient) : ICsidService<ZatcaCsidResult, ZatcaCsrResult>
     {
-        private static readonly HttpClient httpClient = new HttpClient
-        {
-            BaseAddress = new Uri("https://gw-fatoora.zatca.gov.sa/e-invoicing/"),
-            Timeout = TimeSpan.FromSeconds(30)
-        };
+        private readonly HttpClient _httpClient = httpClient;
 
-        private static readonly JsonSerializerOptions _serializerOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
-        private static readonly JsonSerializerOptions _deserializerOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+        private static readonly JsonSerializerOptions _serializerOptions = new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+        private static readonly JsonSerializerOptions _deserializerOptions = new() { PropertyNameCaseInsensitive = true };
 
         public async Task<OperationResult<ZatcaCsidResult>> TryRequestComplianceCsidAsync(string otp, ZatcaCsrResult csrResult, EInvoicingEnvironmentType type)
         {
@@ -39,7 +35,7 @@ namespace Yusr.eInvoicing.Zatca.Services.Csid
             var json = JsonSerializer.Serialize(payload, _serializerOptions);
             request.Content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await httpClient.SendAsync(request);
+            var response = await _httpClient.SendAsync(request);
             var resultJson = await response.Content.ReadAsStringAsync();
 
             if (!response.IsSuccessStatusCode)
@@ -76,7 +72,7 @@ namespace Yusr.eInvoicing.Zatca.Services.Csid
             var json = JsonSerializer.Serialize(payload, _serializerOptions);
             request.Content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await httpClient.SendAsync(request);
+            var response = await _httpClient.SendAsync(request);
             var resultJson = await response.Content.ReadAsStringAsync();
 
             if (!response.IsSuccessStatusCode)
