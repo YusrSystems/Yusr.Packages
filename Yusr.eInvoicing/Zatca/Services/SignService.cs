@@ -6,7 +6,7 @@ using ZATCA.EInvoice.SDK.Contracts.Models;
 
 namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
 {
-    public class SignService : IEInvoicingSignService
+    public class SignService : IEInvoiceSignService
     {
         public OperationResult<XmlDocument> SignInvoice(XmlDocument xmlInvoice, string certificateContent, string privateKey)
         {

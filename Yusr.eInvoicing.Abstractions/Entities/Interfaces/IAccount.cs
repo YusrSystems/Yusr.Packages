@@ -12,6 +12,5 @@ namespace Yusr.eInvoicing.Abstractions.Entities.Interfaces
         public string? District { get; set; }
         public string? BuildingNumber { get; set; }
         public string? PostalCode { get; set; }
-        public City? City { get; set; }
     }
 }

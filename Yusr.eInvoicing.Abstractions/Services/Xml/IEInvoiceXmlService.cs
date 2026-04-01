@@ -4,7 +4,7 @@ using Yusr.eInvoicing.Abstractions.Dto;
 
 namespace Yusr.eInvoicing.Abstractions.Services.Xml
 {
-    public interface IEInvoicingXmlService
+    public interface IEInvoiceXmlService
     {
         OperationResult<XmlDocument> GenerateXmlEInvoice(EInvoiceDto eInvoice);
         OperationResult<(XmlDocument xmlInvoice, XmlDocument xmlSignedInvoice)> CreateFullXml(EInvoiceDto eInvoice, string certificate, string privateKey);

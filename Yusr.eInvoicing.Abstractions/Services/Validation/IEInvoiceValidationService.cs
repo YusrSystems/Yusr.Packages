@@ -2,7 +2,7 @@
 
 namespace Yusr.eInvoicing.Abstractions.Services.Validation
 {
-    public interface IEInvoicingValidationService
+    public interface IEInvoiceValidationService
     {
         (List<string> Errors, List<string> Warnings) ValidateInvoice(EInvoiceDto eInvoice);
     }

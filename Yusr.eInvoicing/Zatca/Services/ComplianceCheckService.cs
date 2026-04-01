@@ -8,9 +8,9 @@ using Yusr.eInvoicing.Abstractions.Services.Xml;
 
 namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
 {
-    public class ComplianceCheckService(IEInvoicingXmlService xmlService, IEInvoiceApiService eInvoiceApiService) : IEInvoicingComplianceCheckService
+    public class ComplianceCheckService(IEInvoiceXmlService xmlService, IEInvoiceApiService eInvoiceApiService) : IEInvoiceComplianceCheckService
     {
-        private readonly IEInvoicingXmlService _xmlService = xmlService;
+        private readonly IEInvoiceXmlService _xmlService = xmlService;
         private readonly IEInvoiceApiService _eInvoiceApiService = eInvoiceApiService;
 
         public async Task<OperationResult<bool>> GenerateFullCheck(IEInvoicingSetting setting, EInvoicingEnvironmentType type)

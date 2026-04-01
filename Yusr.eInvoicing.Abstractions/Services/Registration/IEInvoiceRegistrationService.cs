@@ -4,7 +4,7 @@ using Yusr.eInvoicing.Abstractions.Enums;
 
 namespace Yusr.eInvoicing.Abstractions.Services.Registration
 {
-    public interface IEInvoicingRegistrationService
+    public interface IEInvoiceRegistrationService
     {
         Task<OperationResult<bool>> Register(IEInvoicingSetting setting, string otp, EInvoicingEnvironmentType type);
     }

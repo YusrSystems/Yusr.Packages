@@ -14,11 +14,11 @@ using ZATCA.EInvoice.SDK;
 namespace Yusr.eInvoicing.Zatca.Services
 {
     public class EInvoicingInitializationService(
-        IEInvoicingXmlService xmlService,
-        IEInvoicingQrService qrService,
-        IEInvoicingValidationService validationService,
+        IEInvoiceXmlService xmlService,
+        IEInvoiceQrService qrService,
+        IEInvoiceValidationService validationService,
         IInvoiceMapperService invoiceMapperService
-        ) : IEInvoicingInitializationService
+        ) : IEInvoiceInitializationService
     {
         public OperationResult<EInvoicePrepareDto?> Init(IEInvoicingSetting setting, IInvoice invoice, IAccount actionAccount, List<IItem> dbItems, long? lastCounter, string? lastHash, bool ignoreWarnings)
         {
