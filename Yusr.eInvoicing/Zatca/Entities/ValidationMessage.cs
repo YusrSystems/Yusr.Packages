@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Yusr.eInvoicing.Zatca.Entities
+﻿namespace Yusr.eInvoicing.Zatca.Entities
 {
     public class ValidationMessage
     {

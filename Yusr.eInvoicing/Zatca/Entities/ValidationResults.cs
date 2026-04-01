@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Yusr.Infrastructure.eInvoicing.Zatca.Services;
-
-namespace Yusr.eInvoicing.Zatca.Entities
+﻿namespace Yusr.eInvoicing.Zatca.Entities
 {
     public class ValidationResults
     {

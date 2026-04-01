@@ -1,20 +1,17 @@
 ﻿using System.Text;
 using Yusr.eInvoicing.Abstractions.Services.Entities;
-using ZATCA.EInvoice.SDK.Contracts.Models;
 
 namespace Yusr.eInvoicing.Zatca.Entities
 {
-    public class ZatcaParams
+    public class ZatcaSigningContext
     {
         public byte ZatcaStatus { get; set; }
-        public string PrivateKey { get; set; } = "";
-        public string BinarySecurityToken { get; set; } = "";
-        public string CertificateContent { get; set; } = "";
-        public string Secret { get; set; } = "";
+        public string PrivateKey { get; set; } = string.Empty;
+        public string BinarySecurityToken { get; set; } = string.Empty;
+        public string CertificateContent { get; set; } = string.Empty;
+        public string Secret { get; set; } = string.Empty;
 
-        public ZatcaParams() { }
-
-        public ZatcaParams(ZatcaCsidResult csid, ZatcaCsrResult csr)
+        public ZatcaSigningContext(ZatcaCsidResult csid, ZatcaCsrResult csr)
         {
             byte[] csidCertBytes = Convert.FromBase64String(csid.BinarySecurityToken);
             CertificateContent = Encoding.UTF8.GetString(csidCertBytes);
