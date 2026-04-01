@@ -2,6 +2,7 @@
 {
     public interface IItem
     {
+        public long Id { get; set; }
         public string Name { get; set; }
         public bool TaxIncluded { get; set; }
         public bool Taxable { get; set; }

@@ -4,6 +4,7 @@ namespace Yusr.eInvoicing.Abstractions.Entities.Interfaces
 {
     public interface IAccount
     {
+        public long Id { get; set; }
         public string Name { get; set; }
         public string? VatNumber { get; set; }
         public string? Crn { get; set; }

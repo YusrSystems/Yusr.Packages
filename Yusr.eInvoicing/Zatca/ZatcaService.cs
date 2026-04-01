@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using System.Xml;
-using UBL.Invoice;
 using Yusr.Core.Abstractions.Entities;
 using Yusr.Core.Abstractions.Enums;
 using Yusr.Core.Abstractions.Primitives;
@@ -10,6 +9,13 @@ using Yusr.eInvoicing.Abstractions.Entities;
 using Yusr.eInvoicing.Abstractions.Entities.Interfaces;
 using Yusr.eInvoicing.Abstractions.Enums;
 using Yusr.eInvoicing.Abstractions.Services;
+using Yusr.eInvoicing.Abstractions.Services.Api;
+using Yusr.eInvoicing.Abstractions.Services.Csid;
+using Yusr.eInvoicing.Abstractions.Services.Csr;
+using Yusr.eInvoicing.Abstractions.Services.Entities;
+using Yusr.eInvoicing.Abstractions.Services.Qr;
+using Yusr.eInvoicing.Abstractions.Services.Validation;
+using Yusr.eInvoicing.Abstractions.Services.Xml;
 using Yusr.eInvoicing.Zatca.Entities;
 using Yusr.Identity.Abstractions.Primitives;
 using Yusr.Infrastructure.eInvoicing.Zatca.Extensions;
@@ -18,11 +24,16 @@ using ZATCA.EInvoice.SDK;
 
 namespace Yusr.Infrastructure.eInvoicing.Zatca
 {
-    public class ZatcaService(IEInvoicingSetting settingsService, CsrService csrService, CsidService csidService) : IEInvoicingService
+    public class ZatcaService(IEInvoicingSetting settingsService,
+        IXmlService xmlService, 
+        IQrService qrService,
+        IValidationService validationService,
+        IEInvoiceApiService eInvoiceApiService,
+        ICsrService<ZatcaCsrResult> csrService,
+        ICsidService<ZatcaCsidResult, ZatcaCsrResult> csidService
+        ) : IEInvoicingService
     {
-        private readonly IEInvoicingSetting _settingsService = settingsService;
-        private readonly CsrService _csrService = csrService;
-        private readonly CsidService _csidService = csidService;
+        
 
         public OperationResult<EInvoicePrepareDto> PrepareEInvoice(EInvoiceDto eInvoice, string certificateContent, string privateKey, bool ignoreWarnings, JwtClaims jwtClaims)
         {
@@ -30,7 +41,7 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca
             if (validateRes.ResultType != ResultType.Ok)
                 return OperationResult<EInvoicePrepareDto>.CopyErrorsFrom(validateRes);
 
-            var eInvoiceXmlResult = XmlService.CreateFullXml(eInvoice, jwtClaims, certificateContent, privateKey);
+            var eInvoiceXmlResult = xmlService.CreateFullXml(eInvoice, jwtClaims, certificateContent, privateKey);
             if (!eInvoiceXmlResult.Succeeded || eInvoiceXmlResult.Result.xmlSignedInvoice == null)
                 return OperationResult<EInvoicePrepareDto>.InternalError("لم يتم إنشاء ملف (XML) للفاتورة الإلكترونية بشكل صحيح", eInvoiceXmlResult.ErrorMessage);
 
@@ -38,7 +49,7 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca
             if (!requestResult.IsValid)
                 return OperationResult<EInvoicePrepareDto>.InternalError("لم يتم إصدار الطلب بنجاح", requestResult.ErrorMessages[0]);
 
-            string qrBase64 = QrService.ExtractQrValue(eInvoiceXmlResult.Result.xmlSignedInvoice);
+            string qrBase64 = qrService.ExtractQrValue(eInvoiceXmlResult.Result.xmlSignedInvoice);
 
             return OperationResult<EInvoicePrepareDto>.Ok(new EInvoicePrepareDto
             {
@@ -50,7 +61,7 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca
 
         public OperationResult<bool> ValidateEInvoice(EInvoiceDto eInvoice, bool IgnoreWarnings, JwtClaims jwtClaims)
         {
-            var validationResult = ValidationService.ValidateInvoice(eInvoice);
+            var validationResult = validationService.ValidateInvoice(eInvoice);
 
             StringBuilder stringBuilder = new StringBuilder();
             if (validationResult.Errors.Count > 0)
@@ -77,14 +88,14 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca
         {
             EInvoiceStatus eInvoiceStatus = EInvoiceStatus.NotSent;
 
-            ZatcaApiRespone zatcaApiResponse = new ZatcaApiRespone();
+            OperationResult<EInvoicingApiResponse> zatcaApiResponse;
             bool production = eInvoicingStatus == EInvoicingStatus.Production;
             if (isSimplified)
-                zatcaApiResponse = await ZatcaApi.SendSimplifiedInvoice(invoiceRequest, binarySecurityToken, secret, production);
+                zatcaApiResponse = await eInvoiceApiService.SendSimplifiedInvoice(invoiceRequest, binarySecurityToken, secret, production);
             else
-                zatcaApiResponse = await ZatcaApi.SendStandardInvoice(invoiceRequest, binarySecurityToken, secret, production);
+                zatcaApiResponse = await eInvoiceApiService.SendStandardInvoice(invoiceRequest, binarySecurityToken, secret, production);
 
-            if (!zatcaApiResponse.IsValid)
+            if (!zatcaApiResponse.Succeeded)
                 return OperationResult<EInvoiceStatus>.ValidationError("لم ترسل الفاتورة إلى الهيئة بشكل صحيح", $"[الأخطاء]:{zatcaApiResponse.ErrorMessage}, [التحذيرات]: {zatcaApiResponse.WarningMessage}");
 
             if (!string.IsNullOrEmpty(zatcaApiResponse.ErrorMessage))
@@ -99,7 +110,7 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca
 
         public async Task<OperationResult<EInvoiceStatus>> ResendEInvoiceAsync(IInvoice invoice, JwtClaims jwtClaims)
         {
-            var settings = await _settingsService.GetSettingsAsync();
+            var settings = await settingsService.GetSettingsAsync();
             if (settings == null || settings.BinarySecurityToken == null || settings.Secret == null)
                 return OperationResult<EInvoiceStatus>.BadRequest("لم يتم الحصول على الاعدادات بشكل صحيح");
 
@@ -140,17 +151,17 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca
         {
             try
             {
-                Setting? settings = await _settingsService.GetSettingsAsync();
+                //IEInvoicingSetting? settings = await _settingsService.GetSettingsAsync();
                 if (settings == null)
                     return OperationResult<bool>.BadRequest("لم يتم الحصول على معلومات المؤسسة بشكل صحيح");
 
-                var generateCsrResult = await _csrService.TryGenerateCsr(jwtClaims, settings.Tenant, settings.Branch!, Production);
+                var generateCsrResult = await csrService.TryGenerateCsr(jwtClaims, settingsService.Tenant, settings.Branch!, Production);
                 if (!generateCsrResult.IsValid || generateCsrResult.csrResult == null)
                 {
                     return OperationResult<bool>.InternalError("فشل إنشاء طلب الشهادة الرقمية", generateCsrResult.ErrorMessage ?? string.Empty);
                 }
 
-                var complianceCsidResult = await _csidService.TryRequestComplianceCsidAsync(OTP, generateCsrResult.csrResult, Production);
+                var complianceCsidResult = await csidService.TryRequestComplianceCsidAsync(OTP, generateCsrResult.csrResult, Production);
                 if (!complianceCsidResult.IsValid || complianceCsidResult.CsidResponse == null)
                 {
                     return OperationResult<bool>.InternalError("لم يتم اصدار شهادة الامتثال (SCID) بشكل صحيح", complianceCsidResult.ErrorMessage ?? string.Empty);
@@ -158,7 +169,7 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca
 
                 ZatcaParams zatcaParams = new ZatcaParams(complianceCsidResult.CsidResponse, generateCsrResult.csrResult);
 
-                OperationResult<bool> StoreComplianceCsidResult = await _csidService.StoreCsid(jwtClaims, complianceCsidResult.CsidResponse, zatcaParams.certificateContent, Production);
+                OperationResult<bool> StoreComplianceCsidResult = await csidService.StoreCsid(jwtClaims, complianceCsidResult.CsidResponse, zatcaParams.certificateContent, Production);
                 if (StoreComplianceCsidResult.ResultType != ResultType.Ok)
                 {
                     return OperationResult<bool>.InternalError("لم يتم حفظ شهادة الامتثال بشكل صحيح", StoreComplianceCsidResult.ErrorMessage ?? string.Empty);
@@ -170,7 +181,7 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca
                     return OperationResult<bool>.InternalError("لم يتم التحقق من الامتثال بشكل صحيح", ComplianceCheckResult.ErrorMessage ?? string.Empty);
                 }
 
-                var productionCsidResult = await _csidService.TryRequestProductionCsidAsync(complianceCsidResult.CsidResponse!, Production);
+                var productionCsidResult = await csidService.TryRequestProductionCsidAsync(complianceCsidResult.CsidResponse!, Production);
                 if (!productionCsidResult.IsValid || productionCsidResult.CsidResponse == null)
                 {
                     return OperationResult<bool>.InternalError("لم يتم اصدار شهادة الإنتاج بشكل صحيح", productionCsidResult.ErrorMessage ?? string.Empty);
@@ -178,7 +189,7 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca
 
                 byte[] pcsidCertBytes = Convert.FromBase64String(productionCsidResult.CsidResponse.binarySecurityToken);
                 string certificateContent = Encoding.UTF8.GetString(pcsidCertBytes);
-                OperationResult<bool> StoreProductionCsidResult = await _csidService.StoreCsid(jwtClaims, productionCsidResult.CsidResponse, certificateContent, Production);
+                OperationResult<bool> StoreProductionCsidResult = await csidService.StoreCsid(jwtClaims, productionCsidResult.CsidResponse, certificateContent, Production);
 
                 return StoreProductionCsidResult;
             }
@@ -188,7 +199,7 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca
             }
         }
 
-        public EInvoiceDto GetEInvoiceData(IInvoice invoice, Tenant tenant, Branch branch, Account customer, List<Item> dbItems, long? lastCounter, string? lastHash)
+        public EInvoiceDto GetEInvoiceData(IInvoice invoice, Tenant tenant, Branch branch, IAccount customer, List<IItem> dbItems, long? lastCounter, string? lastHash)
         {
             var result = new EInvoiceDto
             {
@@ -216,7 +227,7 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca
                 CitySubdivisionName = branch.District ?? ""
             };
 
-            result.CustomerName = customer.AccountName;
+            result.CustomerName = customer.Name;
             result.ActionAccountId = customer.Id;
             result.CustomerVatNumber = customer.VatNumber ?? "";
             result.CustomerCRN = customer.Crn ?? "";
@@ -240,7 +251,7 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca
 
             foreach (var itemDto in invoice.InvoiceItems)
             {
-                if (!dbItemsDic.TryGetValue(itemDto.ItemId, out var dbItem)) continue;
+                if (!dbItemsDic.TryGetValue(itemDto.Id, out var dbItem)) continue;
 
                 bool isTaxable = dbItem.Taxable;
                 decimal taxPerc = itemDto.TotalTaxesPerc;
@@ -265,7 +276,7 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca
 
                 lines.Add(new EInvoiceLineDto
                 {
-                    Name = dbItem.ItemName,
+                    Name = dbItem.Name,
                     TaxExemptionReasonCode = dbItem.ExemptionReasonCode ?? "",
                     TaxExemptionReason = dbItem.ExemptionReason ?? "",
                     Taxable = isTaxable,
@@ -298,11 +309,11 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca
 
 
 
-        public async Task<OperationResult<EInvoicePrepareDto?>> PrepareInvoiceAsync(Tenant tenant, Setting setting, Branch branch, Invoice invoice, Account actionAccount, List<Item> dbItems, long? lastCounter, string? lastHash, bool ignoreWarnings, JwtClaims jwtClaims)
+        public async Task<OperationResult<EInvoicePrepareDto?>> PrepareInvoiceAsync(Tenant tenant, IEInvoicingSetting setting, Branch branch, IInvoice invoice, IAccount actionAccount, List<IItem> dbItems, long? lastCounter, string? lastHash, bool ignoreWarnings, JwtClaims jwtClaims)
         {
             EInvoicePrepareDto? eInvoicePrepareDto = null;
 
-            if (Invoice.IsSendableEInvoice(invoice.InvoiceType, setting))
+            if (IInvoice.IsSendableEInvoice(invoice.InvoiceType, setting))
             {
                 var eInvoice = GetEInvoiceData(invoice, tenant, branch, actionAccount, dbItems, lastCounter, lastHash);
                 var prepareRes = PrepareEInvoice(eInvoice, setting.CertificateContent!, setting.PrivateKey!, ignoreWarnings, jwtClaims);
