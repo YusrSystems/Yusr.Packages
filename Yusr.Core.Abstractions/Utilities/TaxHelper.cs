@@ -4,7 +4,11 @@ using System.Text;
 
 namespace Yusr.Core.Abstractions.Utilities
 {
-    internal class TaxHelper
+    public static class TaxHelper
     {
+        public static decimal GetTaxFactor(decimal taxPerc)
+        {
+            return YusrMath.Round((100 + taxPerc) / 100);
+        }
     }
 }
