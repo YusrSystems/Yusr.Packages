@@ -24,13 +24,15 @@ using ZATCA.EInvoice.SDK;
 
 namespace Yusr.Infrastructure.eInvoicing.Zatca
 {
-    public class ZatcaService(IEInvoicingSetting settingsService,
+    public class ZatcaService(IEInvoicingSetting settings,
         IXmlService xmlService, 
         IQrService qrService,
         IValidationService validationService,
         IEInvoiceApiService eInvoiceApiService,
         ICsrService<ZatcaCsrResult> csrService,
-        ICsidService<ZatcaCsidResult, ZatcaCsrResult> csidService
+        ICsidService<ZatcaCsidResult, ZatcaCsrResult> csidService,
+        ICsidStorage csidStorage,
+        IComplianceCheckService ComplianceCheckService
         ) : IEInvoicingService
     {
         
@@ -110,7 +112,6 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca
 
         public async Task<OperationResult<EInvoiceStatus>> ResendEInvoiceAsync(IInvoice invoice, JwtClaims jwtClaims)
         {
-            var settings = await settingsService.GetSettingsAsync();
             if (settings == null || settings.BinarySecurityToken == null || settings.Secret == null)
                 return OperationResult<EInvoiceStatus>.BadRequest("لم يتم الحصول على الاعدادات بشكل صحيح");
 
@@ -134,62 +135,61 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca
 
         public string? GenerateQrBase64(string CompanyName, string CompanyVatNumber, string TimeStamp, string TotalWithVat, string VatAmount)
         {
-            return QrService.GenerateQrBase64(CompanyName, CompanyVatNumber, TimeStamp, TotalWithVat, VatAmount);
+            return qrService.GenerateQrBase64(CompanyName, CompanyVatNumber, TimeStamp, TotalWithVat, VatAmount);
         }
 
         public string? ExtractValueFromXml(XmlDocument signedXml, string xpath)
         {
-            return XmlService.ExtractValue(signedXml, xpath);
+            return xmlService.ExtractValue(signedXml, xpath);
         }
 
         public byte[] GenerateQrCode(string base64Tlv)
         {
-            return QrService.GenerateQrCode(base64Tlv);
+            return qrService.GenerateQrCode(base64Tlv);
         }
 
         public async Task<OperationResult<bool>> LinkEInvoicing(string OTP, bool Production, JwtClaims jwtClaims)
         {
             try
             {
-                //IEInvoicingSetting? settings = await _settingsService.GetSettingsAsync();
                 if (settings == null)
                     return OperationResult<bool>.BadRequest("لم يتم الحصول على معلومات المؤسسة بشكل صحيح");
 
-                var generateCsrResult = await csrService.TryGenerateCsr(jwtClaims, settingsService.Tenant, settings.Branch!, Production);
-                if (!generateCsrResult.IsValid || generateCsrResult.csrResult == null)
+                var generateCsrResult = await csrService.TryGenerateCsrAsync(settings.tenant, settings.branch!, Production);
+                if (!generateCsrResult.Succeeded || generateCsrResult.Result == null)
                 {
                     return OperationResult<bool>.InternalError("فشل إنشاء طلب الشهادة الرقمية", generateCsrResult.ErrorMessage ?? string.Empty);
                 }
 
-                var complianceCsidResult = await csidService.TryRequestComplianceCsidAsync(OTP, generateCsrResult.csrResult, Production);
-                if (!complianceCsidResult.IsValid || complianceCsidResult.CsidResponse == null)
+                var complianceCsidResult = await csidService.TryRequestComplianceCsidAsync(OTP, generateCsrResult.Result, Production);
+                if (!complianceCsidResult.Succeeded || complianceCsidResult.Result == null)
                 {
                     return OperationResult<bool>.InternalError("لم يتم اصدار شهادة الامتثال (SCID) بشكل صحيح", complianceCsidResult.ErrorMessage ?? string.Empty);
                 }
 
-                ZatcaParams zatcaParams = new ZatcaParams(complianceCsidResult.CsidResponse, generateCsrResult.csrResult);
+                ZatcaParams zatcaParams = new ZatcaParams(complianceCsidResult.Result, generateCsrResult.Result);
 
-                OperationResult<bool> StoreComplianceCsidResult = await csidService.StoreCsid(jwtClaims, complianceCsidResult.CsidResponse, zatcaParams.certificateContent, Production);
+                OperationResult<bool> StoreComplianceCsidResult = await csidStorage.StoreCsid(jwtClaims, complianceCsidResult.Result, zatcaParams.CertificateContent, Production);
                 if (StoreComplianceCsidResult.ResultType != ResultType.Ok)
                 {
                     return OperationResult<bool>.InternalError("لم يتم حفظ شهادة الامتثال بشكل صحيح", StoreComplianceCsidResult.ErrorMessage ?? string.Empty);
                 }
 
-                var ComplianceCheckResult = await ComplianceCheckService.GenerateFullCheck(jwtClaims, settings.Tenant, settings, settings.Branch, Production);
-                if (!ComplianceCheckResult.IsValid)
+                var ComplianceCheckResult = await ComplianceCheckService.GenerateFullCheck(jwtClaims, settings.tenant, settings, settings.branch, Production);
+                if (!ComplianceCheckResult.Succeeded)
                 {
                     return OperationResult<bool>.InternalError("لم يتم التحقق من الامتثال بشكل صحيح", ComplianceCheckResult.ErrorMessage ?? string.Empty);
                 }
 
-                var productionCsidResult = await csidService.TryRequestProductionCsidAsync(complianceCsidResult.CsidResponse!, Production);
-                if (!productionCsidResult.IsValid || productionCsidResult.CsidResponse == null)
+                var productionCsidResult = await csidService.TryRequestProductionCsidAsync(complianceCsidResult.Result!, Production);
+                if (!productionCsidResult.Succeeded || productionCsidResult.Result == null)
                 {
                     return OperationResult<bool>.InternalError("لم يتم اصدار شهادة الإنتاج بشكل صحيح", productionCsidResult.ErrorMessage ?? string.Empty);
                 }
 
-                byte[] pcsidCertBytes = Convert.FromBase64String(productionCsidResult.CsidResponse.binarySecurityToken);
+                byte[] pcsidCertBytes = Convert.FromBase64String(productionCsidResult.Result.BinarySecurityToken);
                 string certificateContent = Encoding.UTF8.GetString(pcsidCertBytes);
-                OperationResult<bool> StoreProductionCsidResult = await csidService.StoreCsid(jwtClaims, productionCsidResult.CsidResponse, certificateContent, Production);
+                OperationResult<bool> StoreProductionCsidResult = await csidStorage.StoreCsid(jwtClaims, productionCsidResult.Result, certificateContent, Production);
 
                 return StoreProductionCsidResult;
             }

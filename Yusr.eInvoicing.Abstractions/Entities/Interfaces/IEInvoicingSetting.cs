@@ -1,5 +1,5 @@
-﻿using Yusr.eInvoicing.Abstractions.Enums;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+﻿using Yusr.Core.Abstractions.Entities;
+using Yusr.eInvoicing.Abstractions.Enums;
 
 namespace Yusr.eInvoicing.Abstractions.Entities.Interfaces
 {
@@ -10,7 +10,8 @@ namespace Yusr.eInvoicing.Abstractions.Entities.Interfaces
         public EInvoicingStatus EInvoicingStatus { get; set; }
         public string? BinarySecurityToken { get; set; }
         public string? certificateContent { get; set; }
-
+        public Tenant tenant { get; set; }
+        public Branch branch { get; set; }
         public string? Secret { get; set; }
 
     }
