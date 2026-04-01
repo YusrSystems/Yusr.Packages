@@ -5,8 +5,11 @@ using Yusr.Core.Abstractions.Enums;
 using Yusr.Core.Abstractions.Primitives;
 using Yusr.Core.Abstractions.Utilities;
 using Yusr.eInvoicing.Abstractions.Dto;
+using Yusr.eInvoicing.Abstractions.Entities;
+using Yusr.eInvoicing.Abstractions.Entities.Interfaces;
 using Yusr.eInvoicing.Abstractions.Enums;
 using Yusr.eInvoicing.Abstractions.Services;
+using Yusr.eInvoicing.Zatca.Entities;
 using Yusr.Identity.Abstractions.Primitives;
 using Yusr.Infrastructure.eInvoicing.Zatca.Extensions;
 using Yusr.Infrastructure.eInvoicing.Zatca.Services;
@@ -14,9 +17,9 @@ using ZATCA.EInvoice.SDK;
 
 namespace Yusr.Infrastructure.eInvoicing.Zatca
 {
-    public class ZatcaService(ISettingsRepository settingsRepo, CsrService csrService, CsidService csidService) : IEInvoicingService
+    public class ZatcaService(IEInvoicingSetting settingsService, CsrService csrService, CsidService csidService) : IEInvoicingService
     {
-        private readonly ISettingsRepository _settingsRepo = settingsRepo;
+        private readonly IEInvoicingSetting _settingsService = settingsService;
         private readonly CsrService _csrService = csrService;
         private readonly CsidService _csidService = csidService;
 
@@ -27,14 +30,14 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca
                 return OperationResult<EInvoicePrepareDto>.CopyErrorsFrom(validateRes);
 
             var eInvoiceXmlResult = XmlService.CreateFullXml(eInvoice, jwtClaims, certificateContent, privateKey);
-            if (!eInvoiceXmlResult.Success || eInvoiceXmlResult.xmlSignedInvoice == null)
+            if (!eInvoiceXmlResult.Succeeded || eInvoiceXmlResult.Result.xmlSignedInvoice == null)
                 return OperationResult<EInvoicePrepareDto>.InternalError("لم يتم إنشاء ملف (XML) للفاتورة الإلكترونية بشكل صحيح", eInvoiceXmlResult.ErrorMessage);
 
-            var requestResult = new RequestGenerator().GenerateRequest(eInvoiceXmlResult.xmlSignedInvoice);
+            var requestResult = new RequestGenerator().GenerateRequest(eInvoiceXmlResult.Result.xmlSignedInvoice);
             if (!requestResult.IsValid)
                 return OperationResult<EInvoicePrepareDto>.InternalError("لم يتم إصدار الطلب بنجاح", requestResult.ErrorMessages[0]);
 
-            string qrBase64 = QrService.ExtractQrValue(eInvoiceXmlResult.xmlSignedInvoice);
+            string qrBase64 = QrService.ExtractQrValue(eInvoiceXmlResult.Result.xmlSignedInvoice);
 
             return OperationResult<EInvoicePrepareDto>.Ok(new EInvoicePrepareDto
             {
@@ -95,7 +98,7 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca
 
         public async Task<OperationResult<EInvoiceStatus>> ResendEInvoiceAsync(Invoice invoice, JwtClaims jwtClaims)
         {
-            var settings = await _settingsRepo.GetSettingsAsync();
+            var settings = await _settingsService.GetSettingsAsync();
             if (settings == null || settings.BinarySecurityToken == null || settings.Secret == null)
                 return OperationResult<EInvoiceStatus>.BadRequest("لم يتم الحصول على الاعدادات بشكل صحيح");
 
@@ -136,7 +139,7 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca
         {
             try
             {
-                Setting? settings = await _settingsRepo.GetSettingsAsync();
+                Setting? settings = await _settingsService.GetSettingsAsync();
                 if (settings == null)
                     return OperationResult<bool>.BadRequest("لم يتم الحصول على معلومات المؤسسة بشكل صحيح");
 
