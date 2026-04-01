@@ -8,7 +8,6 @@ using Yusr.eInvoicing.Abstractions.Dto;
 using Yusr.eInvoicing.Abstractions.Enums;
 using Yusr.eInvoicing.Abstractions.Services.Signing;
 using Yusr.eInvoicing.Abstractions.Services.Xml;
-using Yusr.Identity.Abstractions.Primitives;
 
 namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
 {
@@ -16,7 +15,7 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
     {
         private readonly ISignService _signService = signService;
 
-        public OperationResult<XmlDocument> GenerateXmlEInvoice(EInvoiceDto eInvoice, JwtClaims jwtClaims, string Certificate, string PrivateKey)
+        public OperationResult<XmlDocument> GenerateXmlEInvoice(EInvoiceDto eInvoice)
         {
             bool simplified = string.IsNullOrWhiteSpace(eInvoice.CustomerVatNumber) || string.IsNullOrEmpty(eInvoice.CustomerVatNumber);
 
@@ -535,14 +534,14 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
             return OperationResult<XmlDocument>.Ok(xmlDoc);
         }
 
-        public OperationResult<(XmlDocument xmlInvoice, XmlDocument xmlSignedInvoice)> CreateFullXml(EInvoiceDto eInvoice, JwtClaims jwtClaims, string Certificate, string PrivateKey)
+        public OperationResult<(XmlDocument xmlInvoice, XmlDocument xmlSignedInvoice)> CreateFullXml(EInvoiceDto eInvoice, string certificate, string privateKey)
         {
-            var xmlInvoiceResult = GenerateXmlEInvoice(eInvoice, jwtClaims, Certificate, PrivateKey);
+            var xmlInvoiceResult = GenerateXmlEInvoice(eInvoice);
 
             if (!xmlInvoiceResult.Succeeded || xmlInvoiceResult.Result == null)
                 return OperationResult<(XmlDocument xmlInvoice, XmlDocument xmlSignedInvoice)>.CopyErrorsFrom(xmlInvoiceResult);
 
-            var signResult = _signService.SignInvoice(jwtClaims, xmlInvoiceResult.Result, Certificate, PrivateKey);
+            var signResult = _signService.SignInvoice(xmlInvoiceResult.Result, certificate, privateKey);
 
             if (!signResult.Succeeded || signResult.Result == null)
                 return OperationResult<(XmlDocument xmlInvoice, XmlDocument xmlSignedInvoice)>.CopyErrorsFrom(signResult);
