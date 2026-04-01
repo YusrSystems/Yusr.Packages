@@ -4,7 +4,7 @@ using Yusr.eInvoicing.Abstractions.Entities.Interfaces;
 using Yusr.eInvoicing.Abstractions.Enums;
 using Yusr.eInvoicing.Abstractions.Services.Mapper;
 
-namespace Yusr.eInvoicing.Zatca.Services
+namespace Yusr.eInvoicing.Zatca.Services.Mapper
 {
     public class InvoiceMapperService : IInvoiceMapperService
     {

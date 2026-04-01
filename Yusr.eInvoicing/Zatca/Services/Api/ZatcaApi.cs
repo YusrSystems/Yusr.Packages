@@ -12,7 +12,7 @@ using Yusr.Infrastructure.eInvoicing.Zatca.Extensions;
 using ZATCA.EInvoice.SDK;
 using ZATCA.EInvoice.SDK.Contracts.Models;
 
-namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
+namespace Yusr.eInvoicing.Zatca.Services.Api
 {
 
     public class ZatcaApi : IEInvoiceApiService

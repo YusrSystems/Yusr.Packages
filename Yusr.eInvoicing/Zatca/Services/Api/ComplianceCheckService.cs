@@ -6,7 +6,7 @@ using Yusr.eInvoicing.Abstractions.Enums;
 using Yusr.eInvoicing.Abstractions.Services.Api;
 using Yusr.eInvoicing.Abstractions.Services.Xml;
 
-namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
+namespace Yusr.eInvoicing.Zatca.Services.Api
 {
     public class ComplianceCheckService(IEInvoicingXmlService xmlService, IEInvoiceApiService eInvoiceApiService) : IEInvoicingComplianceCheckService
     {

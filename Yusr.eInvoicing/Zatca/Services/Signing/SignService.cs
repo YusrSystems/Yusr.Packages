@@ -4,7 +4,7 @@ using Yusr.eInvoicing.Abstractions.Services.Signing;
 using ZATCA.EInvoice.SDK;
 using ZATCA.EInvoice.SDK.Contracts.Models;
 
-namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
+namespace Yusr.eInvoicing.Zatca.Services.Signing
 {
     public class SignService : IEInvoicingSignService
     {

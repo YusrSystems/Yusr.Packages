@@ -9,7 +9,7 @@ using Yusr.eInvoicing.Abstractions.Enums;
 using Yusr.eInvoicing.Abstractions.Services.Signing;
 using Yusr.eInvoicing.Abstractions.Services.Xml;
 
-namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
+namespace Yusr.eInvoicing.Zatca.Services.Xml
 {
     public class XmlService(IEInvoicingSignService signService) : IEInvoicingXmlService
     {

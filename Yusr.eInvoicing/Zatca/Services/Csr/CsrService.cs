@@ -6,7 +6,7 @@ using Yusr.eInvoicing.Abstractions.Services.Entities;
 using ZATCA.EInvoice.SDK;
 using ZATCA.EInvoice.SDK.Contracts.Models;
 
-namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
+namespace Yusr.eInvoicing.Zatca.Services.Csr
 {
     public class CsrService : ICsrService<ZatcaCsrResult>
     {

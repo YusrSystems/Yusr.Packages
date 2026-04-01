@@ -1,7 +1,7 @@
 ﻿using Yusr.eInvoicing.Abstractions.Dto;
 using Yusr.eInvoicing.Abstractions.Services.Validation;
 
-namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
+namespace Yusr.eInvoicing.Zatca.Services.Validation
 {
     public class ValidationService : IEInvoicingValidationService
     {

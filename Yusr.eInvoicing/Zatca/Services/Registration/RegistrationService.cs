@@ -9,7 +9,7 @@ using Yusr.eInvoicing.Abstractions.Services.Entities;
 using Yusr.eInvoicing.Abstractions.Services.Registration;
 using Yusr.eInvoicing.Zatca.Entities;
 
-namespace Yusr.eInvoicing.Zatca.Services
+namespace Yusr.eInvoicing.Zatca.Services.Registration
 {
     public class RegistrationService(
         ICsrService<ZatcaCsrResult> csrService,

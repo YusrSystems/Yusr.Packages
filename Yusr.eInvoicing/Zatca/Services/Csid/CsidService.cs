@@ -7,7 +7,7 @@ using Yusr.eInvoicing.Abstractions.Services.Csid;
 using Yusr.eInvoicing.Abstractions.Services.Entities;
 using Yusr.eInvoicing.Zatca.Entities;
 
-namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
+namespace Yusr.eInvoicing.Zatca.Services.Csid
 {
     public class CsidService : ICsidService<ZatcaCsidResult, ZatcaCsrResult>
     {

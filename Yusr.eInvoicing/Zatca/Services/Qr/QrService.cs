@@ -3,7 +3,7 @@ using System.Text;
 using System.Xml;
 using Yusr.eInvoicing.Abstractions.Services.Qr;
 
-namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
+namespace Yusr.eInvoicing.Zatca.Services.Qr
 {
     public class QrService : IEInvoicingQrService
     {

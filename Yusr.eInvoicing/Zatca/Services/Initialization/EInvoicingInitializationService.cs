@@ -11,7 +11,7 @@ using Yusr.eInvoicing.Abstractions.Services.Xml;
 using Yusr.Infrastructure.eInvoicing.Zatca.Extensions;
 using ZATCA.EInvoice.SDK;
 
-namespace Yusr.eInvoicing.Zatca.Services
+namespace Yusr.eInvoicing.Zatca.Services.Initialization
 {
     public class EInvoicingInitializationService(
         IEInvoicingXmlService xmlService,

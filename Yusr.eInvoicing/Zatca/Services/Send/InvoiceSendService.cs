@@ -9,7 +9,7 @@ using Yusr.eInvoicing.Abstractions.Services.Api;
 using Yusr.eInvoicing.Abstractions.Services.Sending;
 using Yusr.eInvoicing.Abstractions.Services.Xml;
 
-namespace Yusr.eInvoicing.Zatca.Services
+namespace Yusr.eInvoicing.Zatca.Services.Send
 {
     public class InvoiceSendService(
         IEInvoicingXmlService xmlService,
