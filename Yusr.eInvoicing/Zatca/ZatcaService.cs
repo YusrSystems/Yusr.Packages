@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using System.Xml;
+using UBL.Invoice;
 using Yusr.Core.Abstractions.Entities;
 using Yusr.Core.Abstractions.Enums;
 using Yusr.Core.Abstractions.Primitives;
@@ -96,7 +97,7 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca
             return OperationResult<EInvoiceStatus>.Ok(eInvoiceStatus);
         }
 
-        public async Task<OperationResult<EInvoiceStatus>> ResendEInvoiceAsync(Invoice invoice, JwtClaims jwtClaims)
+        public async Task<OperationResult<EInvoiceStatus>> ResendEInvoiceAsync(IInvoice invoice, JwtClaims jwtClaims)
         {
             var settings = await _settingsService.GetSettingsAsync();
             if (settings == null || settings.BinarySecurityToken == null || settings.Secret == null)
@@ -187,7 +188,7 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca
             }
         }
 
-        public EInvoiceDto GetEInvoiceData(Invoice invoice, Tenant tenant, Branch branch, Account customer, List<Item> dbItems, long? lastCounter, string? lastHash)
+        public EInvoiceDto GetEInvoiceData(IInvoice invoice, Tenant tenant, Branch branch, Account customer, List<Item> dbItems, long? lastCounter, string? lastHash)
         {
             var result = new EInvoiceDto
             {

@@ -4,6 +4,7 @@ namespace Yusr.eInvoicing.Abstractions.Entities.Interfaces
 {
     public interface IInvoice
     {
+        public long Id { get; set; }
         public long? InvoiceCounter { get; set; }
         public long? OriginalInvoiceId { get; set; }
         public DateTime InvoiceDate { get; set; }
