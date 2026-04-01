@@ -1,6 +1,4 @@
-﻿using Yusr.Infrastructure.eInvoicing.Zatca.Services;
-
-namespace Yusr.eInvoicing.Zatca.Entites
+﻿namespace Yusr.eInvoicing.Zatca.Entities
 {
     public class ComplianceValidationResponse
     {

@@ -6,6 +6,6 @@ namespace Yusr.eInvoicing.Abstractions.Services.Signing
 {
     public interface ISignService
     {
-        OperationResult<XmlDocument?> SignInvoice(JwtClaims jwtClaims, XmlDocument xmlInvoice, string certificateContent, string PrivateKey);
+        OperationResult<XmlDocument> SignInvoice(JwtClaims jwtClaims, XmlDocument xmlInvoice, string certificateContent, string PrivateKey);
     }
 }

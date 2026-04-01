@@ -1,10 +1,11 @@
-﻿using Yusr.Erp.Application.Accounting.DTOs;
+﻿using Yusr.eInvoicing.Abstractions.Dto;
+using Yusr.eInvoicing.Abstractions.Services.Validation;
 
 namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
 {
-    public class ValidationService
+    public class ValidationService : IValidationService
     {
-        public static (List<string> Errors, List<string> Warnings) ValidateInvoice(EInvoiceDto eInvoice)
+        public (List<string> Errors, List<string> Warnings) ValidateInvoice(EInvoiceDto eInvoice)
         {
             bool simplified = string.IsNullOrEmpty(eInvoice.CustomerVatNumber);
             var errors = new List<string>();
@@ -16,8 +17,6 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
 
             return (errors, warnings);
         }
-
-
 
         private static void CheckWarnings(EInvoiceDto eInvoice, ref List<string> warnings, bool simplified)
         {

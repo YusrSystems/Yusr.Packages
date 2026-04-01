@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="QRCoder" Version="1.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Yusr.eInvoicing.Abstractions\Yusr.eInvoicing.Abstractions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="ZATCA.EInvoice.SDK">
       <HintPath>Zatca\Libs\ZATCA.EInvoice.SDK.dll</HintPath>
     </Reference>

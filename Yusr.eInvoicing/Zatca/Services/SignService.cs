@@ -1,18 +1,30 @@
 ﻿using System.Xml;
+using Yusr.Core.Abstractions.Primitives;
+using Yusr.eInvoicing.Abstractions.Services.Signing;
 using Yusr.Identity.Abstractions.Primitives;
 using ZATCA.EInvoice.SDK;
 using ZATCA.EInvoice.SDK.Contracts.Models;
 
 namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
 {
-    public class SignService
+    public class SignService : ISignService
     {
-        public static (bool IsValid, string ErrorMessage, XmlDocument? SignedEInvoice) SignInvoice(JwtClaims jwtClaims, XmlDocument xmlInvoice, string certificateContent, string PrivateKey)
+        public OperationResult<XmlDocument> SignInvoice(JwtClaims jwtClaims, XmlDocument xmlInvoice, string certificateContent, string PrivateKey)
         {
-            EInvoiceSigner signer = new EInvoiceSigner();
-            SignResult signResult = signer.SignDocument(xmlInvoice, certificateContent, PrivateKey);
+            try
+            {
+                EInvoiceSigner signer = new EInvoiceSigner();
+                SignResult signResult = signer.SignDocument(xmlInvoice, certificateContent, PrivateKey);
 
-            return (signResult.IsValid, signResult.ErrorMessage, signResult.SignedEInvoice);
+                if (!signResult.IsValid)
+                    return OperationResult<XmlDocument>.InternalError("لم يتم توقيع الشهادة بشكل صحيح", signResult.ErrorMessage);
+
+                return OperationResult<XmlDocument>.Ok(signResult.SignedEInvoice);
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<XmlDocument>.InternalError("لم يتم توقيع الشهادة بشكل صحيح", ex.Message);
+            }
         }
     }
 }

@@ -1,19 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Yusr.Core.Abstractions.Entities;
-using Yusr.Core.Abstractions.Enums;
+﻿using Yusr.Core.Abstractions.Entities;
 using Yusr.Core.Abstractions.Primitives;
-using Yusr.Identity.Abstractions.Primitives;
-using Yusr.Infrastructure.Persistence.Context;
+using Yusr.eInvoicing.Abstractions.Services.Csr;
+using Yusr.eInvoicing.Abstractions.Services.Entities;
 using ZATCA.EInvoice.SDK;
 using ZATCA.EInvoice.SDK.Contracts.Models;
 
 namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
 {
-    public class CsrService(YusrErpDbContext context)
+    public class CsrService : ICsrService<ZatcaCsrResult>
     {
-        private readonly YusrErpDbContext _context = context;
-
-        public async Task<(bool IsValid, string? ErrorMessage, CsrResult? csrResult)> TryGenerateCsr(JwtClaims jwtClaims, Tenant tenant, Branch branch, bool Production)
+        public async Task<OperationResult<ZatcaCsrResult>> TryGenerateCsrAsync(Tenant tenant, Branch branch, bool Production)
         {
             CsrGenerationDto dto = new CsrGenerationDto(
                 $"yusrsys-{Guid.NewGuid().ToString()}-{tenant.VatNumber}",
@@ -31,36 +27,9 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
             CsrResult csrResult = gen.GenerateCsr(dto, Production ? EnvironmentType.Production : EnvironmentType.Simulation, false);
 
             if (!csrResult.IsValid)
-            {
-                return (false, csrResult.ErrorMessages[0] ?? string.Empty, null);
-            }
+                return OperationResult<ZatcaCsrResult>.InternalError("لم يتم اصدار الرقمية بنجاح", csrResult.ErrorMessages[0]);
 
-            OperationResult<bool> storeResult = await StoreCsr(jwtClaims, csrResult);
-
-            if (storeResult.ResultType != ResultType.Ok)
-            {
-                return (false, storeResult.ErrorMessage, null);
-            }
-
-            return (true, null, csrResult);
-        }
-
-        public async Task<OperationResult<bool>> StoreCsr(JwtClaims jwtClaims, CsrResult csrResult)
-        {
-            try
-            {
-                var setting = await _context.Settings.FirstOrDefaultAsync();
-                if (setting == null)
-                    return OperationResult<bool>.NotFound();
-
-                setting.UpdateCsr(csrResult.Csr, csrResult.PrivateKey);
-                await _context.SaveChangesAsync();
-                return OperationResult<bool>.Ok(true);
-            }
-            catch (Exception ex)
-            {
-                return OperationResult<bool>.InternalError("Could not save Csr", ex.Message);
-            }
+            return OperationResult<ZatcaCsrResult>.Ok(new ZatcaCsrResult(csrResult));
         }
     }
 }

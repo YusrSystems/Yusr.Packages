@@ -2,27 +2,23 @@
 using System.Xml;
 using System.Xml.Serialization;
 using UBL.Invoice;
-using Yusr.Erp.Application.Accounting.DTOs;
-using Yusr.Erp.Core.Enums;
-using Yusr.Erp.Core.Utilities;
+using Yusr.Core.Abstractions.Primitives;
+using Yusr.Core.Abstractions.Utilities;
+using Yusr.eInvoicing.Abstractions.Dto;
+using Yusr.eInvoicing.Abstractions.Enums;
+using Yusr.eInvoicing.Abstractions.Services.Signing;
+using Yusr.eInvoicing.Abstractions.Services.Xml;
 using Yusr.Identity.Abstractions.Primitives;
 
 namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
 {
-    public class GenerationResult
+    public class XmlService(ISignService signService) : IXmlService
     {
-        public bool IsValid { get; set; }
-        public string Error { get; set; } = string.Empty;
-    }
+        private readonly ISignService _signService = signService;
 
-
-    public class XmlService
-    {
-        public static (GenerationResult generationResult, XmlDocument? XmlEInvoice) GenerateXmlEInvoice(EInvoiceDto eInvoice, JwtClaims jwtClaims, string Certificate, string PrivateKey)
+        public OperationResult<XmlDocument> GenerateXmlEInvoice(EInvoiceDto eInvoice, JwtClaims jwtClaims, string Certificate, string PrivateKey)
         {
             bool simplified = string.IsNullOrWhiteSpace(eInvoice.CustomerVatNumber) || string.IsNullOrEmpty(eInvoice.CustomerVatNumber);
-            GenerationResult generationResult = new GenerationResult();
-            generationResult.IsValid = true;
 
             // 2: supplier CRN
             PartyIdentificationType[] SupplierIdentification = new PartyIdentificationType[1];
@@ -536,30 +532,25 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
                 xmlDoc.Load(memoryStream);
             }
 
-            return (generationResult, xmlDoc);
+            return OperationResult<XmlDocument>.Ok(xmlDoc);
         }
 
-        public static (bool Success, string ErrorMessage, XmlDocument? xmlInvoice, XmlDocument? xmlSignedInvoice) CreateFullXml(EInvoiceDto eInvoice, JwtClaims jwtClaims, string Certificate, string PrivateKey)
+        public OperationResult<(XmlDocument xmlInvoice, XmlDocument xmlSignedInvoice)> CreateFullXml(EInvoiceDto eInvoice, JwtClaims jwtClaims, string Certificate, string PrivateKey)
         {
             var xmlInvoiceResult = GenerateXmlEInvoice(eInvoice, jwtClaims, Certificate, PrivateKey);
 
-            if (!xmlInvoiceResult.generationResult.IsValid || xmlInvoiceResult.XmlEInvoice == null)
-            {
-                return (false, xmlInvoiceResult.generationResult.Error, null, null);
-            }
+            if (!xmlInvoiceResult.Succeeded || xmlInvoiceResult.Result == null)
+                return OperationResult<(XmlDocument xmlInvoice, XmlDocument xmlSignedInvoice)>.CopyErrorsFrom(xmlInvoiceResult);
 
-            var signResult = SignService.SignInvoice(jwtClaims, xmlInvoiceResult.XmlEInvoice, Certificate, PrivateKey);
+            var signResult = _signService.SignInvoice(jwtClaims, xmlInvoiceResult.Result, Certificate, PrivateKey);
 
-            if (!signResult.IsValid || signResult.SignedEInvoice == null)
-            {
-                return (false, signResult.ErrorMessage, null, null);
-            }
+            if (!signResult.Succeeded || signResult.Result == null)
+                return OperationResult<(XmlDocument xmlInvoice, XmlDocument xmlSignedInvoice)>.CopyErrorsFrom(signResult);
 
-            return (true, "", xmlInvoiceResult.XmlEInvoice, signResult.SignedEInvoice);
+            return OperationResult<(XmlDocument xmlInvoice, XmlDocument xmlSignedInvoice)>.Ok((xmlInvoice: xmlInvoiceResult.Result, xmlSignedInvoice: signResult.Result));
         }
 
-
-        public static string? ExtractValue(XmlDocument signedXml, string xpath)
+        public string? ExtractValue(XmlDocument signedXml, string xpath)
         {
             XmlNamespaceManager nsmgr = new XmlNamespaceManager(signedXml.NameTable);
             nsmgr.AddNamespace("cac", "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2");

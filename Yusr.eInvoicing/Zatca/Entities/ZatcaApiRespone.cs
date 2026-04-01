@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text;
 
-namespace Yusr.eInvoicing.Zatca.Entites
+namespace Yusr.eInvoicing.Zatca.Entities
 {
     public class ZatcaApiRespone
     {

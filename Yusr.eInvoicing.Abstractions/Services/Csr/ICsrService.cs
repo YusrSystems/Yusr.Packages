@@ -1,11 +1,11 @@
 ﻿using Yusr.Core.Abstractions.Entities;
 using Yusr.Core.Abstractions.Primitives;
-using Yusr.Identity.Abstractions.Primitives;
+using Yusr.eInvoicing.Abstractions.Entities.Interfaces;
 
 namespace Yusr.eInvoicing.Abstractions.Services.Csr
 {
-    internal interface ICsrService
+    public interface ICsrService<TCsrResult> where TCsrResult : ICsrResult
     {
-        Task<OperationResult<ICsrService>> TryGenerateCsr(JwtClaims jwtClaims, Tenant tenant, Branch branch, bool Production);
+        Task<OperationResult<TCsrResult>> TryGenerateCsrAsync(Tenant tenant, Branch branch, bool Production);
     }
 }

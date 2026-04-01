@@ -1,16 +1,22 @@
 ﻿using System.Xml;
 using Yusr.Core.Abstractions.Entities;
-using Yusr.Erp.Application.Accounting.DTOs;
-using Yusr.Erp.Core.Entities.Common;
-using Yusr.Erp.Core.Enums;
+using Yusr.Core.Abstractions.Primitives;
+using Yusr.eInvoicing.Abstractions.Dto;
+using Yusr.eInvoicing.Abstractions.Entities.Interfaces;
+using Yusr.eInvoicing.Abstractions.Enums;
+using Yusr.eInvoicing.Abstractions.Services.Api;
+using Yusr.eInvoicing.Abstractions.Services.Xml;
 using Yusr.Identity.Abstractions.Primitives;
 
 
 namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
 {
-    public class ComplianceCheckService
+    public class ComplianceCheckService(IXmlService xmlService, IEInvoiceApiService eInvoiceApiService) : IComplianceCheckService
     {
-        public static async Task<(bool IsValid, string ErrorMessage)> GenerateFullCheck(JwtClaims jwtClaims, Tenant tenant, Setting setting, Branch branch, bool Production = false)
+        private readonly IXmlService _xmlService = xmlService;
+        private readonly IEInvoiceApiService _eInvoiceApiService = eInvoiceApiService;
+
+        public async Task<OperationResult<bool>> GenerateFullCheck(JwtClaims jwtClaims, Tenant tenant, IEInvoicingSetting setting, Branch branch, bool Production = false)
         {
             List<(string invoiceTypeName, EInvoiceType type, bool simplified)> invoices = new List<(string invoiceTypeName, EInvoiceType type, bool simplified)>
             {
@@ -25,30 +31,31 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
             foreach (var invoice in invoices)
             {
                 var res = await SendInvoice(jwtClaims, tenant, setting, branch, invoice.type, invoice.simplified, Production);
-                if (!res.IsValid)
+                if (!res.Succeeded)
                 {
-                    return (false, invoice.invoiceTypeName + " - " + res.ErrorMessage);
+                    return OperationResult<bool>.CopyErrorsFrom(res);
                 }
             }
 
-            return (true, "");
+            return OperationResult<bool>.Ok(true);
         }
 
-        public static async Task<(bool IsValid, string ErrorMessage)> SendInvoice(JwtClaims jwtClaims, Tenant tenant, Setting setting, Branch branch, EInvoiceType type, bool simplified, bool Production = false)
+        public async Task<OperationResult<bool>> SendInvoice(JwtClaims jwtClaims, Tenant tenant, IEInvoicingSetting setting, Branch branch, EInvoiceType type, bool simplified, bool Production = false)
         {
             var res = GenerateInvoice(jwtClaims, tenant, setting, branch, type, simplified);
 
-            if (!res.Success || res.xmlInvoice == null || res.xmlSignedInvoice == null)
-            {
-                return (false, res.ErrorMessage);
-            }
+            if (!res.Succeeded || res.Result.xmlInvoice == null || res.Result.xmlSignedInvoice == null)
+                return OperationResult<bool>.CopyErrorsFrom(res);
 
-            var sendRes = await ZatcaApi.SendComplianceCheckInvoice(res.xmlSignedInvoice, setting.BinarySecurityToken ?? string.Empty, setting.Secret ?? string.Empty, Production);
+            var sendRes = await _eInvoiceApiService.SendComplianceCheckInvoice(res.Result.xmlSignedInvoice, setting.BinarySecurityToken ?? string.Empty, setting.Secret ?? string.Empty, Production);
 
-            return (sendRes.IsValid, sendRes.ErrorMessage);
+            if (!sendRes.Succeeded)
+                return OperationResult<bool>.CopyErrorsFrom(sendRes);
+
+            return OperationResult<bool>.Ok(true);
         }
 
-        private static (bool Success, string ErrorMessage, XmlDocument? xmlInvoice, XmlDocument? xmlSignedInvoice) GenerateInvoice(JwtClaims jwtClaims, Tenant tenant, Setting setting, Branch branch, EInvoiceType type, bool simplified)
+        private OperationResult<(XmlDocument xmlInvoice, XmlDocument xmlSignedInvoice)> GenerateInvoice(JwtClaims jwtClaims, Tenant tenant, IEInvoicingSetting setting, Branch branch, EInvoiceType type, bool simplified)
         {
             var now = DateTime.Now;
 
@@ -129,7 +136,7 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
                 };
             }
 
-            return XmlService.CreateFullXml(eInvoice, jwtClaims, setting.CertificateContent ?? string.Empty, setting.PrivateKey ?? string.Empty);
+            return _xmlService.CreateFullXml(eInvoice, jwtClaims, setting.CertificateContent ?? string.Empty, setting.PrivateKey ?? string.Empty);
         }
     }
 }

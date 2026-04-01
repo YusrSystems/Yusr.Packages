@@ -3,9 +3,9 @@ using Yusr.eInvoicing.Abstractions.Entities.Interfaces;
 
 namespace Yusr.eInvoicing.Abstractions.Services.Csid
 {
-    internal interface ICsidService
+    public interface ICsidService<TCsidResult, TCsrResult> where TCsidResult : ICsidResult where TCsrResult : ICsrResult
     {
-        Task<OperationResult<ICsidResult?>> TryRequestComplianceCsidAsync(string otp, ICsrResult csrResult, bool Production);
-        Task<OperationResult<ICsidResult?>> TryRequestProductionCsidAsync(ICsidResult csidResponse, bool Production);
+        Task<OperationResult<TCsidResult>> TryRequestComplianceCsidAsync(string otp, TCsrResult csrResult, bool Production);
+        Task<OperationResult<TCsidResult>> TryRequestProductionCsidAsync(TCsidResult csidResponse, bool Production);
     }
 }

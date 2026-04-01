@@ -1,12 +1,13 @@
 ﻿using QRCoder;
 using System.Text;
 using System.Xml;
+using Yusr.eInvoicing.Abstractions.Services.Qr;
 
 namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
 {
-    public class QrService
+    public class QrService : IQrService
     {
-        public static string ExtractQrValue(XmlDocument xmlInvoice)
+        public string ExtractQrValue(XmlDocument xmlInvoice)
         {
             var nsmgr = new XmlNamespaceManager(xmlInvoice.NameTable);
             nsmgr.AddNamespace("cac", "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2");
@@ -22,7 +23,7 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
             return qrNode.InnerText.Trim();
         }
 
-        public static string GenerateQrBase64(string companyName, string companyVatNumber, string timeStamp, string totalWithVat, string vatAmount)
+        public string GenerateQrBase64(string companyName, string companyVatNumber, string timeStamp, string totalWithVat, string vatAmount)
         {
             var tlvBytes = new byte[][]
             {
@@ -37,6 +38,14 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
 
             return Convert.ToBase64String(allBytes);
         }
+        public byte[] GenerateQrCode(string base64Tlv)
+        {
+            QRCodeGenerator qrGen = new QRCodeGenerator();
+            QRCodeData qrData = qrGen.CreateQrCode(base64Tlv, QRCodeGenerator.ECCLevel.Q);
+            PngByteQRCode qrCode = new PngByteQRCode(qrData);
+            return qrCode.GetGraphic(20);
+        }
+
 
         private static byte[] EncodeTLV(int tag, string value)
         {
@@ -64,14 +73,6 @@ namespace Yusr.Infrastructure.eInvoicing.Zatca.Services
                 offset += arr.Length;
             }
             return result;
-        }
-
-        public static byte[] GenerateQrCode(string base64Tlv)
-        {
-            QRCodeGenerator qrGen = new QRCodeGenerator();
-            QRCodeData qrData = qrGen.CreateQrCode(base64Tlv, QRCodeGenerator.ECCLevel.Q);
-            PngByteQRCode qrCode = new PngByteQRCode(qrData);
-            return qrCode.GetGraphic(20);
         }
     }
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Yusr.eInvoicing.Zatca.Entites
+namespace Yusr.eInvoicing.Zatca.Entities
 {
     public class ValidationMessage
     {
