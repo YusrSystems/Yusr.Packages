@@ -5,19 +5,19 @@ namespace Yusr.eInvoicing.Abstractions.Entities.Interfaces
 {
     public interface IEInvoiceInvoice
     {
-        public long Id { get; protected set; }
-        public InvoiceType InvoiceType { get; protected set; }
-        public long? InvoiceCounter { get; protected set; }
-        public long? OriginalInvoiceId { get; protected set; }
-        public DateTime InvoiceDate { get; protected set; }
-        public DateTime? DeliveryDate { get; protected set; }
-        public EInvoiceStatus EInvoiceStatus { get; protected set; }
-        public decimal FullAmount { get; protected set; }
-        public string? QR { get; protected set; }
-        public string? InvoiceHash { get; protected set; }
-        public string? PreviousHash { get; protected set; }
-        public string? SignedXml { get; protected set; }
-        public ICollection<IEInvoiceInvoiceItem> InvoiceItems { get; protected set; }
+        public long Id { get; }
+        public InvoiceType InvoiceType { get; }
+        public long? InvoiceCounter { get; }
+        public long? OriginalInvoiceId { get; }
+        public DateTime InvoiceDate { get; }
+        public DateTime? DeliveryDate { get; }
+        public EInvoiceStatus EInvoiceStatus { get; }
+        public decimal FullAmount { get; }
+        public string? QR { get; }
+        public string? InvoiceHash { get; }
+        public string? PreviousHash { get; }
+        public string? SignedXml { get; }
+        public ICollection<IEInvoiceInvoiceItem> InvoiceItems { get; }
 
         public static bool IsSendableEInvoice(InvoiceType type, IEInvoiceSetting settings)
         {
@@ -45,26 +45,11 @@ namespace Yusr.eInvoicing.Abstractions.Entities.Interfaces
             return true;
         }
 
-        public IEInvoiceInvoice UpdateEInvoiceInfo(long? invoiceCounter, string? invoiceHash, string? previousHash, string? signedXml, string? qr)
-        {
-            InvoiceCounter = invoiceCounter;
-            InvoiceHash = invoiceHash;
-            PreviousHash = previousHash;
-            SignedXml = signedXml;
-            return UpdateQr(qr);
-        }
+        public IEInvoiceInvoice UpdateEInvoiceInfo(long? invoiceCounter, string? invoiceHash, string? previousHash, string? signedXml, string? qr);
 
-        public IEInvoiceInvoice UpdateEInvoiceStatus(EInvoiceStatus eInvoiceStatus)
-        {
-            EInvoiceStatus = eInvoiceStatus;
-            return this;
-        }
+        public IEInvoiceInvoice UpdateEInvoiceStatus(EInvoiceStatus eInvoiceStatus);
 
-        public IEInvoiceInvoice UpdateQr(string? qr)
-        {
-            QR = qr;
-            return this;
-        }
+        public IEInvoiceInvoice UpdateQr(string? qr);
 
         public decimal GetTaxAmount()
         {

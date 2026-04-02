@@ -2,11 +2,11 @@
 {
     public interface IEInvoiceItem
     {
-        public long Id { get; protected set; }
-        public string Name { get; protected set; }
-        public bool TaxIncluded { get; protected set; }
-        public bool Taxable { get; protected set; }
-        public string? ExemptionReasonCode { get; protected set; }
-        public string? ExemptionReason { get; protected set; }
+        public long Id { get; }
+        public string Name { get; }
+        public bool TaxIncluded { get; }
+        public bool Taxable { get; }
+        public string? ExemptionReasonCode { get; }
+        public string? ExemptionReason { get; }
     }
 }

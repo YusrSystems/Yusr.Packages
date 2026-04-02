@@ -2,13 +2,13 @@
 {
     public interface IEInvoiceAccount
     {
-        public long Id { get; protected set; }
-        public string Name { get; protected set; }
-        public string? VatNumber { get; protected set; }
-        public string? Crn { get; protected set; }
-        public string? Street { get; protected set; }
-        public string? District { get; protected set; }
-        public string? BuildingNumber { get; protected set; }
-        public string? PostalCode { get; protected set; }
+        public long Id { get; }
+        public string Name { get; }
+        public string? VatNumber { get; }
+        public string? Crn { get; }
+        public string? Street { get; }
+        public string? District { get; }
+        public string? BuildingNumber { get; }
+        public string? PostalCode { get; }
     }
 }
