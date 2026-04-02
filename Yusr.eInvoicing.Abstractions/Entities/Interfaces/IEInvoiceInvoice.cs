@@ -3,7 +3,7 @@ using Yusr.eInvoicing.Abstractions.Enums;
 
 namespace Yusr.eInvoicing.Abstractions.Entities.Interfaces
 {
-    public interface IInvoice
+    public interface IEInvoiceInvoice
     {
         public long Id { get; protected set; }
         public InvoiceType InvoiceType { get; protected set; }
@@ -17,9 +17,9 @@ namespace Yusr.eInvoicing.Abstractions.Entities.Interfaces
         public string? InvoiceHash { get; protected set; }
         public string? PreviousHash { get; protected set; }
         public string? SignedXml { get; protected set; }
-        public ICollection<IInvoiceItem> InvoiceItems { get; protected set; }
+        public ICollection<IEInvoiceInvoiceItem> InvoiceItems { get; protected set; }
 
-        public static bool IsSendableEInvoice(InvoiceType type, IEInvoicingSetting settings)
+        public static bool IsSendableEInvoice(InvoiceType type, IEInvoiceSetting settings)
         {
             if (type != InvoiceType.Sell && type != InvoiceType.SellReturn)
                 return false;
@@ -27,7 +27,7 @@ namespace Yusr.eInvoicing.Abstractions.Entities.Interfaces
             return IsRegisteredForEInvoicing(settings);
         }
 
-        public bool IsSendableEInvoice(IEInvoicingSetting settings)
+        public bool IsSendableEInvoice(IEInvoiceSetting settings)
         {
             if (InvoiceType != InvoiceType.Sell && InvoiceType != InvoiceType.SellReturn)
                 return false;
@@ -35,7 +35,7 @@ namespace Yusr.eInvoicing.Abstractions.Entities.Interfaces
             return IsRegisteredForEInvoicing(settings);
         }
 
-        public static bool IsRegisteredForEInvoicing(IEInvoicingSetting settings)
+        public static bool IsRegisteredForEInvoicing(IEInvoiceSetting settings)
         {
             if (settings.EInvoicingEnvironmentType == EInvoicingEnvironmentType.NotRegistered
                 || string.IsNullOrEmpty(settings.CertificateContent) || string.IsNullOrEmpty(settings.PrivateKey)
@@ -45,7 +45,7 @@ namespace Yusr.eInvoicing.Abstractions.Entities.Interfaces
             return true;
         }
 
-        public IInvoice UpdateEInvoiceInfo(long? invoiceCounter, string? invoiceHash, string? previousHash, string? signedXml, string? qr)
+        public IEInvoiceInvoice UpdateEInvoiceInfo(long? invoiceCounter, string? invoiceHash, string? previousHash, string? signedXml, string? qr)
         {
             InvoiceCounter = invoiceCounter;
             InvoiceHash = invoiceHash;
@@ -54,13 +54,13 @@ namespace Yusr.eInvoicing.Abstractions.Entities.Interfaces
             return UpdateQr(qr);
         }
 
-        public IInvoice UpdateEInvoiceStatus(EInvoiceStatus eInvoiceStatus)
+        public IEInvoiceInvoice UpdateEInvoiceStatus(EInvoiceStatus eInvoiceStatus)
         {
             EInvoiceStatus = eInvoiceStatus;
             return this;
         }
 
-        public IInvoice UpdateQr(string? qr)
+        public IEInvoiceInvoice UpdateQr(string? qr)
         {
             QR = qr;
             return this;

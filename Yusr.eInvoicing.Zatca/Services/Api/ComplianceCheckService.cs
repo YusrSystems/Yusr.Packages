@@ -13,7 +13,7 @@ namespace Yusr.eInvoicing.Zatca.Services.Api
         private readonly IEInvoiceXmlService _xmlService = xmlService;
         private readonly IEInvoiceApiService _eInvoiceApiService = eInvoiceApiService;
 
-        public async Task<OperationResult<bool>> GenerateFullCheck(IEInvoicingSetting setting, EInvoicingEnvironmentType type)
+        public async Task<OperationResult<bool>> GenerateFullCheck(IEInvoiceSetting setting, EInvoicingEnvironmentType type)
         {
             List<(string invoiceTypeName, EInvoiceType type, bool simplified)> invoices =
             [
@@ -37,7 +37,7 @@ namespace Yusr.eInvoicing.Zatca.Services.Api
             return OperationResult<bool>.Ok(true);
         }
 
-        public async Task<OperationResult<bool>> SendInvoice(IEInvoicingSetting setting, EInvoiceType eInvoiceType, bool simplified, EInvoicingEnvironmentType type)
+        public async Task<OperationResult<bool>> SendInvoice(IEInvoiceSetting setting, EInvoiceType eInvoiceType, bool simplified, EInvoicingEnvironmentType type)
         {
             var res = GenerateInvoice(setting, eInvoiceType, simplified);
 
@@ -52,7 +52,7 @@ namespace Yusr.eInvoicing.Zatca.Services.Api
             return OperationResult<bool>.Ok(true);
         }
 
-        private OperationResult<(XmlDocument xmlInvoice, XmlDocument xmlSignedInvoice)> GenerateInvoice(IEInvoicingSetting setting, EInvoiceType type, bool simplified)
+        private OperationResult<(XmlDocument xmlInvoice, XmlDocument xmlSignedInvoice)> GenerateInvoice(IEInvoiceSetting setting, EInvoiceType type, bool simplified)
         {
             var now = DateTime.Now;
 

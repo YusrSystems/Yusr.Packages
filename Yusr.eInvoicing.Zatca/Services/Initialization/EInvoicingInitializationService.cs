@@ -20,7 +20,7 @@ namespace Yusr.eInvoicing.Zatca.Services.Initialization
         IInvoiceMapperService invoiceMapperService
         ) : IEInvoiceInitializationService
     {
-        public OperationResult<EInvoicePrepareDto?> Init(IEInvoicingSetting setting, IInvoice invoice, IAccount actionAccount, List<IItem> dbItems, long? lastCounter, string? lastHash, bool ignoreWarnings)
+        public OperationResult<EInvoicePrepareDto?> Init(IEInvoiceSetting setting, IEInvoiceInvoice invoice, IEInvoiceAccount actionAccount, List<IEInvoiceItem> dbItems, long? lastCounter, string? lastHash, bool ignoreWarnings)
         {
             if (!invoice.IsSendableEInvoice(setting))
                 return OperationResult<EInvoicePrepareDto?>.Ok(null);

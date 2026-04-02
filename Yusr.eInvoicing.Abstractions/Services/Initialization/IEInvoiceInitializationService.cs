@@ -6,6 +6,6 @@ namespace Yusr.eInvoicing.Abstractions.Services.Initialization
 {
     public interface IEInvoiceInitializationService
     {
-        OperationResult<EInvoicePrepareDto?> Init(IEInvoicingSetting setting, IInvoice invoice, IAccount actionAccount, List<IItem> dbItems, long? lastCounter, string? lastHash, bool ignoreWarnings);
+        OperationResult<EInvoicePrepareDto?> Init(IEInvoiceSetting setting, IEInvoiceInvoice invoice, IEInvoiceAccount actionAccount, List<IEInvoiceItem> dbItems, long? lastCounter, string? lastHash, bool ignoreWarnings);
     }
 }

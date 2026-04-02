@@ -6,6 +6,6 @@ namespace Yusr.eInvoicing.Abstractions.Services.Registration
 {
     public interface IEInvoiceRegistrationService
     {
-        Task<OperationResult<bool>> Register(IEInvoicingSetting setting, string otp, EInvoicingEnvironmentType type);
+        Task<OperationResult<bool>> Register(IEInvoiceSetting setting, string otp, EInvoicingEnvironmentType type);
     }
 }

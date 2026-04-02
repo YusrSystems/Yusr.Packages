@@ -5,6 +5,6 @@ namespace Yusr.eInvoicing.Abstractions.Services.Mapper
 {
     public interface IInvoiceMapperService
     {
-        public EInvoiceDto GetEInvoiceData(IEInvoicingSetting setting, IInvoice invoice, IAccount customer, List<IItem> dbItems, long? lastCounter, string? lastHash);
+        public EInvoiceDto GetEInvoiceData(IEInvoiceSetting setting, IEInvoiceInvoice invoice, IEInvoiceAccount customer, List<IEInvoiceItem> dbItems, long? lastCounter, string? lastHash);
     }
 }

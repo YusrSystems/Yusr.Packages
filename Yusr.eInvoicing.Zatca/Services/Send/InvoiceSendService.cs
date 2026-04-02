@@ -44,7 +44,7 @@ namespace Yusr.eInvoicing.Zatca.Services.Send
             return OperationResult<EInvoiceStatus>.Ok(eInvoiceStatus);
         }
 
-        public async Task<OperationResult<EInvoiceStatus>> ResendEInvoiceAsync(IEInvoicingSetting setting, IInvoice invoice)
+        public async Task<OperationResult<EInvoiceStatus>> ResendEInvoiceAsync(IEInvoiceSetting setting, IEInvoiceInvoice invoice)
         {
             if (!invoice.IsSendableEInvoice(setting))
                 return OperationResult<EInvoiceStatus>.ValidationError("هذه الفاتورة غير صالحة للإرسال كفاتورة إلكترونية", "");

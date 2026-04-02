@@ -10,7 +10,7 @@ namespace Yusr.eInvoicing.Zatca.Services.Csr
 {
     public class CsrService : ICsrService<ZatcaCsrResult>
     {
-        public async Task<OperationResult<ZatcaCsrResult>> TryGenerateCsrAsync(IEInvoicingSetting eInvoicingSetting, EInvoicingEnvironmentType type)
+        public async Task<OperationResult<ZatcaCsrResult>> TryGenerateCsrAsync(IEInvoiceSetting eInvoicingSetting, EInvoicingEnvironmentType type)
         {
             CsrGenerationDto dto = new(
                 $"yusrsys-{Guid.NewGuid()}-{eInvoicingSetting.Tenant.VatNumber}",

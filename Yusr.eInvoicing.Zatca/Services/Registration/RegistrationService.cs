@@ -17,7 +17,7 @@ namespace Yusr.eInvoicing.Zatca.Services.Registration
         ICsidStorage csidStorage
     ) : IEInvoiceRegistrationService
     {
-        public async Task<OperationResult<bool>> Register(IEInvoicingSetting setting, string otp, EInvoicingEnvironmentType type)
+        public async Task<OperationResult<bool>> Register(IEInvoiceSetting setting, string otp, EInvoicingEnvironmentType type)
         {
             try
             {

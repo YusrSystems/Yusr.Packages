@@ -3,7 +3,7 @@ using Yusr.eInvoicing.Abstractions.Enums;
 
 namespace Yusr.eInvoicing.Abstractions.Entities.Interfaces
 {
-    public interface IEInvoicingSetting
+    public interface IEInvoiceSetting
     {
         public string? CertificateContent { get; protected set; }
         public string? PrivateKey { get; protected set; }

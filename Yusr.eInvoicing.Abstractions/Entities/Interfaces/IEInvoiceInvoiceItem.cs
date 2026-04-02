@@ -1,6 +1,6 @@
 ﻿namespace Yusr.eInvoicing.Abstractions.Entities.Interfaces
 {
-    public interface IInvoiceItem
+    public interface IEInvoiceInvoiceItem
     {
         public long Id { get; protected set; }
         public decimal Price { get; protected set; }
