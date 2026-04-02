@@ -2,12 +2,12 @@
 {
     public interface IInvoiceItem
     {
-        public long Id { get; set; }
-        public decimal Price { get; set; }
-        public decimal Quantity { get; set; }
-        public decimal TotalPrice { get; set; }
-        public decimal Discount { get; set; }
-        public bool Taxable { get; set; }
-        public decimal TotalTaxesPerc { get; set; }
+        public long Id { get; protected set; }
+        public decimal Price { get; protected set; }
+        public decimal Quantity { get; protected set; }
+        public decimal TotalPrice { get; protected set; }
+        public decimal Discount { get; protected set; }
+        public bool Taxable { get; protected set; }
+        public decimal TotalTaxesPerc { get; protected set; }
     }
 }

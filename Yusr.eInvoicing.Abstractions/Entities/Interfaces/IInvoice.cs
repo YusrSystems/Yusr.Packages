@@ -5,19 +5,19 @@ namespace Yusr.eInvoicing.Abstractions.Entities.Interfaces
 {
     public interface IInvoice
     {
-        public long Id { get; set; }
-        public InvoiceType InvoiceType { get; set; }
-        public long? InvoiceCounter { get; set; }
-        public long? OriginalInvoiceId { get; set; }
-        public DateTime InvoiceDate { get; set; }
-        public DateTime? DeliveryDate { get; set; }
-        public EInvoiceStatus EInvoiceStatus { get; set; }
-        public decimal FullAmount { get; set; }
-        public string? QR { get; set; }
-        public string? InvoiceHash { get; set; }
-        public string? PreviousHash { get; set; }
-        public string? SignedXml { get; set; }
-        public ICollection<IInvoiceItem> InvoiceItems { get; set; }
+        public long Id { get; protected set; }
+        public InvoiceType InvoiceType { get; protected set; }
+        public long? InvoiceCounter { get; protected set; }
+        public long? OriginalInvoiceId { get; protected set; }
+        public DateTime InvoiceDate { get; protected set; }
+        public DateTime? DeliveryDate { get; protected set; }
+        public EInvoiceStatus EInvoiceStatus { get; protected set; }
+        public decimal FullAmount { get; protected set; }
+        public string? QR { get; protected set; }
+        public string? InvoiceHash { get; protected set; }
+        public string? PreviousHash { get; protected set; }
+        public string? SignedXml { get; protected set; }
+        public ICollection<IInvoiceItem> InvoiceItems { get; protected set; }
 
         public static bool IsSendableEInvoice(InvoiceType type, IEInvoicingSetting settings)
         {
