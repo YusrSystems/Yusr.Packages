@@ -4,6 +4,13 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+
+	<PackageId>Yusr.eInvoicing.Abstractions</PackageId>
+	<PackageDescription>
+		The core contract layer for the Yusr e-Invoicing ecosystem. This package defines the standard interfaces, DTOs, and domain models required for electronic invoicing, decoupled from specific tax authority implementations. It provides the foundational abstractions for invoice generation, signing, and submission, ensuring seamless integration with Yusr.Core and Yusr.Identity modules.
+	</PackageDescription>
+	<RepositoryUrl>https://github.com/YusrSystems/Yusr.Packages</RepositoryUrl>
+	  
   </PropertyGroup>
 
   <ItemGroup>

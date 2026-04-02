@@ -4,6 +4,12 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	  
+	<PackageId>Yusr.eInvoicing.Zatca</PackageId>
+	<PackageDescription>
+      A concrete implementation of the Yusr e-Invoicing abstractions tailored for the Saudi Arabian Zakat, Tax and Customs Authority (ZATCA) Fatoora requirements. This package encapsulates the official ZATCA SDK to handle XML signing, UBL 2.1 validation, and clearance/reporting workflows. It includes built-in support for Phase 2 compliance, cryptographic hashing, and Base64 TLV QR code generation using QRCoder.
+    </PackageDescription>
+	<RepositoryUrl>https://github.com/YusrSystems/Yusr.Packages</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,13 +25,13 @@
 
   <ItemGroup>
     <Reference Include="ZATCA.EInvoice.SDK">
-      <HintPath>Zatca\Libs\ZATCA.EInvoice.SDK.dll</HintPath>
+      <HintPath>CoreServices\Libs\ZATCA.EInvoice.SDK.dll</HintPath>
     </Reference>
     <Reference Include="ZATCA.EInvoice.SDK.Contracts">
-      <HintPath>Zatca\Libs\ZATCA.EInvoice.SDK.Contracts.dll</HintPath>
+      <HintPath>CoreServices\Libs\ZATCA.EInvoice.SDK.Contracts.dll</HintPath>
     </Reference>
     <Reference Include="ZATCA.EInvoice.SDK.Saxon">
-      <HintPath>Zatca\Libs\ZATCA.EInvoice.SDK.Saxon.dll</HintPath>
+      <HintPath>CoreServices\Libs\ZATCA.EInvoice.SDK.Saxon.dll</HintPath>
     </Reference>
   </ItemGroup>
 
