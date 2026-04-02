@@ -6,10 +6,10 @@ namespace Yusr.eInvoicing.Abstractions.Entities.Interfaces
     public interface IEInvoiceInvoice
     {
         public long Id { get; }
-        public InvoiceType InvoiceType { get; }
+        public InvoiceType Type { get; }
         public long? InvoiceCounter { get; }
         public long? OriginalInvoiceId { get; }
-        public DateTime InvoiceDate { get; }
+        public DateTime Date { get; }
         public DateTime? DeliveryDate { get; }
         public EInvoiceStatus EInvoiceStatus { get; }
         public decimal FullAmount { get; }
@@ -29,7 +29,7 @@ namespace Yusr.eInvoicing.Abstractions.Entities.Interfaces
 
         public bool IsSendableEInvoice(IEInvoiceSetting settings)
         {
-            if (InvoiceType != InvoiceType.Sell && InvoiceType != InvoiceType.SellReturn)
+            if (Type != InvoiceType.Sell && Type != InvoiceType.SellReturn)
                 return false;
 
             return IsRegisteredForEInvoicing(settings);
