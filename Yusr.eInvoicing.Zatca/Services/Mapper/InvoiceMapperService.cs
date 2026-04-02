@@ -8,7 +8,7 @@ namespace Yusr.eInvoicing.Zatca.Services.Mapper
 {
     public class InvoiceMapperService : IInvoiceMapperService
     {
-        public EInvoiceDto GetEInvoiceData(IEInvoiceSetting setting, IEInvoiceInvoice invoice, IEInvoiceAccount customer, List<IEInvoiceItem> dbItems, long? lastCounter, string? lastHash)
+        public EInvoiceDto GetEInvoiceData(IEInvoiceSetting setting, IEInvoiceInvoice invoice, IEInvoiceAccount customer, IEnumerable<IEInvoiceItem> dbItems, long? lastCounter, string? lastHash)
         {
             EInvoiceDto result = new()
             {
