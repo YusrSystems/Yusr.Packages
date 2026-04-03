@@ -3,7 +3,7 @@ using Yusr.eInvoicing.Abstractions.Entities.Interfaces;
 
 namespace Yusr.eInvoicing.Abstractions.Services.Csr
 {
-    internal interface ICsrStorage
+    public interface ICsrStorage
     {
         Task<OperationResult<bool>> StoreCsr(ICsrResult csrResult);
     }
