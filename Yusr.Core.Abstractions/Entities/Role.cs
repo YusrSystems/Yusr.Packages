@@ -6,8 +6,8 @@ namespace Yusr.Core.Abstractions.Entities
     public class Role : BaseTenantEntity
     {
         public string Name { get; private set; } = string.Empty;
-        public List<string>? ErpPermissions { get; private set; } = [];
-        public List<string>? BusPermissions { get; private set; } = [];
+        public List<string>? ErpPermissions { get; private set; } = null;
+        public List<string>? BusPermissions { get; private set; } = null;
 
         private static readonly Dictionary<AppModule, Func<Role, List<string>>> _getPermissions = new()
         {

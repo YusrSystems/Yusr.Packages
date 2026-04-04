@@ -19,10 +19,12 @@ namespace Yusr.Persistence.Context.Config
             builder.Ignore(r => r.Permissions);
 
             builder.Property(r => r.ErpPermissions)
-                .HasColumnType("jsonb");
+                .HasColumnType("jsonb")
+                .IsRequired(false);
 
             builder.Property(r => r.BusPermissions)
-                .HasColumnType("jsonb");
+                .HasColumnType("jsonb")
+                .IsRequired(false);
 
             builder.HasOne(u => u.Tenant)
                 .WithMany()
