@@ -5,16 +5,10 @@ using Yusr.Identity.Abstractions.Services;
 
 namespace Yusr.Api.Abstractions.Authorization
 {
-    public class PermissionAuthorizationHandler : AuthorizationHandler<PermissionRequirement>
+    public class PermissionAuthorizationHandler(ILogger<PermissionAuthorizationHandler> logger, IRolePermissionService rolePermissionService) : AuthorizationHandler<PermissionRequirement>
     {
-        private readonly ILogger<PermissionAuthorizationHandler> _logger;
-        private readonly IRolePermissionService _rolePermissionService;
-
-        public PermissionAuthorizationHandler(ILogger<PermissionAuthorizationHandler> logger, IRolePermissionService rolePermissionService)
-        {
-            _logger = logger;
-            _rolePermissionService = rolePermissionService;
-        }
+        private readonly ILogger<PermissionAuthorizationHandler> _logger = logger;
+        private readonly IRolePermissionService _rolePermissionService = rolePermissionService;
 
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)
         {
