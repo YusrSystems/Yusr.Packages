@@ -4,6 +4,7 @@ using Yusr.Core.Abstractions.Interfaces;
 using Yusr.Core.Abstractions.Interfaces.Generics;
 using Yusr.Core.Abstractions.Services;
 using Yusr.Infrastructure.Persistence.Interceptors;
+using Yusr.Persistence.Interceptors;
 using Yusr.Persistence.Repositories;
 using Yusr.Persistence.Services;
 

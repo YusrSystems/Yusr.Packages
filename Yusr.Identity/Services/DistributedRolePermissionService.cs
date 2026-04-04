@@ -5,26 +5,20 @@ using Yusr.Identity.Abstractions.Services;
 
 namespace Yusr.Identity.Services
 {
-    public class DistributedRolePermissionService : IRolePermissionService
+    public class DistributedRolePermissionService(IRolesRepository rolesRepo, IDistributedCache cache) : IRolePermissionService
     {
-        private readonly IRolesRepository _rolesRepo;
-        private readonly IDistributedCache _cache;
+        private readonly IRolesRepository _rolesRepo = rolesRepo;
+        private readonly IDistributedCache _cache = cache;
 
         private static readonly JsonSerializerOptions _jsonOptions = new()
         {
             PropertyNameCaseInsensitive = true
         };
 
-        public DistributedRolePermissionService(IRolesRepository rolesRepo, IDistributedCache cache)
-        {
-            _rolesRepo = rolesRepo;
-            _cache = cache;
-        }
-
         public async Task<bool> HasPermissionAsync(long roleId, string permission)
         {
             string cacheKey = BuildCacheKey(roleId);
-            HashSet<string>? permissions = null;
+            HashSet<string>? permissions;
 
             var cachedData = await _cache.GetStringAsync(cacheKey);
 
@@ -35,7 +29,7 @@ namespace Yusr.Identity.Services
             else
             {
                 var role = await _rolesRepo.GetByIdAsync(roleId);
-                permissions = role?.Permissions.ToHashSet() ?? new HashSet<string>();
+                permissions = role?.Permissions.ToHashSet() ?? [];
 
                 var serializedData = JsonSerializer.Serialize(permissions, _jsonOptions);
                 var cacheOptions = new DistributedCacheEntryOptions

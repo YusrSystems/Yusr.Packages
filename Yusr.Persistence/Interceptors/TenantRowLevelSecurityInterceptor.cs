@@ -2,16 +2,11 @@
 using System.Data.Common;
 using Yusr.Core.Abstractions.Services;
 
-namespace Yusr.Infrastructure.Persistence.Interceptors
+namespace Yusr.Persistence.Interceptors
 {
-    public class TenantRowLevelSecurityInterceptor : DbConnectionInterceptor
+    public class TenantRowLevelSecurityInterceptor(ITenantService tenantService) : DbConnectionInterceptor
     {
-        private readonly ITenantService _tenantService;
-
-        public TenantRowLevelSecurityInterceptor(ITenantService tenantService)
-        {
-            _tenantService = tenantService;
-        }
+        private readonly ITenantService _tenantService = tenantService;
 
         public override async Task ConnectionOpenedAsync(
             DbConnection connection,
