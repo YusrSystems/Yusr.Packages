@@ -13,7 +13,7 @@ namespace Yusr.Application.Abstractions.Mappings
             {
                 Id = entity.Id,
                 Username = entity.Username,
-                Password = entity.Password,
+                Password = "",
                 IsActive = entity.IsActive,
                 RoleId = entity.RoleId,
                 BranchId = entity.BranchId,
