@@ -15,6 +15,7 @@ namespace Yusr.Persistence.Repositories
         {
             return await _context.Tenants
                 .AsNoTracking()
+                .Include(t => t.Currency)
                 .Where(c => c.Email == email)
                 .FirstOrDefaultAsync();
         }
