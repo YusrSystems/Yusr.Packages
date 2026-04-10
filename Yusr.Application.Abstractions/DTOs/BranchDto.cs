@@ -10,6 +10,6 @@
         public string? PostalCode { get; set; } = null;
 
 
-        public string CityName { get; set; } = string.Empty;
+        public CityDto? City { get; set; }
     }
 }
