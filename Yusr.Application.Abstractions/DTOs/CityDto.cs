@@ -5,6 +5,6 @@
         public string Name { get; set; } = string.Empty;
         public long CountryId { get; set; }
 
-        public CountryDto Country { get; set; } = new CountryDto();
+        public CountryDto? Country { get; set; }
     }
 }

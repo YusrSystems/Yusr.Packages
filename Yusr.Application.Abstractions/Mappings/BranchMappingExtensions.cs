@@ -18,7 +18,7 @@ namespace Yusr.Application.Abstractions.Mappings
                 Street = entity.Street,
                 BuildingNumber = entity.BuildingNumber,
                 PostalCode = entity.PostalCode,
-                CityName = entity.City?.Name ?? "",
+                City = entity.City?.ToDto(),
             };
         }
 

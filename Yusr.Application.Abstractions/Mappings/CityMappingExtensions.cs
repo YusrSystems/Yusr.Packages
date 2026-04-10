@@ -14,7 +14,7 @@ namespace Yusr.Application.Abstractions.Mappings
                 Id = entity.Id,
                 Name = entity.Name,
                 CountryId = entity.CountryId,
-                Country = entity.Country.ToDto(),
+                Country = entity.Country?.ToDto(),
             };
         }
 
