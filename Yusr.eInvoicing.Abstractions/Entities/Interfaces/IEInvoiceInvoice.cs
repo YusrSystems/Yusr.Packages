@@ -56,13 +56,13 @@ namespace Yusr.eInvoicing.Abstractions.Entities.Interfaces
             return YusrMath.Round(InvoiceItems
                 .Select(ii => new
                 {
-                    ii.TotalPrice,
+                    ii.TaxInclusiveTotalPrice,
                     TaxFactor = (!ii.Taxable || ii.TotalTaxesPerc == 0) ? 1 : YusrMath.GetFactor(ii.TotalTaxesPerc)
                 })
                 .Select(x => new
                 {
-                    TaxTotalPrice = x.TotalPrice,
-                    NoTaxTotalPrice = YusrMath.Round(x.TotalPrice / x.TaxFactor)
+                    TaxTotalPrice = x.TaxInclusiveTotalPrice,
+                    NoTaxTotalPrice = YusrMath.Round(x.TaxInclusiveTotalPrice / x.TaxFactor)
                 })
                 .Sum(x => x.TaxTotalPrice - x.NoTaxTotalPrice));
         }

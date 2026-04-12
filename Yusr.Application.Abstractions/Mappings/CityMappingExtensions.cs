@@ -20,7 +20,7 @@ namespace Yusr.Application.Abstractions.Mappings
 
         public static List<CityDto> ToDtoList(this IEnumerable<City> entities)
         {
-            return entities.Select(e => e.ToDto()).ToList();
+            return [.. entities.Select(e => e.ToDto())];
         }
     }
 }

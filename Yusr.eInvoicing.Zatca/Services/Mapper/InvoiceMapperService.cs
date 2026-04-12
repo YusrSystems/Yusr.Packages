@@ -63,15 +63,15 @@ namespace Yusr.eInvoicing.Zatca.Services.Mapper
 
                 bool isTaxable = dbItem.Taxable;
                 decimal taxPerc = itemDto.TotalTaxesPerc;
-                decimal price = itemDto.Price;
-                decimal discount = itemDto.Discount;
+                decimal price = itemDto.TaxInclusivePrice;
+                decimal settlement = itemDto.Settlement;
                 decimal qty = itemDto.Quantity;
-                decimal totalPrice = itemDto.TotalPrice;
+                decimal totalPrice = itemDto.TaxInclusiveTotalPrice;
 
                 decimal taxFactor = (!isTaxable || taxPerc == 0) ? 1 : YusrMath.GetFactor(taxPerc);
 
-                decimal noTaxPrice = YusrMath.Round((price - discount) / taxFactor);
-                decimal taxPrice = YusrMath.Round(price - discount);
+                decimal noTaxPrice = YusrMath.Round((price + settlement) / taxFactor);
+                decimal taxPrice = YusrMath.Round(price + settlement);
                 decimal noTaxTotalPrice = YusrMath.Round(totalPrice / taxFactor);
                 decimal taxTotalPrice = totalPrice;
 
