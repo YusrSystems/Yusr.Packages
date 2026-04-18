@@ -8,7 +8,7 @@ namespace Yusr.Storage
     {
         public static IServiceCollection AddYusrFilesStorage(this IServiceCollection services)
         {
-            services.AddSingleton<IFilesStorage, WasabiService>();
+            services.AddSingleton<IFilesStorage, S3Service>();
 
             return services;
         }

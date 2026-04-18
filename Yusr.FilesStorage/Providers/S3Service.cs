@@ -8,12 +8,12 @@ using Yusr.Storage.Abstractions.Services;
 
 namespace Yusr.Storage.Providers
 {
-    public class WasabiService : IFilesStorage
+    public class S3Service : IFilesStorage
     {
         private readonly FilesStorageOptions _options;
         private readonly AmazonS3Client _s3Client;
 
-        public WasabiService(IOptions<FilesStorageOptions> options)
+        public S3Service(IOptions<FilesStorageOptions> options)
         {
             _options = options.Value;
 
