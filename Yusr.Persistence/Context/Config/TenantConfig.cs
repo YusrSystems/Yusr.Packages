@@ -15,6 +15,13 @@ namespace Yusr.Persistence.Context.Config
             builder.Property(x => x.Id)
                 .ValueGeneratedOnAdd();
 
+            builder.Property(x => x.RegistrationKey)
+                .HasMaxLength(10)
+                .IsRequired();
+
+            builder.HasIndex(x => x.RegistrationKey)
+                .IsUnique();
+
             builder.HasOne(x => x.Currency)
                 .WithMany()
                 .HasForeignKey(x => x.CurrencyId)
