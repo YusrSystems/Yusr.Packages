@@ -7,5 +7,6 @@ namespace Yusr.Core.Abstractions.Interfaces
     {
         Task<Tenant?> GetTenantByEmailAsync(string email);
         Task<bool> CheckEmailAvailability(string email);
+        Task<Tenant?> GetTenantByRegistrationKeyAsync(string registrationKey);
     }
 }

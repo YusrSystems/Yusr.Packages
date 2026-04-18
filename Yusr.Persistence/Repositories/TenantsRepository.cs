@@ -20,6 +20,15 @@ namespace Yusr.Persistence.Repositories
                 .FirstOrDefaultAsync();
         }
 
+        public async Task<Tenant?> GetTenantByRegistrationKeyAsync(string registrationKey)
+        {
+            return await _context.Tenants
+                .AsNoTracking()
+                .Include(t => t.Currency)
+                .Where(c => c.RegistrationKey == registrationKey)
+                .FirstOrDefaultAsync();
+        }
+
         public async Task<bool> CheckEmailAvailability(string email)
         {
             var normalizedUsername = email.Trim().ToLower();

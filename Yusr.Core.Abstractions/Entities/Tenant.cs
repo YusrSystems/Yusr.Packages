@@ -1,9 +1,12 @@
-﻿namespace Yusr.Core.Abstractions.Entities
+﻿using Yusr.Core.Abstractions.Utilities;
+
+namespace Yusr.Core.Abstractions.Entities
 {
     public class Tenant : BaseEntity
     {
         public string Email { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
+        public string RegistrationKey { get; set; } = string.Empty;
         public string Phone { get; private set; } = string.Empty;
         public long CurrencyId { get; private set; }
         public string? CompanyBusinessCategory { get; private set; }
@@ -23,6 +26,7 @@
             {
                 Email = email,
                 Name = name,
+                RegistrationKey = KeyGenerator.GenerateNanoid(),
                 Phone = phone,
                 CreateDate = DateTime.UtcNow,
                 StartDate = DateTime.UtcNow,
@@ -42,6 +46,12 @@
             CurrencyId = currencyId;
             Logo = logo;
 
+            return this;
+        }
+
+        public Tenant RegenerateRegistrationKey()
+        {
+            RegistrationKey = KeyGenerator.GenerateNanoid();
             return this;
         }
 
