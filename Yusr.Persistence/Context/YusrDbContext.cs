@@ -27,9 +27,11 @@ namespace Yusr.Persistence.Context
                         .GetMethod(nameof(SetTenantQueryFilter), System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
                         ?.MakeGenericMethod(entityType.ClrType);
 
-                    method?.Invoke(this, new object[] { modelBuilder });
+                    method?.Invoke(this, [modelBuilder]);
                 }
             }
+
+            modelBuilder.RegisterYusrMath();
         }
 
         protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)

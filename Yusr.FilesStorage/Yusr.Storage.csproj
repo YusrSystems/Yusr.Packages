@@ -12,7 +12,7 @@
   </PropertyGroup>
 
 	<ItemGroup>
-		<None Include="README.md" Pack="true" PackagePath="\"/>
+		<None Include="README.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
   <ItemGroup>
@@ -20,10 +20,10 @@
   </ItemGroup>
 	
   <ItemGroup>
-	<PackageReference Include="AWSSDK.S3" Version="4.0.19.1" />
-	<PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.5" />
-	<PackageReference Include="Microsoft.Extensions.Options" Version="10.0.5" />
-	<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.5" />
+	<PackageReference Include="AWSSDK.S3" Version="4.0.21.2" />
+	<PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.6" />
+	<PackageReference Include="Microsoft.Extensions.Options" Version="10.0.6" />
+	<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.6" />
   </ItemGroup>
 
   <ItemGroup>
